@@ -48,7 +48,7 @@ const AuthAPI = {
         return apiCall('auth/logout');
     },
     async checkAuth() {
-        return apiCall('auth/check', { method: 'GET' });
+        return apiCall('auth/check', { method: 'GET', cache: 'no-store' });
     },
     async check() {
         return this.checkAuth();

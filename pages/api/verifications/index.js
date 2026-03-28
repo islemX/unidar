@@ -84,8 +84,10 @@ async function submit(req, res, user) {
 
   const toDbPath = (f) => 'uploads/verifications/' + path.basename(f.filepath || f.path);
 
-  await query('INSERT INTO verifications (user_id, student_id_file, national_id_file) VALUES (?, ?, ?)',
-              [user.id, toDbPath(studentIdFile), toDbPath(nationalIdFile)]);
+  await query(
+    'INSERT INTO verifications (user_id, student_id_file, national_id_file, status, submitted_at) VALUES (?, ?, ?, \'pending\', NOW())',
+    [user.id, toDbPath(studentIdFile), toDbPath(nationalIdFile)]
+  );
 
   return res.status(201).json({ success: true, message: 'Verification submitted successfully' });
 }
