@@ -114,12 +114,13 @@ export default function ListingDetailPage() {
             renderHeaderAuth(authRes);
             renderContent();
           } catch (err) {
-            document.getElementById('listingContent').innerHTML = '<div class="alert alert-error">Failed to load listing details: ' + (err && err.message ? err.message : String(err)) + '</div>';
+            document.getElementById('listingContent').innerHTML = '<div class="alert alert-error">Failed to load listing details.</div>';
           }
         }
 
         function renderHeaderAuth(auth) {
           const area = document.getElementById('navAuthArea');
+          if (!area) return; // common.js navbar replaced this element
           if (auth.authenticated) {
             const dash = auth.user.role === 'admin' ? '/admin' : auth.user.role === 'owner' ? '/owner-listings' : '/user-dashboard';
             area.innerHTML = '<a href="' + dash + '" class="nav-link">Dashboard</a>';
