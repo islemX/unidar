@@ -25,7 +25,7 @@ async function getListing(req, res, id) {
   if (!user) return;
 
   const rows = await query(`
-    SELECT l.*, u.full_name as owner_name, u.email as owner_email, u.phone as owner_phone,
+    SELECT l.*, u.full_name as owner_name, u.email as owner_email,
            (SELECT status FROM verifications WHERE user_id = l.owner_id ORDER BY id DESC LIMIT 1) as owner_verified,
            (SELECT COUNT(*) FROM saved_listings WHERE listing_id = l.id AND user_id = ?) as is_saved,
            (SELECT COUNT(*) FROM contracts WHERE listing_id = l.id

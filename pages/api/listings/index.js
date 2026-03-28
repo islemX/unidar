@@ -3,6 +3,8 @@ import { verifyToken, requireAuth, requireRole } from '../../../lib/auth';
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import { put } from '@vercel/blob';
 
 export const config = { api: { bodyParser: false } };
 
@@ -71,11 +73,15 @@ async function createListing(req, res) {
   const user = requireRole(req, res, 'owner');
   if (!user) return;
 
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'listings');
-  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+  const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+  const uploadDir = useBlob
+    ? os.tmpdir()
+    : path.join(process.cwd(), 'public', 'uploads', 'listings');
+
+  if (!useBlob && !fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
   const form = formidable({ uploadDir, keepExtensions: true, multiples: true });
-  
+
   const { fields, files } = await new Promise((resolve, reject) => {
     form.parse(req, (err, fds, fs) => err ? reject(err) : resolve({ fields: fds, files: fs }));
   });
@@ -107,10 +113,20 @@ async function createListing(req, res) {
   // Handle uploaded images
   let uploadedFiles = files.images || [];
   if (!Array.isArray(uploadedFiles)) uploadedFiles = [uploadedFiles];
+  uploadedFiles = uploadedFiles.filter(Boolean);
 
   for (let i = 0; i < uploadedFiles.length; i++) {
     const f = uploadedFiles[i];
-    const dbPath = 'uploads/listings/' + path.basename(f.filepath || f.path);
+    let dbPath;
+    if (useBlob) {
+      const ext = path.extname(f.originalFilename || f.newFilename || '');
+      const blob = await put(`listings/${listingId}-${i}-${Date.now()}${ext}`,
+                             fs.createReadStream(f.filepath), { access: 'public' });
+      dbPath = blob.url;
+      try { fs.unlinkSync(f.filepath); } catch (_) {}
+    } else {
+      dbPath = 'uploads/listings/' + path.basename(f.filepath || f.path);
+    }
     await query('INSERT INTO listing_images (listing_id, image_path, display_order) VALUES (?, ?, ?)',
                 [listingId, dbPath, i]);
   }
