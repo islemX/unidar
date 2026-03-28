@@ -72,6 +72,22 @@ export default function ListingDetailPage() {
         let isSaved = false;
         let currentImgIndex = 0;
 
+        // Fallbacks in case utils.js hasn't finished loading yet
+        if (!window.resolveImageUrl) {
+          window.resolveImageUrl = function(p) {
+            if (!p) return '/placeholder.jpg';
+            if (typeof p === 'string' && p.startsWith('http')) return p;
+            if (typeof p === 'string') return p.startsWith('/') ? p : '/' + p;
+            return '/placeholder.jpg';
+          };
+        }
+        if (!window.formatDate) {
+          window.formatDate = function(d) {
+            if (!d) return 'N/A';
+            return new Date(d).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+          };
+        }
+
         async function loadDetail() {
           try {
             const api = window.UNIDAR_API;
