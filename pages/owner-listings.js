@@ -204,7 +204,10 @@ export default function OwnerListingsPage() {
         });
 
         document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-          await window.UNIDAR_API.Auth.logout(); window.location.href = '/login';
+          await window.UNIDAR_API.Auth.logout();
+          localStorage.removeItem('unidar_auth_user');
+          sessionStorage.clear();
+          window.location.href = '/login';
         });
 
         initOwner();

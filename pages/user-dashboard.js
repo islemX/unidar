@@ -400,6 +400,8 @@ export default function UserDashboardPage() {
         document.getElementById('refreshContracts')?.addEventListener('click', init);
         document.getElementById('logoutBtn')?.addEventListener('click', async () => {
           await window.UNIDAR_API.Auth.logout();
+          localStorage.removeItem('unidar_auth_user');
+          sessionStorage.clear();
           window.location.href = '/login';
         });
 
