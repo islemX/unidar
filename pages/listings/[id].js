@@ -114,7 +114,7 @@ export default function ListingDetailPage() {
             renderHeaderAuth(authRes);
             renderContent();
           } catch (err) {
-            document.getElementById('listingContent').innerHTML = '<div class="alert alert-error">Failed to load listing details.</div>';
+            document.getElementById('listingContent').innerHTML = '<div class="alert alert-error">Failed to load listing details: ' + (err && err.message ? err.message : String(err)) + '</div>';
           }
         }
 
