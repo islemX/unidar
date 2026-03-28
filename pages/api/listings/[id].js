@@ -24,32 +24,49 @@ async function getListing(req, res, id) {
   const user = requireAuth(req, res);
   if (!user) return;
 
+  // Core query: only listings + users (always exist)
   const rows = await query(`
-    SELECT l.*, u.full_name as owner_name, u.email as owner_email,
-           (SELECT status FROM verifications WHERE user_id = l.owner_id ORDER BY id DESC LIMIT 1) as owner_verified,
-           (SELECT COUNT(*) FROM saved_listings WHERE listing_id = l.id AND user_id = ?) as is_saved,
-           (SELECT COUNT(*) FROM contracts WHERE listing_id = l.id
-            AND status IN ('signed_by_student','signed_by_owner','paid','active','completed','completed_student','signed_by_both')
-            AND (end_date IS NULL OR end_date >= CURDATE())) as occupant_count
+    SELECT l.*, u.full_name as owner_name, u.email as owner_email
     FROM listings l
     JOIN users u ON l.owner_id = u.id
     WHERE l.id = ?
-  `, [user.id, id]);
+  `, [id]);
 
   if (!rows.length) return res.status(404).json({ error: 'Listing not found' });
   const listing = rows[0];
-  listing.is_saved = !!listing.is_saved;
 
-  listing.images = await query('SELECT image_path FROM listing_images WHERE listing_id = ? ORDER BY display_order', [id]);
+  // Optional queries — wrapped individually so a missing table never kills the whole request
+  try {
+    const saved = await query('SELECT COUNT(*) as c FROM saved_listings WHERE listing_id = ? AND user_id = ?', [id, user.id]);
+    listing.is_saved = !!(saved[0]?.c);
+  } catch (_) { listing.is_saved = false; }
 
-  listing.roommates = await query(`
-    SELECT u.id as student_id, u.full_name, rp.gender, rp.cleanliness_level, rp.sleep_schedule, rp.noise_tolerance, rp.guests, rp.pets
-    FROM contracts c
-    JOIN users u ON c.student_id = u.id
-    LEFT JOIN roommate_preferences rp ON u.id = rp.user_id
-    WHERE c.listing_id = ? AND c.status IN ('signed_by_student','signed_by_owner','paid','active','completed','completed_student','signed_by_both')
-    AND (c.end_date IS NULL OR c.end_date >= CURDATE())
-  `, [id]);
+  try {
+    const occ = await query(`SELECT COUNT(*) as c FROM contracts WHERE listing_id = ?
+      AND status IN ('signed_by_student','signed_by_owner','paid','active','completed','completed_student','signed_by_both')
+      AND (end_date IS NULL OR end_date >= CURDATE())`, [id]);
+    listing.occupant_count = occ[0]?.c || 0;
+  } catch (_) { listing.occupant_count = 0; }
+
+  try {
+    const ver = await query('SELECT status FROM verifications WHERE user_id = ? ORDER BY id DESC LIMIT 1', [listing.owner_id]);
+    listing.owner_verified = ver[0]?.status || null;
+  } catch (_) { listing.owner_verified = null; }
+
+  try {
+    listing.images = await query('SELECT image_path FROM listing_images WHERE listing_id = ? ORDER BY display_order', [id]);
+  } catch (_) { listing.images = []; }
+
+  try {
+    listing.roommates = await query(`
+      SELECT u.id as student_id, u.full_name, rp.gender, rp.cleanliness_level, rp.sleep_schedule, rp.noise_tolerance, rp.guests, rp.pets
+      FROM contracts c
+      JOIN users u ON c.student_id = u.id
+      LEFT JOIN roommate_preferences rp ON u.id = rp.user_id
+      WHERE c.listing_id = ? AND c.status IN ('signed_by_student','signed_by_owner','paid','active','completed','completed_student','signed_by_both')
+      AND (c.end_date IS NULL OR c.end_date >= CURDATE())
+    `, [id]);
+  } catch (_) { listing.roommates = []; }
 
   return res.json({ listing });
 }
