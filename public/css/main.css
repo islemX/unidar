@@ -512,17 +512,7 @@ input, textarea, select {
   box-shadow: var(--shadow-lg);
   position: relative;
 }
-.premium-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-2xl);
-  background: var(--gradient-glass);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-.premium-card:hover::before { opacity: 1; }
+/* premium-card hover overlay removed — caused white-on-white text */
 
 /* Glass card */
 .card-glass {
