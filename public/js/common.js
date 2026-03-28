@@ -195,16 +195,56 @@ function applyRoleNavbar(page, user) {
 
     var langSwitcherHTML = window.UNIDAR_I18N ? window.UNIDAR_I18N.createSwitcherHTML() : '';
 
+    var firstName = userData && userData.full_name ? userData.full_name.split(' ')[0] : '';
     container.innerHTML =
         '<a href="/" class="nav-logo">' +
-        '<span style="color: var(--color-brand);">UNI</span>DAR' +
+        '<span>UNI</span>DAR' +
         '</a>' +
-        '<div class="nav-links">' + linksHTML + '</div>' +
-        '<div style="display: flex; align-items: center; gap: var(--space-md);">' +
+        '<button class="nav-hamburger" id="navHamburger" aria-label="Menu">' +
+        '<span></span><span></span><span></span>' +
+        '</button>' +
+        '<div class="nav-links" id="navLinks">' + linksHTML + '</div>' +
+        '<div style="display: flex; align-items: center; gap: var(--space-sm);">' +
         langSwitcherHTML +
-        '<span id="userName" class="text-muted text-small" style="font-weight: 500;">' + (userData ? userData.full_name : '') + '</span>' +
-        '<button class="btn btn-secondary" id="logoutBtn" style="padding: var(--space-xs) var(--space-md); font-size: var(--font-size-xs);" data-i18n="nav_logout">' + t('nav_logout') + '</button>' +
+        '<span id="userName" class="text-muted text-small" style="font-weight:600;font-size:0.8rem;">' + firstName + '</span>' +
+        '<button class="btn btn-secondary btn-sm" id="logoutBtn" data-i18n="nav_logout">' + t('nav_logout') + '</button>' +
         '</div>';
+
+    // Hamburger toggle
+    var hamburger = document.getElementById('navHamburger');
+    var navbar = document.querySelector('.navbar');
+    if (hamburger && navbar) {
+        hamburger.addEventListener('click', function () {
+            navbar.classList.toggle('nav-open');
+        });
+        // Close on nav link click
+        var navLinks = document.getElementById('navLinks');
+        if (navLinks) {
+            navLinks.querySelectorAll('.nav-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    navbar.classList.remove('nav-open');
+                });
+            });
+        }
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (!navbar.contains(e.target)) {
+                navbar.classList.remove('nav-open');
+            }
+        });
+    }
+
+    // Scroll shadow
+    var navbarEl = document.querySelector('.navbar');
+    if (navbarEl) {
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 8) {
+                navbarEl.classList.add('scrolled');
+            } else {
+                navbarEl.classList.remove('scrolled');
+            }
+        }, { passive: true });
+    }
 
     var logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
