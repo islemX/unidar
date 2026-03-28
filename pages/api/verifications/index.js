@@ -9,6 +9,8 @@ import { requireAuth, requireRole }   from '../../../lib/auth';
 import formidable                      from 'formidable';
 import fs                              from 'fs';
 import path                            from 'path';
+import os                              from 'os';
+import { put }                         from '@vercel/blob';
 
 export const config = { api: { bodyParser: false } };
 
@@ -66,8 +68,13 @@ async function submit(req, res, user) {
   const pending = await query("SELECT id FROM verifications WHERE user_id = ? AND status = 'pending'", [user.id]);
   if (pending.length) return res.status(409).json({ error: 'Verification already pending' });
 
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'verifications');
-  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+  // On Vercel the project root is read-only; use /tmp for temporary upload storage
+  const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+  const uploadDir = useBlob
+    ? os.tmpdir()
+    : path.join(process.cwd(), 'public', 'uploads', 'verifications');
+
+  if (!useBlob && !fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
   const form = formidable({ uploadDir, keepExtensions: true, maxFileSize: 5 * 1024 * 1024 });
 
@@ -82,11 +89,31 @@ async function submit(req, res, user) {
     return res.status(400).json({ error: 'Both files are required' });
   }
 
-  const toDbPath = (f) => 'uploads/verifications/' + path.basename(f.filepath || f.path);
+  let studentIdPath, nationalIdPath;
+
+  if (useBlob) {
+    // Upload to Vercel Blob (production)
+    const ext = (f) => path.extname(f.originalFilename || f.newFilename || '');
+    const [sBlob, nBlob] = await Promise.all([
+      put(`verifications/${user.id}-student-${Date.now()}${ext(studentIdFile)}`,
+          fs.createReadStream(studentIdFile.filepath), { access: 'public' }),
+      put(`verifications/${user.id}-national-${Date.now()}${ext(nationalIdFile)}`,
+          fs.createReadStream(nationalIdFile.filepath), { access: 'public' }),
+    ]);
+    studentIdPath  = sBlob.url;
+    nationalIdPath = nBlob.url;
+    // Remove temp files from /tmp
+    try { fs.unlinkSync(studentIdFile.filepath); fs.unlinkSync(nationalIdFile.filepath); } catch (_) {}
+  } else {
+    // Local development: files already written to public/uploads/verifications
+    const basename = (f) => 'uploads/verifications/' + path.basename(f.filepath || f.path);
+    studentIdPath  = basename(studentIdFile);
+    nationalIdPath = basename(nationalIdFile);
+  }
 
   await query(
-    'INSERT INTO verifications (user_id, student_id_file, national_id_file, status, submitted_at) VALUES (?, ?, ?, \'pending\', NOW())',
-    [user.id, toDbPath(studentIdFile), toDbPath(nationalIdFile)]
+    "INSERT INTO verifications (user_id, student_id_file, national_id_file, status, submitted_at) VALUES (?, ?, ?, 'pending', NOW())",
+    [user.id, studentIdPath, nationalIdPath]
   );
 
   return res.status(201).json({ success: true, message: 'Verification submitted successfully' });
