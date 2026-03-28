@@ -336,7 +336,10 @@ input, textarea, select {
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn::before {
+/* Shimmer only on dark/gradient buttons — not secondary/ghost */
+.btn-primary::before,
+.btn-danger::before,
+.btn-success::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -344,10 +347,13 @@ input, textarea, select {
   background-size: 200% 100%;
   opacity: 0;
   transition: opacity 0.3s;
+  pointer-events: none;
 }
-.btn:hover::before {
-  opacity: 1;
-  animation: shimmer 1.5s infinite;
+.btn-primary:hover::before,
+.btn-danger:hover::before,
+.btn-success:hover::before {
+  opacity: 0.2;
+  animation: shimmer 1.8s infinite;
 }
 
 .btn-sm {
@@ -706,11 +712,13 @@ textarea.form-input {
   position: fixed;
   inset: 0;
   z-index: var(--z-modal);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: var(--space-md);
 }
+/* JS toggles display:flex / display:none inline; also support .open class */
+.modal.open { display: flex; }
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -892,10 +900,13 @@ textarea.form-input {
   background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(var(--blur-md));
   z-index: var(--z-max);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
+}
+.lightbox-overlay.active {
+  display: flex;
   animation: fadeIn 0.2s ease;
 }
 .lightbox-image {
