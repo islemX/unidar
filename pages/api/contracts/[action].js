@@ -79,10 +79,11 @@ async function handleGenerate(req, res, user) {
   // Generate a unique, deterministic-enough number before INSERT to avoid duplicate '' defaults.
   const contractNumber = `CN-${listing_id}-${user.id}-${Date.now()}`;
 
-  // Insert contract
+  // Insert contract — use 'draft' (valid ENUM value; 'pending' not in schema ENUM)
+  // contract_template_id defaults to 0 / contract_content filled via UPDATE below
   const result = await query(`
-    INSERT INTO contracts (contract_number, listing_id, student_id, owner_id, start_date, end_date, monthly_rent, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
+    INSERT INTO contracts (contract_number, listing_id, student_id, owner_id, start_date, end_date, monthly_rent, status, contract_template_id, contract_content)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 'draft', 0, '')
   `, [contractNumber, listing_id, user.id, listing.owner_id, toMysql(startDate), toMysql(endDate), listing.price]);
 
   const contractId = result.insertId;
@@ -95,7 +96,7 @@ async function handleGenerate(req, res, user) {
   return res.json({
     success:     true,
     contract_id: contractId,
-    contract:    { id: contractId, status: 'pending', content, start_date: toMysql(startDate), end_date: toMysql(endDate), monthly_rent: listing.price }
+    contract:    { id: contractId, status: 'draft', content, start_date: toMysql(startDate), end_date: toMysql(endDate), monthly_rent: listing.price }
   });
 }
 
