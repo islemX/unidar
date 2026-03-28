@@ -77,6 +77,8 @@ export default function ListingDetailPage() {
           window.resolveImageUrl = function(p) {
             if (!p) return '/placeholder.jpg';
             if (typeof p === 'string' && p.startsWith('http')) return p;
+            if (typeof p === 'string' && p.startsWith('data:')) return p;
+            if (typeof p === 'string' && p.startsWith('hounitn/')) return 'https://storage.googleapis.com/' + p;
             if (typeof p === 'string') return p.startsWith('/') ? p : '/' + p;
             return '/placeholder.jpg';
           };

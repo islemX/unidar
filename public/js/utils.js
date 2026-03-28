@@ -144,14 +144,15 @@ function getAPIBaseURL() {
 function resolveImageUrl(imagePath) {
     if (!imagePath) return '/placeholder.jpg';
     if (imagePath.startsWith('http')) return imagePath;
+    if (imagePath.startsWith('data:')) return imagePath;
     // Normalize windows backslashes if any
     imagePath = imagePath.replaceAll('\\', '/');
-    
+    // Legacy Google Cloud Storage paths stored without the base URL
+    if (imagePath.startsWith('hounitn/')) {
+        return 'https://storage.googleapis.com/' + imagePath;
+    }
     // Ensure path starts with / if it doesn't already
     const path = imagePath.startsWith('/') ? imagePath : '/' + imagePath;
-
-    // If backend returns /unidar/... paths, keep them (apache/xampp root)
-    // If it returns /backend/... also keep them.
     return path;
 }
 
