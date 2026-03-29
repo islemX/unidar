@@ -303,10 +303,23 @@ async function handleRequestTermination(req, res, user) {
   const rows = await query('SELECT id, owner_id, listing_id FROM contracts WHERE id = ? AND student_id = ?', [contract_id, user.id]);
   if (!rows.length) return res.status(404).json({ success: false, error: 'Contract not found' });
 
-  // Always mark contract as termination_requested so admin/owner can see it
-  await query("UPDATE contracts SET status = 'termination_requested' WHERE id = ?", [contract_id]);
+  // Ensure termination_requests table exists (auto-migrate)
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS termination_requests (
+        id           INT AUTO_INCREMENT PRIMARY KEY,
+        contract_id  INT NOT NULL,
+        requester_id INT NOT NULL,
+        reason       TEXT DEFAULT NULL,
+        status       ENUM('pending','approved','rejected') DEFAULT 'pending',
+        created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY uniq_contract (contract_id)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+  } catch (_) {}
 
-  // Insert into termination_requests for formal tracking (best-effort — table may not exist yet)
+  // Insert/update termination request
   try {
     await query(`
       INSERT INTO termination_requests (contract_id, requester_id, reason, status)
@@ -314,9 +327,22 @@ async function handleRequestTermination(req, res, user) {
       ON DUPLICATE KEY UPDATE reason = VALUES(reason), status = 'pending', updated_at = NOW()
     `, [contract_id, user.id, reason]);
   } catch (e) {
-    // Table doesn't exist yet — contract status update above is the fallback
-    console.warn('termination_requests table missing, using contract status fallback:', e.message);
+    return res.status(500).json({ success: false, error: 'Could not save request: ' + e.message });
   }
+
+  // Also expand the contracts ENUM and update status if possible (best-effort)
+  try {
+    await query(`
+      ALTER TABLE contracts MODIFY COLUMN status
+        ENUM('draft','pending','pending_signature','signed_by_student','signed_by_both',
+             'completed','cancelled','active','paid','terminated','termination_requested',
+             'expired','rejected')
+        DEFAULT 'draft'
+    `);
+  } catch (_) {}
+  try {
+    await query("UPDATE contracts SET status = 'termination_requested' WHERE id = ?", [contract_id]);
+  } catch (_) {}
 
   return res.json({ success: true });
 }
