@@ -10,6 +10,7 @@ import { query, rawPool } from '../../../lib/db';
 import { requireAuth }    from '../../../lib/auth';
 import fs                 from 'fs';
 import path               from 'path';
+import { put as blobPut } from '@vercel/blob';
 
 export default async function handler(req, res) {
   const user = requireAuth(req, res);
@@ -107,16 +108,31 @@ async function handleSign(req, res, user) {
   const { contract_id, signature } = req.body;
   if (!contract_id || !signature) return res.status(400).json({ success: false, error: 'Contract and signature required' });
 
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'signatures');
-  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-
-  const sigName = `student_${contract_id}_${Date.now()}.png`;
   const sigData = signature.replace('data:image/png;base64,', '').replace(/ /g, '+');
   const decoded = Buffer.from(sigData, 'base64');
   if (!decoded.length) return res.status(400).json({ success: false, error: 'Invalid signature data' });
 
-  fs.writeFileSync(path.join(uploadDir, sigName), decoded);
-  const sigPath = 'uploads/signatures/' + sigName;
+  const sigName = `signatures/student_${contract_id}_${Date.now()}.png`;
+  let sigPath;
+
+  // On Vercel the filesystem is read-only — upload to Blob storage
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    try {
+      const blob = await blobPut(sigName, decoded, { access: 'public', contentType: 'image/png' });
+      sigPath = blob.url;
+    } catch (e) {
+      return res.status(500).json({ success: false, error: 'Signature upload failed: ' + e.message });
+    }
+  } else {
+    // Local dev: write to /tmp then copy to public/uploads/signatures
+    const tmpPath = path.join('/tmp', `sig_${contract_id}_${Date.now()}.png`);
+    fs.writeFileSync(tmpPath, decoded);
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'signatures');
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+    const localName = `student_${contract_id}_${Date.now()}.png`;
+    fs.copyFileSync(tmpPath, path.join(uploadDir, localName));
+    sigPath = 'uploads/signatures/' + localName;
+  }
 
   const result = await query(
     "UPDATE contracts SET student_signature_path = ?, status = 'signed_by_student' WHERE id = ? AND student_id = ?",
