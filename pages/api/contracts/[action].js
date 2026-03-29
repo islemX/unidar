@@ -299,40 +299,116 @@ async function handleRequestTermination(req, res, user) {
   const { contract_id, reason = '' } = req.body;
   if (!contract_id) return res.status(400).json({ success: false, error: 'contract_id required' });
 
-  await query(`INSERT INTO termination_requests (contract_id, requester_id, reason, status)
-               VALUES (?, ?, ?, 'pending')
-               ON DUPLICATE KEY UPDATE reason = VALUES(reason), status = 'pending'`,
-               [contract_id, user.id, reason]).catch(async () => {
-    // fallback if table doesn't exist yet – just update contract
-    await query("UPDATE contracts SET status = 'termination_requested' WHERE id = ?", [contract_id]);
-  });
+  // Verify this student owns this contract
+  const rows = await query('SELECT id, owner_id, listing_id FROM contracts WHERE id = ? AND student_id = ?', [contract_id, user.id]);
+  if (!rows.length) return res.status(404).json({ success: false, error: 'Contract not found' });
+
+  // Always mark contract as termination_requested so admin/owner can see it
+  await query("UPDATE contracts SET status = 'termination_requested' WHERE id = ?", [contract_id]);
+
+  // Insert into termination_requests for formal tracking (best-effort — table may not exist yet)
+  try {
+    await query(`
+      INSERT INTO termination_requests (contract_id, requester_id, reason, status)
+      VALUES (?, ?, ?, 'pending')
+      ON DUPLICATE KEY UPDATE reason = VALUES(reason), status = 'pending', updated_at = NOW()
+    `, [contract_id, user.id, reason]);
+  } catch (e) {
+    // Table doesn't exist yet — contract status update above is the fallback
+    console.warn('termination_requests table missing, using contract status fallback:', e.message);
+  }
 
   return res.json({ success: true });
 }
 
 // ── Get termination requests ─────────────────────────────────────────────────
 async function handleGetTerminationRequests(req, res, user) {
-  let sql, params;
+  let rows = [];
+
   if (user.role === 'admin') {
-    sql = `SELECT tr.*, c.listing_id, l.title as listing_title, u.full_name as requester_name
-           FROM termination_requests tr
-           JOIN contracts c ON tr.contract_id = c.id
-           JOIN listings l ON c.listing_id = l.id
-           JOIN users u ON tr.requester_id = u.id
-           WHERE tr.status = 'pending' ORDER BY tr.created_at DESC`;
-    params = [];
+    // Try termination_requests table first (formal path)
+    try {
+      rows = await query(`
+        SELECT tr.id, tr.contract_id, tr.reason, tr.status, tr.created_at,
+               c.listing_id, c.owner_id, c.student_id,
+               l.title as listing_title,
+               u.full_name as requester_name,
+               o.full_name as owner_name,
+               o.role as owner_role
+        FROM termination_requests tr
+        JOIN contracts c ON tr.contract_id = c.id
+        JOIN listings l ON c.listing_id = l.id
+        JOIN users u ON tr.requester_id = u.id
+        JOIN users o ON c.owner_id = o.id
+        WHERE tr.status = 'pending'
+        ORDER BY tr.created_at DESC
+      `);
+    } catch (_) { rows = []; }
+
+    // Fallback: also include contracts with status='termination_requested' not in the table above
+    try {
+      const contractIds = rows.map(r => r.contract_id);
+      const fallbackSql = `
+        SELECT c.id as contract_id, NULL as id, c.status as status, c.created_at,
+               c.listing_id, c.owner_id, c.student_id,
+               l.title as listing_title,
+               s.full_name as requester_name,
+               o.full_name as owner_name,
+               o.role as owner_role,
+               'Contract status only' as reason
+        FROM contracts c
+        JOIN listings l ON c.listing_id = l.id
+        JOIN users s ON c.student_id = s.id
+        JOIN users o ON c.owner_id = o.id
+        WHERE c.status = 'termination_requested'
+        ${contractIds.length ? `AND c.id NOT IN (${contractIds.map(() => '?').join(',')})` : ''}
+        ORDER BY c.updated_at DESC
+      `;
+      const fallbackParams = contractIds.length ? contractIds : [];
+      const fallback = await query(fallbackSql, fallbackParams);
+      rows = [...rows, ...fallback];
+    } catch (_) {}
+
   } else {
-    sql = `SELECT tr.*, c.listing_id, l.title as listing_title, u.full_name as requester_name
-           FROM termination_requests tr
-           JOIN contracts c ON tr.contract_id = c.id
-           JOIN listings l ON c.listing_id = l.id
-           JOIN users u ON tr.requester_id = u.id
-           WHERE (c.owner_id = ? OR c.student_id = ?) AND tr.status = 'pending' 
-           ORDER BY tr.created_at DESC`;
-    params = [user.id, user.id];
+    // Owner: see requests on their own listings
+    try {
+      rows = await query(`
+        SELECT tr.id, tr.contract_id, tr.reason, tr.status, tr.created_at,
+               c.listing_id, c.owner_id, c.student_id,
+               l.title as listing_title,
+               u.full_name as requester_name,
+               o.full_name as owner_name,
+               o.role as owner_role
+        FROM termination_requests tr
+        JOIN contracts c ON tr.contract_id = c.id
+        JOIN listings l ON c.listing_id = l.id
+        JOIN users u ON tr.requester_id = u.id
+        JOIN users o ON c.owner_id = o.id
+        WHERE c.owner_id = ? AND tr.status = 'pending'
+        ORDER BY tr.created_at DESC
+      `, [user.id]);
+    } catch (_) { rows = []; }
+
+    // Fallback: contracts with termination_requested status for this owner
+    try {
+      const contractIds = rows.map(r => r.contract_id);
+      const fallback = await query(`
+        SELECT c.id as contract_id, NULL as id, 'pending' as status, c.updated_at as created_at,
+               c.listing_id, c.owner_id, c.student_id,
+               l.title as listing_title,
+               s.full_name as requester_name,
+               ? as owner_name, ? as owner_role,
+               'Cancellation requested' as reason
+        FROM contracts c
+        JOIN listings l ON c.listing_id = l.id
+        JOIN users s ON c.student_id = s.id
+        WHERE c.owner_id = ? AND c.status = 'termination_requested'
+        ${contractIds.length ? `AND c.id NOT IN (${contractIds.map(() => '?').join(',')})` : ''}
+      `, [user.full_name || '', user.role || 'owner', user.id, ...contractIds]);
+      rows = [...rows, ...fallback];
+    } catch (_) {}
   }
-  
-  const rows = await query(sql, params).catch(() => []);
+
   return res.json({ success: true, requests: rows });
 }
 
