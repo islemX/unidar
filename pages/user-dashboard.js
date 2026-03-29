@@ -275,6 +275,9 @@ export default function UserDashboardPage() {
               }
             }
 
+            // Auto-expire old contracts silently
+            api.Contracts.checkExpired().catch(() => {});
+
             // Contracts
             try {
               const cRes = await api.Contracts.getUserContracts();
@@ -282,15 +285,42 @@ export default function UserDashboardPage() {
               if (document.getElementById('statContractsCard')) document.getElementById('statContractsCard').textContent = contracts.length;
               const cCont = document.getElementById('contractsContainer');
               if (cCont) {
-                cCont.innerHTML = contracts.length ? contracts.map(c => {
-                  return '<div class="glass" style="border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">' +
-                    '<div>' +
-                      '<strong style="color:#1e293b">' + (c.listing_title || 'Listing') + '</strong>' +
-                      '<p class="text-muted text-small">' + (c.status || '') + ' • ' + (c.start_date || '') + '</p>' +
-                    '</div>' +
-                    '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">Doc</a>' +
-                  '</div>';
-                }).join('') : '<p class="text-muted">No contracts yet.</p>';
+                if (!contracts.length) {
+                  cCont.innerHTML = '<p class="text-muted">No contracts yet.</p>';
+                } else {
+                  cCont.innerHTML = contracts.map(c => {
+                    const statusColor = {
+                      draft: '#64748b', pending: '#f59e0b', pending_signature: '#f59e0b',
+                      signed_by_student: '#3b82f6', signed_by_both: '#10b981',
+                      active: '#10b981', paid: '#10b981', completed: '#6366f1',
+                      terminated: '#ef4444', expired: '#94a3b8', cancelled: '#94a3b8'
+                    }[c.status] || '#64748b';
+
+                    // Pay Now button: show when student signed but payment not done yet
+                    const needsPay = c.status === 'signed_by_student';
+                    // Cancel button: show for non-terminal statuses
+                    const canCancel = !['terminated','expired','cancelled','rejected','completed'].includes(c.status);
+
+                    return '<div class="glass" style="border-radius:14px;padding:14px;margin-bottom:10px">' +
+                      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' +
+                        '<div style="flex:1;min-width:0">' +
+                          '<strong style="color:#1e293b;display:block;margin-bottom:2px">' + (c.listing_title || 'Listing') + '</strong>' +
+                          '<p class="text-muted text-small m-0">' +
+                            '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + statusColor + ';margin-right:4px;vertical-align:middle"></span>' +
+                            (c.status || '') + ' · ' + (c.start_date ? c.start_date.slice(0,10) : '') +
+                            (c.end_date ? ' → ' + c.end_date.slice(0,10) : '') +
+                          '</p>' +
+                          (c.monthly_rent ? '<p class="text-small m-0 mt-xs" style="color:var(--color-brand);font-weight:700">' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</p>' : '') +
+                        '</div>' +
+                        '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
+                          '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
+                          (needsPay ? '<button onclick="payContract(' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981">💳 Pay Now</button>' : '') +
+                          (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">✕ Cancel</button>' : '') +
+                        '</div>' +
+                      '</div>' +
+                    '</div>';
+                  }).join('');
+                }
               }
             } catch (e) { console.error('Error loading contracts:', e); }
 
@@ -395,6 +425,31 @@ export default function UserDashboardPage() {
 
         window.unsaveListing = async (id) => {
           try { await window.UNIDAR_API.SavedListings.remove(id); init(); } catch (e) {}
+        };
+
+        window.payContract = async (contractId) => {
+          if (!confirm('Proceed with payment for this contract?')) return;
+          try {
+            const api = window.UNIDAR_API;
+            await api.Contracts.processPayment(contractId);
+            alert('✅ Payment successful! Contract is now active.');
+            init();
+          } catch (e) {
+            alert('Payment failed: ' + (e.message || 'Unknown error'));
+          }
+        };
+
+        window.cancelContract = async (contractId) => {
+          const reason = prompt('Reason for cancellation (optional):') ?? '';
+          if (reason === null) return; // user hit Cancel on prompt
+          try {
+            const api = window.UNIDAR_API;
+            await api.Contracts.requestTermination(contractId, reason);
+            alert('✅ Cancellation request submitted. The owner will be notified.');
+            init();
+          } catch (e) {
+            alert('Error: ' + (e.message || 'Unknown error'));
+          }
         };
 
         document.getElementById('refreshContracts')?.addEventListener('click', init);

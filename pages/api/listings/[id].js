@@ -45,8 +45,9 @@ async function getListing(req, res, id) {
     const occ = await query(`SELECT COUNT(*) as c FROM contracts WHERE listing_id = ?
       AND status IN ('signed_by_student','signed_by_owner','paid','active','completed','completed_student','signed_by_both')
       AND (end_date IS NULL OR end_date >= CURDATE())`, [id]);
-    listing.occupant_count = occ[0]?.c || 0;
-  } catch (_) { listing.occupant_count = 0; }
+    listing.occupant_count  = Number(occ[0]?.c) || 0;
+    listing.available_rooms = Math.max(0, (Number(listing.capacity) || 1) - listing.occupant_count);
+  } catch (_) { listing.occupant_count = 0; listing.available_rooms = Number(listing.capacity) || 1; }
 
   try {
     const ver = await query('SELECT status FROM verifications WHERE user_id = ? ORDER BY id DESC LIMIT 1', [listing.owner_id]);

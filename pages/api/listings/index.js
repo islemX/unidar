@@ -62,8 +62,10 @@ async function getListings(req, res) {
 
   for (const listing of listings) {
     const images = await query('SELECT image_path FROM listing_images WHERE listing_id = ? ORDER BY display_order', [listing.id]);
-    listing.images   = images;
-    listing.is_saved = !!listing.is_saved;
+    listing.images        = images;
+    listing.is_saved      = !!listing.is_saved;
+    listing.occupant_count = Number(listing.occupant_count) || 0;
+    listing.available_rooms = Math.max(0, (Number(listing.capacity) || 1) - listing.occupant_count);
   }
 
   return res.json({ listings });

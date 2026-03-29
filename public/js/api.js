@@ -322,6 +322,15 @@ const ContractsAPI = {
     async rejectTermination(requestId) {
         return apiCall('contracts/reject-termination', { method: 'POST', body: { request_id: requestId } });
     },
+    async processPayment(contractId, paymentMethod = 'card') {
+        return apiCall('contracts/process-payment', { method: 'POST', body: { contract_id: contractId, payment_method: paymentMethod } });
+    },
+    async terminate(contractId, reason = '') {
+        return apiCall('contracts/terminate', { method: 'POST', body: { contract_id: contractId, reason } });
+    },
+    async checkExpired() {
+        return apiCall('contracts/check-expired');
+    },
 };
 
 // ─── Saved Listings API ────────────────────────────────────────────────────

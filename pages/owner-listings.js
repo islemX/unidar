@@ -135,28 +135,65 @@ export default function OwnerListingsPage() {
             }).join('');
           }
 
-          // Load contracts
+          // Auto-expire silently
+          api.Contracts.checkExpired().catch(() => {});
+
+          // Load contracts (all non-terminal)
           const cRes = await api.Contracts.getUserContracts();
-          const contracts = (cRes.contracts || []).filter(c => ['signed_by_student','signed_by_owner','paid','active'].includes(c.status));
+          const allContracts = cRes.contracts || [];
+          const activeContracts = allContracts.filter(c =>
+            !['terminated','expired','cancelled','rejected'].includes(c.status)
+          );
           const cList = document.getElementById('contractsList');
           if (cList) {
-            cList.innerHTML = contracts.length ? contracts.map(c => {
-              const badgeClass = c.status === 'active' || c.status === 'paid' ? 'success' : 'warning';
-              return '<div style="border:1px solid var(--color-border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">' +
-                '<div>' +
-                  '<strong>' + (c.listing_title || 'Listing') + '</strong>' +
-                  '<p class="text-muted text-small">Student: ' + c.student_name + ' • ' + c.start_date + ' → ' + c.end_date + '</p>' +
-                '</div>' +
-                '<span class="badge badge-' + badgeClass + '">' + c.status + '</span>' +
-              '</div>';
-            }).join('') : '<p class="text-muted">No active contracts.</p>';
+            if (!activeContracts.length) {
+              cList.innerHTML = '<p class="text-muted">No active contracts.</p>';
+            } else {
+              cList.innerHTML = activeContracts.map(c => {
+                const statusColor = {
+                  draft: '#64748b', pending: '#f59e0b', pending_signature: '#f59e0b',
+                  signed_by_student: '#3b82f6', signed_by_both: '#10b981',
+                  active: '#10b981', paid: '#10b981', completed: '#6366f1',
+                  termination_requested: '#f97316'
+                }[c.status] || '#64748b';
+                const canTerminate = !['terminated','expired','cancelled','rejected','completed'].includes(c.status);
+                return '<div style="border:1px solid var(--color-surface-200);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px">' +
+                  '<div style="flex:1;min-width:0">' +
+                    '<strong style="color:#1e293b;display:block">' + (c.listing_title || 'Listing') + '</strong>' +
+                    '<p class="text-muted text-small m-0">👤 ' + (c.student_name || 'Student') + ' · ' +
+                      '<span style="color:' + statusColor + ';font-weight:600">' + (c.status || '') + '</span>' +
+                    '</p>' +
+                    '<p class="text-small m-0 text-muted">' + (c.start_date ? c.start_date.slice(0,10) : '') + ' → ' + (c.end_date ? c.end_date.slice(0,10) : '') +
+                      (c.monthly_rent ? ' · <strong>' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</strong>' : '') +
+                    '</p>' +
+                    (c.status === 'termination_requested' ? '<p class="text-small mt-xs" style="color:#f97316;font-weight:600">⚠️ Student requested cancellation</p>' : '') +
+                  '</div>' +
+                  '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
+                    '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
+                    (canTerminate ? '<button onclick="terminateContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">🚫 Terminate</button>' : '') +
+                  '</div>' +
+                '</div>';
+              }).join('');
+            }
           }
         }
 
         window.removeListing = async (id) => {
           if (!confirm('Remove this listing?')) return;
           try { await window.UNIDAR_API.Listings.delete(id); initOwner(); } catch (e) { alert(e.message); }
-        }
+        };
+
+        window.terminateContract = async (contractId) => {
+          const reason = prompt('Reason for termination (optional):') ?? '';
+          if (reason === null) return;
+          try {
+            await window.UNIDAR_API.Contracts.terminate(contractId, reason);
+            alert('✅ Contract terminated. The listing is now available again.');
+            initOwner();
+          } catch (e) {
+            alert('Error: ' + (e.message || 'Unknown error'));
+          }
+        };
 
         document.getElementById('createListingBtn')?.addEventListener('click', () => {
           const modal = document.getElementById('createModal');

@@ -280,14 +280,17 @@ async function handlePaymentStatus(req, res, user) {
 
 // ── Terminate (owner direct) ─────────────────────────────────────────────────
 async function handleTerminate(req, res, user) {
-  if (user.role !== 'owner') return res.status(403).json({ success: false, error: 'Owners only' });
+  if (user.role !== 'owner' && user.role !== 'admin') return res.status(403).json({ success: false, error: 'Owners/admin only' });
   const { contract_id, reason = '' } = req.body;
   if (!contract_id) return res.status(400).json({ success: false, error: 'contract_id required' });
 
-  const rows = await query('SELECT owner_id FROM contracts WHERE id = ?', [contract_id]);
-  if (!rows.length || rows[0].owner_id !== user.id) return res.status(403).json({ success: false, error: 'Not authorized' });
+  const rows = await query('SELECT owner_id, listing_id FROM contracts WHERE id = ?', [contract_id]);
+  if (!rows.length) return res.status(404).json({ success: false, error: 'Contract not found' });
+  if (user.role !== 'admin' && rows[0].owner_id !== user.id) return res.status(403).json({ success: false, error: 'Not authorized' });
 
   await query("UPDATE contracts SET status = 'terminated', termination_reason = ? WHERE id = ?", [reason, contract_id]);
+  // Release listing back to available if no other active contracts
+  await releaseListingIfFree(rows[0].listing_id);
   return res.json({ success: true });
 }
 
@@ -347,11 +350,14 @@ async function handleApproveTermination(req, res, user) {
   await query("UPDATE termination_requests SET status = 'approved' WHERE id = ?", [request_id]);
   // Update contract
   await query("UPDATE contracts SET status = 'terminated' WHERE id = ?", [contract_id]);
+  // Release listing back to available
+  const cRows = await query('SELECT listing_id FROM contracts WHERE id = ?', [contract_id]).catch(() => []);
+  if (cRows.length) await releaseListingIfFree(cRows[0].listing_id);
 
   // Log admin action if admin
   if (user.role === 'admin') {
      await query('INSERT INTO admin_actions (admin_id, action_type, notes) VALUES (?, ?, ?)',
-                 [user.id, 'approve_termination', `Approved termination for contract ${contract_id}`]);
+                 [user.id, 'approve_termination', `Approved termination for contract ${contract_id}`]).catch(() => {});
   }
 
   return res.json({ success: true });
@@ -374,11 +380,41 @@ async function handleRejectTermination(req, res, user) {
 
 // ── Check expired ────────────────────────────────────────────────────────────
 async function handleCheckExpired(req, res, user) {
-  const result = await query(`
-    UPDATE contracts SET status = 'expired'
-    WHERE end_date < CURDATE() AND status IN ('active','paid','signed_by_both')
-  `);
-  return res.json({ success: true, expired: result.affectedRows });
+  // Get listing_ids of contracts that are about to expire
+  const toExpire = await query(`
+    SELECT id, listing_id FROM contracts
+    WHERE end_date < CURDATE()
+    AND status IN ('active','paid','signed_by_both','signed_by_student','draft','pending','pending_signature')
+  `).catch(() => []);
+
+  if (toExpire.length) {
+    const ids = toExpire.map(r => r.id);
+    await query(`UPDATE contracts SET status = 'expired' WHERE id IN (${ids.map(() => '?').join(',')})`, ids);
+    // Release listings for each expired contract
+    const listingIds = [...new Set(toExpire.map(r => r.listing_id))];
+    for (const lid of listingIds) {
+      await releaseListingIfFree(lid);
+    }
+  }
+
+  return res.json({ success: true, expired: toExpire.length });
+}
+
+// ── Helper: set listing back to active if no blocking contracts remain ────────
+async function releaseListingIfFree(listingId) {
+  if (!listingId) return;
+  try {
+    const blocking = await query(`
+      SELECT id FROM contracts
+      WHERE listing_id = ?
+      AND status NOT IN ('expired','terminated','cancelled','rejected','draft')
+    `, [listingId]);
+    if (!blocking.length) {
+      await query("UPDATE listings SET status = 'active' WHERE id = ?", [listingId]);
+    }
+  } catch (e) {
+    console.error('releaseListingIfFree error:', e.message);
+  }
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
