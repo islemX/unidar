@@ -203,24 +203,32 @@
             const tbody = document.getElementById('termsTableBody');
             if (!tbody) return;
             if (!list.length) {
-                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No pending termination requests</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No pending termination requests</td></tr>';
                 return;
             }
-            tbody.innerHTML = list.map(t => `
-                <tr>
-                    <td>${t.id}</td>
-                    <td>${escapeHtml(t.listing_title || 'N/A')}</td>
+            tbody.innerHTML = list.map(t => {
+                const isAdminOwned = t.owner_role === 'admin';
+                const rowStyle = isAdminOwned ? 'background:linear-gradient(90deg,#fffbeb,#fef9ee);' : '';
+                const adminBadge = isAdminOwned
+                    ? '<span class="badge badge-warning" style="margin-left:6px;font-size:0.65rem">ADMIN LISTING</span>'
+                    : '';
+                // For fallback rows (no formal termination_requests entry), id is null — use contract_id for the action
+                const actionId = t.id || ('c:' + t.contract_id);
+                return `<tr style="${rowStyle}">
+                    <td>${t.contract_id}<br><small style="color:#94a3b8">#${t.id || 'fallback'}</small></td>
+                    <td>${escapeHtml(t.listing_title || 'N/A')}${adminBadge}</td>
+                    <td>${escapeHtml(t.owner_name || 'N/A')}</td>
                     <td>${escapeHtml(t.requester_name || 'N/A')}</td>
-                    <td><div class="text-truncate" style="max-width:260px" title="${escapeHtml(t.reason||'')}">${escapeHtml(t.reason||'')}</div></td>
-                    <td>${t.created_at ? new Date(t.created_at).toLocaleString() : '—'}</td>
+                    <td><div class="text-truncate" style="max-width:200px" title="${escapeHtml(t.reason||'')}">${escapeHtml(t.reason||'—')}</div></td>
+                    <td>${t.created_at ? new Date(t.created_at).toLocaleDateString() : '—'}</td>
                     <td style="text-align:center">
                         <div class="action-buttons">
-                            <button class="btn btn-primary btn-sm" onclick="reviewTerm(${t.id}, 'approve')">Approve</button>
-                            <button class="btn btn-danger btn-sm" onclick="reviewTerm(${t.id}, 'reject')">Reject</button>
+                            <button class="btn btn-primary btn-sm" onclick="reviewTerm('${actionId}', 'approve')">✓ Approve</button>
+                            <button class="btn btn-danger btn-sm" onclick="reviewTerm('${actionId}', 'reject')">✕ Reject</button>
                         </div>
                     </td>
-                </tr>
-            `).join('');
+                </tr>`;
+            }).join('');
         } catch (e) { console.error('Terminations error', e); }
     }
 
@@ -263,9 +271,25 @@
     window.reviewTerm = async (id, action) => {
         if (!confirm(`Are you sure you want to ${action} this termination request?`)) return;
         try {
-            await api.Admin.reviewTermination(id, action);
+            // Fallback rows use 'c:contractId' format — handle them via terminate/reject directly
+            if (String(id).startsWith('c:')) {
+                const contractId = String(id).replace('c:', '');
+                if (action === 'approve') {
+                    await api.Contracts.terminate(contractId, 'Approved by admin');
+                } else {
+                    // Reject: reset contract status back to active
+                    await fetch('/api/contracts/update-status', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ contract_id: contractId, status: 'active' })
+                    });
+                }
+            } else {
+                await api.Admin.reviewTermination(id, action);
+            }
             loadTerminations(); loadStats();
-        } catch (e) { alert('Action failed'); }
+        } catch (e) { alert('Action failed: ' + (e.message || e)); }
     };
 
     window.loadAllAdminData = () => { 

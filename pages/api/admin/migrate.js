@@ -77,5 +77,37 @@ export default async function handler(req, res) {
     results.push('contracts signature paths: ' + e.message);
   }
 
+  // 6. Create termination_requests table if missing
+  try {
+    await query(`
+      CREATE TABLE IF NOT EXISTS termination_requests (
+        id            INT AUTO_INCREMENT PRIMARY KEY,
+        contract_id   INT NOT NULL,
+        requester_id  INT NOT NULL,
+        reason        TEXT DEFAULT NULL,
+        status        ENUM('pending','approved','rejected') DEFAULT 'pending',
+        created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY uniq_contract (contract_id)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+    results.push('termination_requests table created or already exists');
+  } catch (e) {
+    results.push('termination_requests: ' + e.message);
+  }
+
+  // 7. Backfill: insert termination_requests rows for contracts that fell back to status='termination_requested'
+  try {
+    await query(`
+      INSERT IGNORE INTO termination_requests (contract_id, requester_id, reason, status)
+      SELECT c.id, c.student_id, 'Requested via dashboard', 'pending'
+      FROM contracts c
+      WHERE c.status = 'termination_requested'
+    `);
+    results.push('termination_requests backfilled from contracts.status');
+  } catch (e) {
+    results.push('termination_requests backfill: ' + e.message);
+  }
+
   return res.json({ success: true, results });
 }

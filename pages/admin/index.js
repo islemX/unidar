@@ -143,7 +143,7 @@ export default function AdminDashboardPage() {
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th>ID</th><th>Listing</th><th>Requester</th><th>Reason</th><th>Created</th><th style={{textAlign:'center'}}>Actions</th>
+                      <th>Contract</th><th>Listing</th><th>Owner</th><th>Student</th><th>Reason</th><th>Date</th><th style={{textAlign:'center'}}>Actions</th>
                     </tr>
                   </thead>
                   <tbody id="termsTableBody">
