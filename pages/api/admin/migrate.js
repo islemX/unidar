@@ -68,5 +68,14 @@ export default async function handler(req, res) {
     results.push('contracts.contract_content: ' + e.message);
   }
 
+  // 5. Widen signature path columns to TEXT (Vercel Blob URLs can exceed varchar(500))
+  try {
+    await query(`ALTER TABLE contracts MODIFY COLUMN student_signature_path TEXT DEFAULT NULL`);
+    await query(`ALTER TABLE contracts MODIFY COLUMN owner_signature_path TEXT DEFAULT NULL`);
+    results.push('contracts signature path columns widened to TEXT');
+  } catch (e) {
+    results.push('contracts signature paths: ' + e.message);
+  }
+
   return res.json({ success: true, results });
 }
