@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
       <Script src="/js/admin-dashboard.js?v=4" strategy="afterInteractive" />
 
       {/* Needed for contracts viewer modal */}
-      <Script src="/js/contracts.js?v=6" strategy="afterInteractive" />
+      <Script src="/js/contracts.js?v=7" strategy="afterInteractive" />
       
       <style jsx global>{`
         .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }

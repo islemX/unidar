@@ -659,7 +659,7 @@ const PaymentManager = {
     async calculatePaymentAmounts(listingId) {
         try {
             const apiBase = getContractApiBase();
-            const response = await fetch(`${apiBase}/contracts.php?action=calculate-payment&listing_id=${listingId}`, {
+            const response = await fetch(`/api/contracts/calculate-payment?listing_id=${listingId}`, {
                 method: 'GET',
                 credentials: 'include'
             });
@@ -894,9 +894,12 @@ const PaymentManager = {
     async loadPaymentDetails(listingId) {
         const result = await PaymentManager.calculatePaymentAmounts(listingId);
         if (result) {
-            document.getElementById('monthlyRent').textContent = formatCurrency(result.rent);
-            document.getElementById('commissionAmount').textContent = formatCurrency(result.commission);
-            document.getElementById('totalAmount').textContent = formatCurrency(result.total);
+            const rent = result.monthly_rent ?? result.rent ?? 0;
+            const fee  = result.platform_fee ?? result.commission ?? 0;
+            const total = result.total_due ?? result.total ?? (rent + fee);
+            document.getElementById('monthlyRent').textContent = formatCurrency(rent);
+            document.getElementById('commissionAmount').textContent = formatCurrency(fee);
+            document.getElementById('totalAmount').textContent = formatCurrency(total);
         }
     },
 
@@ -987,8 +990,7 @@ const PaymentManager = {
                 await new Promise(r => setTimeout(r, 800 + Math.random() * 500));
             }
 
-            const apiBase = getContractApiBase();
-            const response = await fetch(`${apiBase}/contracts.php?action=process-payment`, {
+            const response = await fetch(`/api/contracts/process-payment`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

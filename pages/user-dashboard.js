@@ -124,6 +124,8 @@ export default function UserDashboardPage() {
         strategy="afterInteractive"
       />
 
+      <Script src="/js/contracts.js?v=7" strategy="afterInteractive" />
+
       <Script id="dashboard-logic" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
         let dashboardMap = null;
         let dashboardMarkers = [];
@@ -314,7 +316,7 @@ export default function UserDashboardPage() {
                         '</div>' +
                         '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
                           '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
-                          (needsPay ? '<button onclick="payContract(' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981">💳 Pay Now</button>' : '') +
+                          (needsPay ? '<button onclick="payContract(' + c.listing_id + ',' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981">💳 Pay Now</button>' : '') +
                           (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">✕ Cancel</button>' : '') +
                         '</div>' +
                       '</div>' +
@@ -427,15 +429,15 @@ export default function UserDashboardPage() {
           try { await window.UNIDAR_API.SavedListings.remove(id); init(); } catch (e) {}
         };
 
-        window.payContract = async (contractId) => {
-          if (!confirm('Proceed with payment for this contract?')) return;
-          try {
-            const api = window.UNIDAR_API;
-            await api.Contracts.processPayment(contractId);
-            alert('✅ Payment successful! Contract is now active.');
-            init();
-          } catch (e) {
-            alert('Payment failed: ' + (e.message || 'Unknown error'));
+        window.payContract = (listingId, contractId) => {
+          if (window.PaymentManager && window.PaymentManager.showPaymentModal) {
+            window.PaymentManager.showPaymentModal(listingId, contractId);
+          } else {
+            // fallback: direct payment if contracts.js not loaded yet
+            if (!confirm('Proceed with payment for this contract?')) return;
+            window.UNIDAR_API.Contracts.processPayment(contractId)
+              .then(() => { alert('✅ Payment successful! Contract is now active.'); init(); })
+              .catch(e => alert('Payment failed: ' + (e.message || 'Unknown error')));
           }
         };
 
@@ -451,6 +453,9 @@ export default function UserDashboardPage() {
             alert('Error: ' + (e.message || 'Unknown error'));
           }
         };
+
+        // Let contracts.js call init() after payment success
+        window.loadUserContracts = init;
 
         document.getElementById('refreshContracts')?.addEventListener('click', init);
         document.getElementById('logoutBtn')?.addEventListener('click', async () => {

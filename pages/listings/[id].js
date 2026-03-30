@@ -62,7 +62,7 @@ export default function ListingDetailPage() {
 
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       <Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" strategy="lazyOnload" />
-      <Script src="/js/contracts.js?v=2" strategy="lazyOnload" />
+      <Script src="/js/contracts.js?v=7" strategy="lazyOnload" />
       <Script src="/js/map-utils.js" strategy="lazyOnload" />
       <Script src="/js/listing-map-init.js" strategy="lazyOnload" />
       <Script id="detail-logic" strategy="afterInteractive">{`
