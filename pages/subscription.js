@@ -1,6 +1,6 @@
 /**
  * UNIDAR – Subscription Page (Premium)
- * Matches PHP version exactly (2-Column Grid + Virtual Card Preview)
+ * Single yearly plan — 25 TND/year
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -25,49 +25,38 @@ export default function SubscriptionPage() {
         <section className="section" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <div className="container">
             <div className="sub-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: 60, alignItems: 'start' }}>
-              
-              {/* Left Column: Plans */}
+
+              {/* Left Column: Plan */}
               <div className="sub-plans" style={{ color: 'white' }}>
                 <div className="hero-badge" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', marginBottom: '1.5rem' }}>✨ Premium Access</div>
-                <h1 style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem', letterSpacing: '-2px' }}>Choose Your Plan</h1>
+                <h1 style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem', letterSpacing: '-2px' }}>Go Premium</h1>
                 <p style={{ fontSize: '1.2rem', opacity: 0.8, marginBottom: '3rem' }}>Unlock the full potential of UNIDAR. Verified listings, direct messaging, and secure digital contracts.</p>
 
-                <div className="plan-cards" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  {/* Monthly Plan */}
-                  <div className="plan-card active" data-plan="monthly" style={{ cursor: 'pointer', padding: 24, borderRadius: 24, border: '2px solid var(--color-brand)', background: 'rgba(255,255,255,0.05)', position: 'relative', transition: 'all 0.3s' }}>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Monthly</h3>
-                        <p style={{ opacity: 0.7 }}>Perfect for short-term stays</p>
-                      </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: 800 }}>25</span>
-                        <span style={{ opacity: 0.7 }}> TND/mo</span>
-                      </div>
+                {/* Yearly Plan — only plan */}
+                <div className="plan-card active" style={{ padding: 28, borderRadius: 24, border: '2px solid var(--color-brand)', background: 'rgba(255,255,255,0.05)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: -12, right: 24, background: 'var(--color-brand)', color: 'white', padding: '4px 14px', borderRadius: 100, fontSize: '0.75rem', fontWeight: 800 }}>Full Year Access</div>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Yearly</h3>
+                      <p style={{ opacity: 0.7, margin: '4px 0 0' }}>Complete access for a full year</p>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>25</span>
+                      <span style={{ opacity: 0.7, fontSize: '1.1rem' }}> TND/yr</span>
                     </div>
                   </div>
-
-                  {/* Yearly Plan */}
-                  <div className="plan-card" data-plan="yearly" style={{ cursor: 'pointer', padding: 24, borderRadius: 24, border: '2px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', position: 'relative', transition: 'all 0.3s' }}>
-                    <div style={{ position: 'absolute', top: -12, right: 24, background: 'var(--color-brand)', color: 'white', padding: '4px 12px', borderRadius: 100, fontSize: '0.75rem', fontWeight: 800 }}>Best Value</div>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Yearly</h3>
-                        <p style={{ opacity: 0.7 }}>Save 50 TND per year</p>
-                      </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: 800 }}>250</span>
-                        <span style={{ opacity: 0.7 }}> TND/yr</span>
-                      </div>
-                    </div>
-                  </div>
+                  <ul style={{ marginTop: 20, paddingLeft: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {['✓ Access all verified listings', '✓ Unlimited direct messaging', '✓ Secure digital contracts', '✓ Priority support'].map(f => (
+                      <li key={f} style={{ opacity: 0.85, fontSize: '0.95rem' }}>{f}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
               {/* Right Column: Payment Form & Card Preview */}
               <div className="sub-payment stagger-2">
                 <div className="premium-card-v2" style={{ background: 'white', borderRadius: 32, padding: 32, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}>
-                  
+
                   {/* Virtual Card Preview */}
                   <div className="virtual-card-preview" style={{ background: 'linear-gradient(135deg, #1e293b, #0f172a)', borderRadius: 20, padding: 24, color: 'white', marginBottom: 32, position: 'relative', overflow: 'hidden', boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}>
                     <div style={{ position: 'absolute', top: -50, right: -50, width: 150, height: 150, background: 'rgba(255,255,255,0.03)', borderRadius: '50%' }}></div>
@@ -86,6 +75,11 @@ export default function SubscriptionPage() {
                         <div id="displayExpiry" style={{ fontSize: '0.9rem', fontWeight: 600 }}>MM/YY</div>
                       </div>
                     </div>
+                  </div>
+
+                  <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12, padding: '10px 16px', marginBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#065f46', fontWeight: 600, fontSize: '0.9rem' }}>Total due today</span>
+                    <span style={{ color: '#065f46', fontWeight: 800, fontSize: '1.1rem' }}>25 TND</span>
                   </div>
 
                   <form id="paymentForm">
@@ -108,7 +102,7 @@ export default function SubscriptionPage() {
                       </div>
                     </div>
                     <button type="submit" id="payBtn" className="btn btn-primary" style={{ width: '100%', padding: '16px', borderRadius: 16, fontWeight: 800, fontSize: '1.1rem' }}>
-                      Complete Purchase
+                      Pay 25 TND / Year
                     </button>
                     <p className="text-center text-tiny text-muted mt-md">Secure SSL Encrypted Payment</p>
                   </form>
@@ -120,28 +114,12 @@ export default function SubscriptionPage() {
       </main>
 
       <Script id="subscription-logic" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
-        let selectedPlan = 'monthly';
-        let currentUser = null;
-
         async function init() {
           const auth = await window.UNIDAR_API.Auth.check();
           if (!auth || !auth.authenticated) { window.location.href = '/login'; return; }
-          currentUser = auth.user;
+          const currentUser = auth.user;
           const disp = document.getElementById('displayName');
           if (disp && currentUser.full_name) disp.textContent = currentUser.full_name.toUpperCase();
-          
-          // Plan Selection Logic
-          document.querySelectorAll('.plan-card').forEach(card => {
-            card.onclick = function() {
-              document.querySelectorAll('.plan-card').forEach(c => {
-                c.classList.remove('active');
-                c.style.borderColor = 'rgba(255,255,255,0.1)';
-              });
-              this.classList.add('active');
-              this.style.borderColor = 'var(--color-brand)';
-              selectedPlan = this.dataset.plan;
-            };
-          });
 
           // Card Input Visual Sync
           document.getElementById('cardName')?.addEventListener('input', e => {
@@ -172,19 +150,16 @@ export default function SubscriptionPage() {
           document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('payBtn');
-            if (btn) {
-              btn.disabled = true;
-              btn.textContent = 'Processing...';
-            }
+            if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
             try {
-              const res = await window.UNIDAR_API.Subscriptions.create({ plan_type: selectedPlan });
+              const res = await window.UNIDAR_API.Subscriptions.create({ plan: 'yearly' });
               if (res.success) {
                 if (btn) { btn.style.background = '#10b981'; btn.textContent = 'Payment Successful! Redirecting...'; }
                 setTimeout(() => window.location.href = '/user-dashboard', 1500);
               }
             } catch (err) {
               alert(err.message || 'Payment failed');
-              if (btn) { btn.disabled = false; btn.textContent = 'Complete Purchase'; }
+              if (btn) { btn.disabled = false; btn.textContent = 'Pay 25 TND / Year'; }
             }
           });
         }
@@ -208,7 +183,6 @@ export default function SubscriptionPage() {
             margin-bottom: 2rem;
         }
         .plan-card.active {
-            transform: scale(1.02);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
       `}</style>

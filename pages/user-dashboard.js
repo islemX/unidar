@@ -408,11 +408,11 @@ export default function UserDashboardPage() {
           const cont = document.getElementById('bannerContainer');
           if (!cont) return;
           let title = 'Subscription Required';
-          let body = '25 TND/month for full access.';
+          let body = '25 TND/year for full access.';
           if (status === 'expired') {
             const dateText = expiresAt ? formatDateShort(expiresAt) : '—';
             title = 'Subscription Expired';
-            body = 'Your premium access ended on ' + dateText + '. Renew to keep full features.';
+            body = 'Your yearly access ended on ' + dateText + '. Renew for 25 TND/year.';
           }
           const div = document.createElement('div');
           div.className = 'glass';
