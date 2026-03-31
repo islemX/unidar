@@ -7,7 +7,7 @@
 import { query }       from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';
 
-const PRICES = { monthly: 25.00, yearly: 250.00 };
+const PRICES = { yearly: 25.00 };
 
 export default async function handler(req, res) {
   try {
@@ -46,16 +46,15 @@ async function getMine(req, res, user) {
 }
 
 async function createSubscription(req, res, user) {
-  const { plan = 'monthly', payment_method = 'card', card_number = '' } = req.body;
+  const { plan = 'yearly', payment_method = 'card', card_number = '' } = req.body;
 
-  if (!PRICES[plan]) return res.status(400).json({ error: 'Invalid plan. Choose monthly or yearly.' });
+  if (!PRICES[plan]) return res.status(400).json({ error: 'Invalid plan.' });
 
   const amount   = PRICES[plan];
   const cardLast4 = card_number.replace(/\D/g, '').slice(-4) || null;
   const now      = new Date();
   const exp      = new Date(now);
-  if (plan === 'yearly') exp.setFullYear(exp.getFullYear() + 1);
-  else exp.setMonth(exp.getMonth() + 1);
+  exp.setFullYear(exp.getFullYear() + 1);
 
   const toMysql = d => d.toISOString().slice(0, 19).replace('T', ' ');
 
