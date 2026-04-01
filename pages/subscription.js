@@ -238,7 +238,7 @@ export default function SubscriptionPage() {
 
           // Card brand themes for subscription page
           const SP_BRANDS = {
-            'e-Dinar':    { gradient: 'linear-gradient(135deg,#052e16,#14532d,#166534)', logo: '<span style="font-size:0.72rem;font-weight:900;letter-spacing:1.5px;color:#4ade80">e•DINAR</span>' },
+            'e-Dinar':    { gradient: 'linear-gradient(135deg,#3b0764 0%,#6d28d9 25%,#be185d 55%,#d97706 85%,#b45309 100%)', logo: '<svg width="70" height="22" viewBox="0 0 70 22"><text x="0" y="16" fill="#fbbf24" font-size="13" font-weight="900" font-family="Arial,sans-serif" font-style="italic">e-</text><text x="16" y="16" fill="#fbbf24" font-size="13" font-weight="900" font-family="Arial,sans-serif" font-style="italic">&#x110;</text><text x="26" y="16" fill="white" font-size="13" font-weight="900" font-family="Arial,sans-serif" font-style="italic">inar</text></svg>' },
             'Visa':       { gradient: 'linear-gradient(135deg,#0a1628,#1e3a8a,#1d4ed8)', logo: '<svg width="48" height="16" viewBox="0 0 48 16"><text x="1" y="14" fill="white" font-size="15" font-style="italic" font-weight="900" font-family="Arial,sans-serif">VISA</text></svg>' },
             'Mastercard': { gradient: 'linear-gradient(135deg,#1a0505,#450a0a,#7f1d1d)', logo: '<svg width="40" height="24" viewBox="0 0 40 24"><circle cx="13" cy="12" r="11" fill="#eb001b"/><circle cx="27" cy="12" r="11" fill="#f79e1b"/><path d="M20 3.2a11 11 0 0 1 0 17.6A11 11 0 0 1 20 3.2z" fill="#ff5f00"/></svg>' },
             'Amex':       { gradient: 'linear-gradient(135deg,#0c1a2e,#1d3461,#1e40af)', logo: '<svg width="46" height="18" viewBox="0 0 46 18"><text x="1" y="14" fill="white" font-size="11" font-weight="900" font-family="Arial,sans-serif" letter-spacing="2">AMEX</text></svg>' },
@@ -692,7 +692,7 @@ export default function SubscriptionPage() {
         }
         .sp-ci-visa   { background: #1a1f71; color: white; letter-spacing: 1px; }
         .sp-ci-mc     { background: #eb001b; color: white; }
-        .sp-ci-edinar { background: #15803d; color: white; letter-spacing: 0.5px; }
+        .sp-ci-edinar { background: linear-gradient(90deg,#fde68a,#fbbf24); color: #92400e; font-weight: 900; border: 1px solid #f59e0b; letter-spacing: 0.5px; }
         .sp-ci { transition: opacity 0.25s; }
 
         .sp-cvc-icon {

@@ -658,9 +658,10 @@ window.CardValidator = CardValidator;
 // Card brand themes — gradient, logo SVG, accent colour
 const CARD_BRANDS = {
     'e-Dinar': {
-        gradient: 'linear-gradient(135deg,#052e16 0%,#14532d 60%,#166534 100%)',
-        logo: '<span style="font-size:0.75rem;font-weight:900;letter-spacing:1.5px;color:#4ade80">e•DINAR</span>',
-        label: 'e-DINAR',
+        // Multicolour gradient echoing the real e-Dinar Jeune card's vibrant cube design + La Poste yellow
+        gradient: 'linear-gradient(135deg,#3b0764 0%,#6d28d9 25%,#be185d 55%,#d97706 85%,#b45309 100%)',
+        logo: '<svg width="70" height="22" viewBox="0 0 70 22"><text x="0" y="16" fill="#fbbf24" font-size="13" font-weight="900" font-family="Arial,sans-serif" font-style="italic">e-</text><text x="16" y="16" fill="#fbbf24" font-size="13" font-weight="900" font-family="Arial,sans-serif" font-style="italic">&#x110;</text><text x="26" y="16" fill="white" font-size="13" font-weight="900" font-family="Arial,sans-serif" font-style="italic">inar</text></svg>',
+        label: 'e-Dinar',
     },
     'Visa': {
         gradient: 'linear-gradient(135deg,#0a1628 0%,#1e3a8a 60%,#1d4ed8 100%)',
@@ -896,7 +897,7 @@ const PaymentManager = {
         const INPUT_LOGOS = {
             'Visa':       '<svg width="34" height="12" viewBox="0 0 34 12"><text x="0" y="10" fill="#1a1f71" font-size="12" font-style="italic" font-weight="900" font-family="Arial,sans-serif">VISA</text></svg>',
             'Mastercard': '<svg width="26" height="18" viewBox="0 0 26 18"><circle cx="9" cy="9" r="8.5" fill="#eb001b"/><circle cx="17" cy="9" r="8.5" fill="#f79e1b"/><path d="M13 2.2a8.5 8.5 0 0 1 0 13.6A8.5 8.5 0 0 1 13 2.2z" fill="#ff5f00"/></svg>',
-            'e-Dinar':    '<span style="font-size:0.58rem;font-weight:900;letter-spacing:1px;color:#15803d;background:#dcfce7;padding:2px 5px;border-radius:3px">eDinar</span>',
+            'e-Dinar':    '<span style="font-size:0.58rem;font-weight:900;letter-spacing:0.5px;color:#92400e;background:linear-gradient(90deg,#fef3c7,#fde68a);padding:2px 6px;border-radius:3px;border:1px solid #f59e0b">e-Dinar</span>',
         };
 
         const applyBrand = (raw) => {
