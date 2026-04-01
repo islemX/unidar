@@ -620,14 +620,15 @@ const CardValidator = {
         return parts.join(' ');
     },
 
-    // Detect card brand from number
+    // Detect card brand from number (e-Dinar before Visa since both start with 4)
     getCardBrand(cardNumber) {
         const num = cardNumber.replace(/\D/g, '');
-        if (/^4/.test(num)) return { brand: 'Visa', icon: '💳' };
-        if (/^5[1-5]/.test(num)) return { brand: 'Mastercard', icon: '💳' };
-        if (/^3[47]/.test(num)) return { brand: 'Amex', icon: '💳' };
-        if (/^6(?:011|5)/.test(num)) return { brand: 'Discover', icon: '💳' };
-        return { brand: '', icon: '💳' };
+        if (/^4030/.test(num))            return { brand: 'e-Dinar' };
+        if (/^4/.test(num))               return { brand: 'Visa' };
+        if (/^5[1-5]|^2[2-7]/.test(num)) return { brand: 'Mastercard' };
+        if (/^3[47]/.test(num))           return { brand: 'Amex' };
+        if (/^6(?:011|5)/.test(num))      return { brand: 'Discover' };
+        return { brand: '' };
     },
 
     // Format expiry date
@@ -653,6 +654,40 @@ const CardValidator = {
     }
 };
 window.CardValidator = CardValidator;
+
+// Card brand themes — gradient, logo SVG, accent colour
+const CARD_BRANDS = {
+    'e-Dinar': {
+        gradient: 'linear-gradient(135deg,#052e16 0%,#14532d 60%,#166534 100%)',
+        logo: '<span style="font-size:0.75rem;font-weight:900;letter-spacing:1.5px;color:#4ade80">e•DINAR</span>',
+        label: 'e-DINAR',
+    },
+    'Visa': {
+        gradient: 'linear-gradient(135deg,#0a1628 0%,#1e3a8a 60%,#1d4ed8 100%)',
+        logo: '<svg width="52" height="18" viewBox="0 0 52 18"><text x="1" y="15" fill="white" font-size="17" font-style="italic" font-weight="900" font-family="Arial,sans-serif">VISA</text></svg>',
+        label: 'Visa',
+    },
+    'Mastercard': {
+        gradient: 'linear-gradient(135deg,#1a0505 0%,#450a0a 60%,#7f1d1d 100%)',
+        logo: '<svg width="44" height="28" viewBox="0 0 44 28"><circle cx="15" cy="14" r="13" fill="#eb001b"/><circle cx="29" cy="14" r="13" fill="#f79e1b"/><path d="M22 3.4a13 13 0 0 1 0 21.2A13 13 0 0 1 22 3.4z" fill="#ff5f00"/></svg>',
+        label: 'Mastercard',
+    },
+    'Amex': {
+        gradient: 'linear-gradient(135deg,#0c1a2e 0%,#1d3461 60%,#1e40af 100%)',
+        logo: '<svg width="50" height="20" viewBox="0 0 50 20"><text x="1" y="15" fill="white" font-size="12" font-weight="900" font-family="Arial,sans-serif" letter-spacing="2">AMEX</text></svg>',
+        label: 'American Express',
+    },
+    'Discover': {
+        gradient: 'linear-gradient(135deg,#1c0a00 0%,#431407 60%,#7c2d12 100%)',
+        logo: '<svg width="60" height="20" viewBox="0 0 60 20"><text x="1" y="15" fill="white" font-size="11" font-weight="900" font-family="Arial,sans-serif" letter-spacing="0.5">DISCOVER</text></svg>',
+        label: 'Discover',
+    },
+    '': {
+        gradient: 'linear-gradient(135deg,#1e293b 0%,#0f172a 100%)',
+        logo: '',
+        label: '',
+    },
+};
 
 // Payment Management Functions
 const PaymentManager = {
@@ -682,110 +717,159 @@ const PaymentManager = {
     showPaymentModal(listingId, contractId) {
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(2,6,23,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px';
         modal.innerHTML = `
-            <div class="modal-content" style="max-width: 850px; padding: var(--space-lg);">
-                <div class="modal-header" style="margin-bottom: var(--space-md);">
-                    <h3>Paiement Sécurisé</h3>
-                    <button class="modal-close" onclick="PaymentManager.closeModal(this)">&times;</button>
+            <div class="pm-shell" style="background:#fff;border-radius:24px;width:100%;max-width:840px;overflow:hidden;box-shadow:0 50px 100px -20px rgba(0,0,0,0.7)">
+                <!-- Header -->
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 28px;background:linear-gradient(135deg,#0f172a,#1e1b4b);color:white">
+                    <div>
+                        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);padding:3px 10px;border-radius:100px;font-size:0.7rem;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">🔒 Sécurisé par UNIDAR Pay</div>
+                        <h2 style="margin:0;font-size:1.25rem;font-weight:800;letter-spacing:-0.5px">Paiement Sécurisé</h2>
+                    </div>
+                    <button class="pm-close" onclick="PaymentManager.closeModal(this)" style="background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:34px;height:34px;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
                 </div>
-                
-                <div class="modal-body" style="padding: 0;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
-                        <!-- Left Column: Card & Summary -->
-                        <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-                            <div class="card-preview-container" style="margin: 0;">
-                                <div class="virtual-card" id="virtual-card" style="width: 100%; aspect-ratio: 1.58; height: auto; transform: scale(1);">
-                                    <div class="card-brand-logo" id="v-card-brand">💳</div>
-                                    <div class="card-chip"></div>
-                                    <div class="card-number-display" id="v-card-number" style="font-size: 1.2rem; margin-top: 15px;">•••• •••• •••• ••••</div>
-                                    <div class="card-bottom-info">
-                                        <div class="card-holder-display">
-                                            <div class="card-label">Titulaire</div>
-                                            <div class="card-holder-name" id="v-card-holder">NOM PRENOM</div>
-                                        </div>
-                                        <div class="card-expiry-display-container">
-                                            <div class="card-label">Expire</div>
-                                            <div class="card-expiry-display" id="v-card-expiry">MM/YY</div>
-                                        </div>
+                <!-- Body -->
+                <div style="display:grid;grid-template-columns:1fr 1fr">
+                    <!-- LEFT: Card + Summary -->
+                    <div style="background:#f8fafc;padding:26px;border-right:1px solid #e2e8f0;display:flex;flex-direction:column;gap:18px">
+                        <!-- 3D Card -->
+                        <div class="pm-card-scene" style="width:100%;aspect-ratio:1.586">
+                            <div class="pm-card" id="pm-card">
+                                <!-- Front -->
+                                <div class="pm-card-front" id="pm-card-face" style="background:linear-gradient(135deg,#1e293b,#0f172a);padding:20px 22px;display:flex;flex-direction:column">
+                                    <div style="display:flex;align-items:center;margin-bottom:14px;gap:10px">
+                                        <!-- EMV Chip -->
+                                        <svg width="42" height="32" viewBox="0 0 42 32" style="flex-shrink:0">
+                                            <rect width="42" height="32" rx="5" fill="#fbbf24"/>
+                                            <rect x="3" y="3" width="36" height="26" rx="3" fill="#d97706"/>
+                                            <rect x="7" y="11" width="28" height="10" rx="2" fill="#fbbf24"/>
+                                            <line x1="21" y1="3" x2="21" y2="29" stroke="#b45309" stroke-width="1.5"/>
+                                            <line x1="3" y1="16" x2="39" y2="16" stroke="#b45309" stroke-width="1.5"/>
+                                            <line x1="7" y1="11" x2="7" y2="21" stroke="#b45309" stroke-width="1"/>
+                                            <line x1="35" y1="11" x2="35" y2="21" stroke="#b45309" stroke-width="1"/>
+                                        </svg>
+                                        <!-- Contactless -->
+                                        <svg width="22" height="22" viewBox="0 0 22 22" style="opacity:0.55;flex-shrink:0">
+                                            <circle cx="6" cy="11" r="2.2" fill="white"/>
+                                            <path d="M9.5,6.5 a6.5,6.5 0 0,1 0,9" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                                            <path d="M12.5,4 a10,10 0 0,1 0,14" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+                                            <path d="M15.5,1.5 a13.5,13.5 0 0,1 0,19" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+                                        </svg>
                                     </div>
+                                    <div id="pm-cf-number" style="font-family:'Courier New',monospace;font-size:clamp(0.9rem,2.2vw,1.15rem);letter-spacing:0.2em;text-shadow:0 2px 6px rgba(0,0,0,0.4);margin-bottom:14px;flex:1;display:flex;align-items:flex-end;color:white">•••• •••• •••• ••••</div>
+                                    <div style="display:flex;align-items:flex-end;gap:16px">
+                                        <div style="flex:1;min-width:0">
+                                            <div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;color:white">Titulaire</div>
+                                            <div id="pm-cf-name" style="font-size:0.8rem;font-weight:600;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:white">NOM PRENOM</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;color:white">Expire</div>
+                                            <div id="pm-cf-expiry" style="font-size:0.8rem;font-weight:600;white-space:nowrap;color:white">MM/YY</div>
+                                        </div>
+                                        <div id="pm-cf-brand" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center"></div>
+                                    </div>
+                                    <div class="pm-card-shine"></div>
                                 </div>
-                            </div>
-
-                            <div class="payment-summary" style="background: var(--color-surface-50); padding: var(--space-md); border-radius: var(--radius-xl); border: 1px solid var(--color-surface-100);">
-                                <div class="payment-breakdown" style="font-size: 0.9rem;">
-                                    <div class="flex justify-between mb-xs">
-                                        <span class="text-muted">Loyer Mensuel:</span>
-                                        <span id="monthlyRent" class="font-bold">--</span>
+                                <!-- Back -->
+                                <div class="pm-card-back" id="pm-card-back" style="background:linear-gradient(135deg,#1e293b,#0f172a)">
+                                    <div style="width:100%;height:44px;background:#111;margin-top:26px"></div>
+                                    <div style="display:flex;align-items:center;gap:10px;margin:12px 22px 0">
+                                        <div style="flex:1;height:34px;background:repeating-linear-gradient(90deg,#f1f5f9,#f1f5f9 10px,#e2e8f0 10px,#e2e8f0 12px);border-radius:2px"></div>
+                                        <div id="pm-cb-cvv" style="background:white;color:#0f172a;font-style:italic;font-weight:700;font-size:0.95rem;letter-spacing:3px;padding:6px 12px;border-radius:4px;min-width:46px;text-align:center">•••</div>
                                     </div>
-                                    <div class="flex justify-between mb-xs">
-                                        <span class="text-muted">Commission (5%):</span>
-                                        <span id="commissionAmount" class="font-bold">--</span>
-                                    </div>
-                                    <div class="flex justify-between pt-sm mt-sm" style="border-top: 1px dashed var(--color-surface-200);">
-                                        <span class="font-bold">Total:</span>
-                                        <span id="totalAmount" class="font-bold text-brand" style="font-size: 1.1rem;">--</span>
-                                    </div>
+                                    <div style="font-size:0.58rem;opacity:0.35;text-align:center;padding:10px 22px;line-height:1.4;color:white">Ne communiquez jamais votre code CVV à quiconque</div>
+                                    <div id="pm-cb-brand" style="position:absolute;bottom:14px;right:18px"></div>
+                                    <div class="pm-card-shine"></div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Right Column: Form -->
-                        <div style="display: flex; flex-direction: column; justify-content: space-between;">
-                            <div class="payment-methods" id="paymentMethodsContainer">
-                                <div class="flex gap-sm mb-md">
-                                    <button class="btn btn-secondary flex-1 active-tab" id="tab-card" onclick="PaymentManager.switchTab('card')" style="padding: 8px; font-size: 0.85rem;">
-                                        💳 Carte
-                                    </button>
-                                    <button class="btn btn-secondary flex-1" id="tab-transfer" onclick="PaymentManager.switchTab('transfer')" style="padding: 8px; font-size: 0.85rem;">
-                                        🏦 Virement
-                                    </button>
+                        <!-- Summary -->
+                        <div style="background:white;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px">
+                            <div style="font-size:0.68rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">Récapitulatif</div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.875rem;color:#475569;margin-bottom:7px"><span>Loyer mensuel</span><span id="monthlyRent" style="font-weight:700">--</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.875rem;color:#475569;margin-bottom:7px"><span>Commission (5%)</span><span id="commissionAmount" style="font-weight:700">--</span></div>
+                            <div style="height:1px;background:#e2e8f0;margin:8px 0"></div>
+                            <div style="display:flex;justify-content:space-between;font-weight:800;font-size:0.95rem;color:#0f172a"><span>Total à payer</span><span id="totalAmount" style="color:#6366f1;font-size:1.05rem">--</span></div>
+                        </div>
+                    </div>
+                    <!-- RIGHT: Form -->
+                    <div style="padding:26px;display:flex;flex-direction:column;gap:14px">
+                        <!-- Tabs -->
+                        <div style="display:flex;gap:6px;background:#f1f5f9;border-radius:12px;padding:4px">
+                            <button id="tab-card" onclick="PaymentManager.switchTab('card')" style="flex:1;padding:9px 10px;border:none;border-radius:9px;background:white;color:#0f172a;font-size:0.85rem;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                                Carte Bancaire
+                            </button>
+                            <button id="tab-transfer" onclick="PaymentManager.switchTab('transfer')" style="flex:1;padding:9px 10px;border:none;border-radius:9px;background:transparent;color:#64748b;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M16 3v4M8 3v4M2 11h20"/></svg>
+                                Virement
+                            </button>
+                        </div>
+                        <!-- Form area (hid during processing) -->
+                        <div id="paymentMethodsContainer" style="display:flex;flex-direction:column;gap:12px;flex:1">
+                            <div id="card-form">
+                                <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
+                                    <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">Nom sur la Carte</label>
+                                    <input type="text" id="cc-name" placeholder="NOM COMPLET" autocomplete="cc-name"
+                                        style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:inherit;width:100%;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s"
+                                        onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
+                                        onblur="this.style.borderColor='#e2e8f0';this.style.boxShadow='none';this.style.background='#f8fafc'">
                                 </div>
-
-                                <div id="card-form">
-                                    <div class="form-group mb-sm">
-                                        <label class="form-label" style="font-size: 0.75rem;">Nom sur la Carte</label>
-                                        <input type="text" id="cc-name" class="form-input" placeholder="NOM COMPLET" style="padding: 8px; font-size: 0.9rem;">
-                                    </div>
-
-                                    <div class="form-group mb-sm">
-                                        <label class="form-label" style="font-size: 0.75rem;">Numéro de Carte</label>
-                                        <input type="text" id="cc-number" class="form-input" placeholder="•••• •••• •••• ••••" maxlength="19" style="padding: 8px; font-size: 1rem; font-family: monospace;">
-                                    </div>
-
-                                    <div class="grid-2 gap-sm mb-md">
-                                        <div class="form-group">
-                                            <label class="form-label" style="font-size: 0.75rem;">Expiration</label>
-                                            <input type="text" id="cc-expiry" class="form-input" placeholder="MM/YY" maxlength="5" style="padding: 8px; font-size: 0.9rem; text-align: center;">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label" style="font-size: 0.75rem;">CVC</label>
-                                            <input type="password" id="cc-cvv" class="form-input" placeholder="•••" maxlength="4" style="padding: 8px; font-size: 0.9rem; text-align: center;">
-                                        </div>
+                                <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
+                                    <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">Numéro de Carte</label>
+                                    <div style="position:relative">
+                                        <input type="text" id="cc-number" placeholder="0000  0000  0000  0000" maxlength="22" autocomplete="cc-number" inputmode="numeric"
+                                            style="padding:11px 90px 11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:'Courier New',monospace;width:100%;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s"
+                                            onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
+                                            onblur="this.style.borderColor='';this.style.boxShadow='none';this.style.background='#f8fafc'">
+                                        <div id="pm-brand-badge" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:4px;pointer-events:none"></div>
                                     </div>
                                 </div>
-
-                                <div id="transfer-info" style="display: none; font-size: 0.85rem;">
-                                    <div class="alert alert-info p-sm" style="margin: 0;">
-                                        <p class="mb-xs"><strong>IBAN:</strong> TN59...7890</p>
-                                        <p class="mb-xs"><strong>Banque:</strong> BIAT</p>
-                                        <p class="mb-0"><strong>Ref:</strong> <span class="text-brand">CONTRAT-${contractId}</span></p>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                                    <div style="display:flex;flex-direction:column;gap:5px">
+                                        <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">Expiration</label>
+                                        <input type="text" id="cc-expiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" inputmode="numeric"
+                                            style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:inherit;width:100%;box-sizing:border-box;text-align:center;transition:border-color 0.2s,box-shadow 0.2s"
+                                            onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
+                                            onblur="this.style.borderColor='';this.style.boxShadow='none';this.style.background='#f8fafc'">
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;gap:5px">
+                                        <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">CVC <span title="3 chiffres au dos de votre carte" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:800;cursor:help;vertical-align:middle;margin-left:2px">?</span></label>
+                                        <input type="text" id="cc-cvv" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric"
+                                            style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:inherit;width:100%;box-sizing:border-box;text-align:center;transition:border-color 0.2s,box-shadow 0.2s"
+                                            onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
+                                            onblur="this.style.borderColor='';this.style.boxShadow='none';this.style.background='#f8fafc'">
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div id="payment-processing" style="display: none; text-align: center; padding: var(--space-md) 0;">
-                                <div style="width: 40px; height: 40px; margin: 0 auto 10px; border: 3px solid var(--color-surface-100); border-top-color: var(--color-brand); border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                                <h5 id="processing-text" class="m-0">Traitement...</h5>
+                            <div id="transfer-info" style="display:none">
+                                <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px">
+                                    <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.875rem;margin-bottom:10px"><span style="color:#16a34a;font-weight:700;min-width:70px">IBAN</span><span style="color:#166534;word-break:break-all">TN59 2040 0400 0831 2345 6789</span></div>
+                                    <div style="display:flex;gap:10px;align-items:flex-start;font-size:0.875rem;margin-bottom:10px"><span style="color:#16a34a;font-weight:700;min-width:70px">Banque</span><span style="color:#166534">BIAT — Banque Internationale Arabe de Tunisie</span></div>
+                                    <div style="display:flex;gap:10px;align-items:center;font-size:0.875rem"><span style="color:#16a34a;font-weight:700;min-width:70px">Référence</span><span style="color:#6366f1;font-weight:700;font-family:monospace">CONTRAT-${contractId}</span></div>
+                                </div>
                             </div>
-
-                            <div style="margin-top: auto;">
-                                <button id="btn-confirm-payment" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 700;" onclick="PaymentManager.processPayment(${contractId})">
-                                    🔐 Payer Maintenant
-                                </button>
-                                <p class="text-center text-tiny text-muted mt-sm" style="margin-bottom: 0;">
-                                    🛡️ Sécurisé par UNIDAR Pay
-                                </p>
+                        </div>
+                        <!-- Processing -->
+                        <div id="payment-processing" style="display:none;text-align:center;padding:20px 0">
+                            <div class="pm-processing-icon">⚡</div>
+                            <p id="processing-text" style="font-weight:700;color:#0f172a;margin:0 0 4px">Traitement...</p>
+                            <p id="processing-substep" style="font-size:0.78rem;color:#94a3b8;margin:0 0 12px"></p>
+                            <div style="width:100%;height:6px;background:#e2e8f0;border-radius:100px;overflow:hidden">
+                                <div id="payment-progress" style="height:100%;background:linear-gradient(90deg,#6366f1,#a78bfa);border-radius:100px;width:0;transition:width 0.5s ease"></div>
                             </div>
+                        </div>
+                        <!-- CTA -->
+                        <button id="btn-confirm-payment" onclick="PaymentManager.processPayment(${contractId})"
+                            style="width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;font-size:1rem;font-weight:800;box-shadow:0 4px 20px rgba(99,102,241,0.4);transition:transform 0.15s,box-shadow 0.15s;margin-top:auto"
+                            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(99,102,241,0.55)'"
+                            onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 20px rgba(99,102,241,0.4)'">
+                            🔐 Payer Maintenant
+                        </button>
+                        <div style="text-align:center;font-size:0.7rem;color:#94a3b8;font-weight:600;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+                            <span>🛡️ SSL / TLS 1.3</span>
+                            <span>🔒 Aucune donnée stockée</span>
+                            <span>✓ 3D Secure</span>
                         </div>
                     </div>
                 </div>
@@ -793,102 +877,102 @@ const PaymentManager = {
         `;
 
         document.body.appendChild(modal);
-
-        // Add card input formatting listeners
         PaymentManager.initCardInputs();
         PaymentManager.loadPaymentDetails(listingId);
-
     },
 
     initCardInputs() {
-        const ccName = document.getElementById('cc-name');
+        const ccName   = document.getElementById('cc-name');
         const ccNumber = document.getElementById('cc-number');
         const ccExpiry = document.getElementById('cc-expiry');
-        const cardBrandStatus = document.getElementById('card-brand-status');
-        const cardError = document.getElementById('card-error');
+        const ccCvv    = document.getElementById('cc-cvv');
 
-        // Virtual card elements
-        const vCardNumber = document.getElementById('v-card-number');
-        const vCardHolder = document.getElementById('v-card-holder');
-        const vCardExpiry = document.getElementById('v-card-expiry');
-        const vCardBrand = document.getElementById('v-card-brand');
+        const setEl = (id, html, prop = 'textContent') => {
+            const el = document.getElementById(id);
+            if (el) { if (prop === 'innerHTML') el.innerHTML = html; else el[prop] = html; }
+        };
+
+        const applyBrand = (raw) => {
+            const info = CardValidator.getCardBrand(raw);
+            const theme = CARD_BRANDS[info.brand] || CARD_BRANDS[''];
+            // Card faces gradient
+            const face = document.getElementById('pm-card-face');
+            const back = document.getElementById('pm-card-back');
+            if (face) face.style.background = theme.gradient;
+            if (back) back.style.background = theme.gradient;
+            // Brand logo on front & back of card
+            setEl('pm-cf-brand', theme.logo, 'innerHTML');
+            setEl('pm-cb-brand', theme.logo, 'innerHTML');
+            // Badge in the number input
+            const badge = document.getElementById('pm-brand-badge');
+            if (badge) badge.innerHTML = theme.label
+                ? '<span style="font-size:0.65rem;color:#64748b;font-weight:700;letter-spacing:0.5px">' + theme.label + '</span>'
+                : '';
+        };
 
         if (ccName) {
-            ccName.addEventListener('input', (e) => {
-                const val = e.target.value.toUpperCase();
-                if (vCardHolder) vCardHolder.textContent = val || 'NOM PRENOM';
+            ccName.addEventListener('input', e => {
+                setEl('pm-cf-name', e.target.value.toUpperCase() || 'NOM PRENOM');
             });
         }
 
         if (ccNumber) {
-            ccNumber.addEventListener('input', (e) => {
-                const formatted = CardValidator.formatCardNumber(e.target.value);
-                e.target.value = formatted;
+            ccNumber.addEventListener('input', e => {
+                // Format: groups of 4 separated by 2 spaces
+                const digits = e.target.value.replace(/\D/g, '').substring(0, 16);
+                const parts = digits.match(/.{1,4}/g) || [];
+                e.target.value = parts.join('  ');
 
-                // Sync virtual card
-                if (vCardNumber) {
-                    let masked = formatted || '•••• •••• •••• ••••';
-                    // Fill remaining dots if shorter
-                    const dotsNeeded = 19 - masked.length;
-                    if (dotsNeeded > 0) {
-                        const dots = '•••• •••• •••• ••••'.substring(masked.length);
-                        masked += dots;
-                    }
-                    vCardNumber.textContent = masked;
-                }
+                // Masked preview on card (show last group unmasked)
+                const masked = parts.length
+                    ? parts.map((p, i) => i < parts.length - 1 ? p.replace(/\d/g, '•') : p).join('  ')
+                    : '•••• •••• •••• ••••';
+                // Pad to 19 chars (4+2+4+2+4+2+4 = 22 with double spaces, simplify)
+                setEl('pm-cf-number', masked || '•••• •••• •••• ••••');
 
-                // Update card brand
-                const brand = CardValidator.getCardBrand(formatted);
-                if (cardBrandStatus) {
-                    cardBrandStatus.textContent = brand.brand ? brand.brand : '';
-                }
-                if (vCardBrand) {
-                    vCardBrand.textContent = brand.brand ? brand.icon : '💳';
-                    // Visual feedback: subtly change card gradient based on brand
-                    const vCard = document.getElementById('virtual-card');
-                    if (vCard) {
-                        if (brand.brand === 'Visa') vCard.style.background = 'linear-gradient(135deg, #1a365d, #2c5282)';
-                        else if (brand.brand === 'Mastercard') vCard.style.background = 'linear-gradient(135deg, #4a5568, #2d3748)';
-                        else vCard.style.background = 'linear-gradient(135deg, #1e293b, #0f172a)';
-                    }
-                }
+                applyBrand(e.target.value);
 
-                // Validate on blur
-                const digits = formatted.replace(/\D/g, '');
-                if (digits.length >= 13) {
-                    if (CardValidator.luhnCheck(digits)) {
-                        ccNumber.style.borderColor = 'var(--color-success)';
-                        if (cardError) cardError.style.display = 'none';
-                    } else {
-                        ccNumber.style.borderColor = 'var(--color-error)';
-                        if (cardError) {
-                            cardError.textContent = 'Numéro de carte invalide';
-                            cardError.style.display = 'block';
-                        }
-                    }
+                // Luhn validation feedback
+                const d = digits;
+                if (d.length >= 13) {
+                    e.target.style.borderColor = CardValidator.luhnCheck(d) ? '#10b981' : '#ef4444';
                 } else {
-                    ccNumber.style.borderColor = '';
-                    if (cardError) cardError.style.display = 'none';
+                    e.target.style.borderColor = '#e2e8f0';
                 }
             });
         }
 
         if (ccExpiry) {
-            ccExpiry.addEventListener('input', (e) => {
-                e.target.value = CardValidator.formatExpiry(e.target.value);
-                if (vCardExpiry) vCardExpiry.textContent = e.target.value || 'MM/YY';
-
-                if (e.target.value.length === 5) {
-                    if (CardValidator.isValidExpiry(e.target.value)) {
-                        ccExpiry.style.borderColor = 'var(--color-success)';
-                    } else {
-                        ccExpiry.style.borderColor = 'var(--color-error)';
-                    }
+            ccExpiry.addEventListener('input', e => {
+                const v = e.target.value.replace(/\D/g, '').substring(0, 4);
+                e.target.value = v.length >= 3 ? v.substring(0, 2) + ' / ' + v.substring(2) : v;
+                setEl('pm-cf-expiry', e.target.value || 'MM/YY');
+                if (e.target.value.length === 7) {
+                    const clean = e.target.value.replace(/\s/g, '').replace('/', '/');
+                    e.target.style.borderColor = CardValidator.isValidExpiry(clean) ? '#10b981' : '#ef4444';
                 } else {
-                    ccExpiry.style.borderColor = '';
+                    e.target.style.borderColor = '#e2e8f0';
                 }
             });
         }
+
+        if (ccCvv) {
+            ccCvv.addEventListener('input', e => {
+                e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+                setEl('pm-cb-cvv', e.target.value.replace(/\d/g, '•') || '•••');
+            });
+            ccCvv.addEventListener('focus', () => {
+                const card = document.getElementById('pm-card');
+                if (card) card.classList.add('pm-flipped');
+            });
+            ccCvv.addEventListener('blur', () => {
+                const card = document.getElementById('pm-card');
+                if (card) card.classList.remove('pm-flipped');
+            });
+        }
+
+        // Init brand display
+        applyBrand('');
     },
 
     async loadPaymentDetails(listingId) {
@@ -907,17 +991,20 @@ const PaymentManager = {
 
     switchTab(method) {
         this.currentMethod = method;
-        document.getElementById('card-form').style.display = method === 'card' ? 'block' : 'none';
-        document.getElementById('transfer-info').style.display = method === 'transfer' ? 'block' : 'none';
-
-        document.getElementById('tab-card').classList.toggle('active-tab', method === 'card');
-        document.getElementById('tab-transfer').classList.toggle('active-tab', method === 'transfer');
-
-        // Form styling for buttons (fallback since we use vanilla CSS)
-        document.getElementById('tab-card').style.background = method === 'card' ? 'var(--color-brand)' : '';
-        document.getElementById('tab-card').style.color = method === 'card' ? 'white' : '';
-        document.getElementById('tab-transfer').style.background = method === 'transfer' ? 'var(--color-brand)' : '';
-        document.getElementById('tab-transfer').style.color = method === 'transfer' ? 'white' : '';
+        document.getElementById('card-form').style.display      = method === 'card'     ? 'block' : 'none';
+        document.getElementById('transfer-info').style.display  = method === 'transfer' ? 'block' : 'none';
+        const tabCard     = document.getElementById('tab-card');
+        const tabTransfer = document.getElementById('tab-transfer');
+        if (tabCard) {
+            tabCard.style.background  = method === 'card' ? 'white'        : 'transparent';
+            tabCard.style.color       = method === 'card' ? '#0f172a'       : '#64748b';
+            tabCard.style.boxShadow   = method === 'card' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none';
+        }
+        if (tabTransfer) {
+            tabTransfer.style.background = method === 'transfer' ? 'white'        : 'transparent';
+            tabTransfer.style.color      = method === 'transfer' ? '#0f172a'       : '#64748b';
+            tabTransfer.style.boxShadow  = method === 'transfer' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none';
+        }
     },
 
     async processPayment(contractId) {
