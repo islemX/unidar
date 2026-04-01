@@ -620,10 +620,10 @@ const CardValidator = {
         return parts.join(' ');
     },
 
-    // Detect card brand from number (e-Dinar before Visa since both start with 4)
+    // Detect card brand from number (e-Dinar before Mastercard since both start with 5)
     getCardBrand(cardNumber) {
         const num = cardNumber.replace(/\D/g, '');
-        if (/^4030/.test(num))            return { brand: 'e-Dinar' };
+        if (/^5359/.test(num))            return { brand: 'e-Dinar' };   // La Poste Tunisienne
         if (/^4/.test(num))               return { brand: 'Visa' };
         if (/^5[1-5]|^2[2-7]/.test(num)) return { brand: 'Mastercard' };
         if (/^3[47]/.test(num))           return { brand: 'Amex' };
@@ -892,6 +892,13 @@ const PaymentManager = {
             if (el) { if (prop === 'innerHTML') el.innerHTML = html; else el[prop] = html; }
         };
 
+        // Mini logos for the input badge strip
+        const INPUT_LOGOS = {
+            'Visa':       '<svg width="34" height="12" viewBox="0 0 34 12"><text x="0" y="10" fill="#1a1f71" font-size="12" font-style="italic" font-weight="900" font-family="Arial,sans-serif">VISA</text></svg>',
+            'Mastercard': '<svg width="26" height="18" viewBox="0 0 26 18"><circle cx="9" cy="9" r="8.5" fill="#eb001b"/><circle cx="17" cy="9" r="8.5" fill="#f79e1b"/><path d="M13 2.2a8.5 8.5 0 0 1 0 13.6A8.5 8.5 0 0 1 13 2.2z" fill="#ff5f00"/></svg>',
+            'e-Dinar':    '<span style="font-size:0.58rem;font-weight:900;letter-spacing:1px;color:#15803d;background:#dcfce7;padding:2px 5px;border-radius:3px">eDinar</span>',
+        };
+
         const applyBrand = (raw) => {
             const info = CardValidator.getCardBrand(raw);
             const theme = CARD_BRANDS[info.brand] || CARD_BRANDS[''];
@@ -903,11 +910,15 @@ const PaymentManager = {
             // Brand logo on front & back of card
             setEl('pm-cf-brand', theme.logo, 'innerHTML');
             setEl('pm-cb-brand', theme.logo, 'innerHTML');
-            // Badge in the number input
+            // Badge strip: show Visa / MC / eDinar — dim non-matching when detected
             const badge = document.getElementById('pm-brand-badge');
-            if (badge) badge.innerHTML = theme.label
-                ? '<span style="font-size:0.65rem;color:#64748b;font-weight:700;letter-spacing:0.5px">' + theme.label + '</span>'
-                : '';
+            if (badge) {
+                const detected = info.brand;
+                badge.innerHTML = ['Visa', 'Mastercard', 'e-Dinar'].map(b => {
+                    const op = !detected ? '0.45' : detected === b ? '1' : '0.18';
+                    return '<span style="display:inline-flex;align-items:center;opacity:' + op + ';transition:opacity 0.25s">' + INPUT_LOGOS[b] + '</span>';
+                }).join('');
+            }
         };
 
         if (ccName) {

@@ -158,10 +158,11 @@ export default function SubscriptionPage() {
                 <div className="sp-field">
                   <label className="sp-label">Card Number</label>
                   <div className="sp-input-wrap">
-                    <input type="text" id="cardNum" className="sp-input sp-input-card" placeholder="0000  0000  0000  0000" maxLength="19" required autoComplete="cc-number" inputMode="numeric" />
-                    <div className="sp-card-icons">
-                      <span className="sp-ci sp-ci-visa">VISA</span>
-                      <span className="sp-ci sp-ci-mc">MC</span>
+                    <input type="text" id="cardNum" className="sp-input sp-input-card" placeholder="0000  0000  0000  0000" maxLength="22" required autoComplete="cc-number" inputMode="numeric" />
+                    <div className="sp-card-icons" id="sp-card-icons">
+                      <span className="sp-ci sp-ci-visa" id="sp-ci-visa">VISA</span>
+                      <span className="sp-ci sp-ci-mc" id="sp-ci-mc">MC</span>
+                      <span className="sp-ci sp-ci-edinar" id="sp-ci-edinar">eDinar</span>
                     </div>
                   </div>
                 </div>
@@ -245,12 +246,14 @@ export default function SubscriptionPage() {
           };
           function spDetectBrand(num) {
             const n = num.replace(/\\D/g, '');
-            if (/^4030/.test(n)) return 'e-Dinar';
+            if (/^5359/.test(n)) return 'e-Dinar';  // La Poste Tunisienne
             if (/^4/.test(n))    return 'Visa';
             if (/^5[1-5]|^2[2-7]/.test(n)) return 'Mastercard';
             if (/^3[47]/.test(n)) return 'Amex';
             return '';
           }
+          // Map brand name to input badge element ID
+          const SP_BADGE_IDS = { 'Visa': 'sp-ci-visa', 'Mastercard': 'sp-ci-mc', 'e-Dinar': 'sp-ci-edinar' };
           function spApplyBrand(raw) {
             const b = spDetectBrand(raw);
             const theme = SP_BRANDS[b] || SP_BRANDS[''];
@@ -258,6 +261,11 @@ export default function SubscriptionPage() {
             if (face) face.style.background = theme.gradient;
             const brandEl = document.getElementById('sp-card-brand');
             if (brandEl) brandEl.innerHTML = theme.logo;
+            // Dim non-matching badges in input
+            ['Visa','Mastercard','e-Dinar'].forEach(name => {
+              const el = document.getElementById(SP_BADGE_IDS[name]);
+              if (el) el.style.opacity = !b ? '0.5' : b === name ? '1' : '0.18';
+            });
           }
 
           document.getElementById('cardNum')?.addEventListener('input', e => {
@@ -682,8 +690,10 @@ export default function SubscriptionPage() {
         .sp-ci {
           font-size: 0.6rem; font-weight: 900; padding: 3px 6px; border-radius: 4px;
         }
-        .sp-ci-visa { background: #1a1f71; color: white; letter-spacing: 1px; }
-        .sp-ci-mc   { background: #eb001b; color: white; }
+        .sp-ci-visa   { background: #1a1f71; color: white; letter-spacing: 1px; }
+        .sp-ci-mc     { background: #eb001b; color: white; }
+        .sp-ci-edinar { background: #15803d; color: white; letter-spacing: 0.5px; }
+        .sp-ci { transition: opacity 0.25s; }
 
         .sp-cvc-icon {
           position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
