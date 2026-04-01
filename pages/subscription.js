@@ -111,32 +111,43 @@ export default function SubscriptionPage() {
                 <div className="sp-card-saving">That's less than 2.10 TND/month</div>
               </div>
 
-              {/* Virtual bank card */}
-              <div className="sp-vcard">
-                <div className="sp-vcard-shine" />
-                <div className="sp-vcard-top">
-                  <div className="sp-vcard-chip">
-                    <div className="sp-chip-line" />
-                    <div className="sp-chip-line" />
+              {/* Virtual Card Preview — realistic with chip, contactless, brand detection */}
+                  <div id="sp-card-face" style={{ background: 'linear-gradient(135deg,#1e293b,#0f172a)', borderRadius: 16, padding: '20px 22px', color: 'white', marginBottom: 24, position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.07)', transition: 'background 0.5s ease', aspectRatio: '1.586', display: 'flex', flexDirection: 'column' }}>
+                    {/* Shine */}
+                    <div style={{ position: 'absolute', inset: 0, borderRadius: 'inherit', background: 'linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.06) 50%,transparent 60%)', backgroundSize: '300% 100%', animation: 'sp-shine 5s ease-in-out infinite', pointerEvents: 'none' }} />
+                    {/* Top row: chip + contactless */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                      <svg width="42" height="32" viewBox="0 0 42 32" style={{ flexShrink: 0 }}>
+                        <rect width="42" height="32" rx="5" fill="#fbbf24"/>
+                        <rect x="3" y="3" width="36" height="26" rx="3" fill="#d97706"/>
+                        <rect x="7" y="11" width="28" height="10" rx="2" fill="#fbbf24"/>
+                        <line x1="21" y1="3" x2="21" y2="29" stroke="#b45309" strokeWidth="1.5"/>
+                        <line x1="3" y1="16" x2="39" y2="16" stroke="#b45309" strokeWidth="1.5"/>
+                        <line x1="7" y1="11" x2="7" y2="21" stroke="#b45309" strokeWidth="1"/>
+                        <line x1="35" y1="11" x2="35" y2="21" stroke="#b45309" strokeWidth="1"/>
+                      </svg>
+                      <svg width="22" height="22" viewBox="0 0 22 22" style={{ opacity: 0.55, flexShrink: 0 }}>
+                        <circle cx="6" cy="11" r="2.2" fill="white"/>
+                        <path d="M9.5,6.5 a6.5,6.5 0 0,1 0,9" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+                        <path d="M12.5,4 a10,10 0 0,1 0,14" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.7"/>
+                        <path d="M15.5,1.5 a13.5,13.5 0 0,1 0,19" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.4"/>
+                      </svg>
+                    </div>
+                    {/* Card number */}
+                    <div id="displayCardNum" style={{ fontFamily: "'Courier New',monospace", fontSize: 'clamp(0.85rem,3.5vw,1.1rem)', letterSpacing: '0.2em', textShadow: '0 2px 6px rgba(0,0,0,0.4)', marginBottom: 12, flex: 1, display: 'flex', alignItems: 'flex-end' }}>•••• •••• •••• ••••</div>
+                    {/* Bottom row */}
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.5, marginBottom: 3 }}>Card Holder</div>
+                        <div id="displayName" style={{ fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>USER NAME</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.5, marginBottom: 3 }}>Expires</div>
+                        <div id="displayExpiry" style={{ fontSize: '0.8rem', fontWeight: 600, whiteSpace: 'nowrap' }}>MM/YY</div>
+                      </div>
+                      <div id="sp-card-brand" style={{ marginLeft: 'auto', flexShrink: 0, display: 'flex', alignItems: 'center' }}></div>
+                    </div>
                   </div>
-                  <div className="sp-vcard-brand">UNIDAR</div>
-                </div>
-                <div id="displayCardNum" className="sp-vcard-num">•••• •••• •••• ••••</div>
-                <div className="sp-vcard-bottom">
-                  <div>
-                    <div className="sp-vcard-label">Cardholder</div>
-                    <div id="displayName" className="sp-vcard-value">YOUR NAME</div>
-                  </div>
-                  <div>
-                    <div className="sp-vcard-label">Expires</div>
-                    <div id="displayExpiry" className="sp-vcard-value">MM / YY</div>
-                  </div>
-                  <div className="sp-vcard-circles">
-                    <div className="sp-vcard-circle sp-vcard-circle-1" />
-                    <div className="sp-vcard-circle sp-vcard-circle-2" />
-                  </div>
-                </div>
-              </div>
 
               {/* Payment Form */}
               <form id="paymentForm" className="sp-form">
@@ -224,21 +235,47 @@ export default function SubscriptionPage() {
             setDisplay('displayName', e.target.value.toUpperCase() || currentUser.full_name.toUpperCase());
           });
 
+          // Card brand themes for subscription page
+          const SP_BRANDS = {
+            'e-Dinar':    { gradient: 'linear-gradient(135deg,#052e16,#14532d,#166534)', logo: '<span style="font-size:0.72rem;font-weight:900;letter-spacing:1.5px;color:#4ade80">e•DINAR</span>' },
+            'Visa':       { gradient: 'linear-gradient(135deg,#0a1628,#1e3a8a,#1d4ed8)', logo: '<svg width="48" height="16" viewBox="0 0 48 16"><text x="1" y="14" fill="white" font-size="15" font-style="italic" font-weight="900" font-family="Arial,sans-serif">VISA</text></svg>' },
+            'Mastercard': { gradient: 'linear-gradient(135deg,#1a0505,#450a0a,#7f1d1d)', logo: '<svg width="40" height="24" viewBox="0 0 40 24"><circle cx="13" cy="12" r="11" fill="#eb001b"/><circle cx="27" cy="12" r="11" fill="#f79e1b"/><path d="M20 3.2a11 11 0 0 1 0 17.6A11 11 0 0 1 20 3.2z" fill="#ff5f00"/></svg>' },
+            'Amex':       { gradient: 'linear-gradient(135deg,#0c1a2e,#1d3461,#1e40af)', logo: '<svg width="46" height="18" viewBox="0 0 46 18"><text x="1" y="14" fill="white" font-size="11" font-weight="900" font-family="Arial,sans-serif" letter-spacing="2">AMEX</text></svg>' },
+            '':           { gradient: 'linear-gradient(135deg,#1e293b,#0f172a)', logo: '' },
+          };
+          function spDetectBrand(num) {
+            const n = num.replace(/\\D/g, '');
+            if (/^4030/.test(n)) return 'e-Dinar';
+            if (/^4/.test(n))    return 'Visa';
+            if (/^5[1-5]|^2[2-7]/.test(n)) return 'Mastercard';
+            if (/^3[47]/.test(n)) return 'Amex';
+            return '';
+          }
+          function spApplyBrand(raw) {
+            const b = spDetectBrand(raw);
+            const theme = SP_BRANDS[b] || SP_BRANDS[''];
+            const face = document.getElementById('sp-card-face');
+            if (face) face.style.background = theme.gradient;
+            const brandEl = document.getElementById('sp-card-brand');
+            if (brandEl) brandEl.innerHTML = theme.logo;
+          }
+
           document.getElementById('cardNum')?.addEventListener('input', e => {
-            let v = e.target.value.replace(/\\D/g, '').substring(0, 16);
-            let parts = v.match(/.{1,4}/g) || [];
+            const digits = e.target.value.replace(/\\D/g, '').substring(0, 16);
+            const parts = digits.match(/.{1,4}/g) || [];
             e.target.value = parts.join('  ');
             const masked = parts.length
-              ? parts.map((p, i) => i < parts.length - 1 ? p.replace(/./g, '•') : p).join('  ')
+              ? parts.map((p, i) => i < parts.length - 1 ? p.replace(/\\d/g, '•') : p).join('  ')
               : '•••• •••• •••• ••••';
-            setDisplay('displayCardNum', masked || '•••• •••• •••• ••••');
+            const el = document.getElementById('displayCardNum');
+            if (el) el.textContent = masked || '•••• •••• •••• ••••';
+            spApplyBrand(e.target.value);
           });
-
           document.getElementById('cardExpiry')?.addEventListener('input', e => {
-            let v = e.target.value.replace(/\\D/g, '').substring(0, 4);
-            if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
-            e.target.value = v;
-            setDisplay('displayExpiry', v || 'MM / YY');
+            const v = e.target.value.replace(/\\D/g, '').substring(0, 4);
+            e.target.value = v.length >= 3 ? v.substring(0,2) + ' / ' + v.substring(2) : v;
+            const el = document.getElementById('displayExpiry');
+            if (el) el.textContent = e.target.value || 'MM/YY';
           });
 
           document.getElementById('cardCvc')?.addEventListener('input', e => {
@@ -563,9 +600,8 @@ export default function SubscriptionPage() {
           animation: sp-shine 4s ease-in-out infinite;
         }
         @keyframes sp-shine {
-          0%   { left: -60%; }
-          60%  { left: 140%; }
-          100% { left: 140%; }
+          0%        { background-position: -200% 0; }
+          60%, 100% { background-position: 300% 0; }
         }
         .sp-vcard-top {
           display: flex; justify-content: space-between; align-items: flex-start;
