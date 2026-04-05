@@ -102,84 +102,176 @@ export default function HomePage() {
             <div className="split-content">
               <div className="split-visual reveal">
                 <style>{`
-                  @keyframes tierSlideIn {
-                    from { opacity: 0; transform: translateX(-18px); }
-                    to   { opacity: 1; transform: translateX(0); }
+                  @keyframes tierIn {
+                    from { opacity:0; transform:translateY(14px); }
+                    to   { opacity:1; transform:translateY(0); }
                   }
-                  @keyframes arrowDrop {
-                    0%,100% { transform: translateY(0); opacity:.45; }
-                    50%      { transform: translateY(5px); opacity:1; }
+                  @keyframes premiumGlow {
+                    0%,100% { box-shadow:0 4px 20px rgba(99,102,241,.12), 0 0 0 0 rgba(99,102,241,0); }
+                    50%     { box-shadow:0 8px 36px rgba(99,102,241,.22), 0 0 0 5px rgba(99,102,241,.06); }
                   }
-                  @keyframes premiumPulse {
-                    0%,100% { box-shadow: 0 4px 24px rgba(99,102,241,.18); }
-                    50%      { box-shadow: 0 8px 36px rgba(99,102,241,.38); }
+                  @keyframes orbFloat {
+                    0%,100% { transform:translate(0,0) scale(1); }
+                    40%     { transform:translate(10px,-8px) scale(1.06); }
+                    70%     { transform:translate(-6px,5px) scale(.96); }
                   }
-                  @keyframes lockPop {
-                    0%   { transform: scale(1); }
-                    40%  { transform: scale(1.18) rotate(-8deg); }
-                    70%  { transform: scale(0.95) rotate(4deg); }
-                    100% { transform: scale(1); }
+                  @keyframes connFade {
+                    0%,100% { opacity:.3; }
+                    50%     { opacity:.7; }
                   }
-                  .tier-card-1 { animation: tierSlideIn .55s ease forwards; animation-delay:.12s; opacity:0; }
-                  .tier-card-2 { animation: tierSlideIn .55s ease forwards; animation-delay:.32s; opacity:0; }
-                  .tier-card-3 { animation: tierSlideIn .55s ease forwards, premiumPulse 2.8s ease infinite; animation-delay:.52s, .9s; opacity:0; }
-                  .tier-arrow  { animation: arrowDrop 1.3s ease infinite; }
-                  .tier-lock:hover { animation: lockPop .4s ease; }
+                  .tc1 { animation:tierIn .5s cubic-bezier(.22,1,.36,1) .08s both; }
+                  .tc2 { animation:tierIn .5s cubic-bezier(.22,1,.36,1) .24s both; }
+                  .tc3 { animation:tierIn .5s cubic-bezier(.22,1,.36,1) .4s both, premiumGlow 2.8s ease infinite .7s; }
+                  .t-orb-1 { animation:orbFloat 7s ease infinite; }
+                  .t-orb-2 { animation:orbFloat 9s ease infinite reverse; }
+                  .t-conn   { animation:connFade 1.6s ease infinite; }
                 `}</style>
 
-                <div style={{ padding: '4px 0' }}>
+                {/* Glass card wrapper */}
+                <div style={{
+                  position:'relative',
+                  background:'linear-gradient(150deg,rgba(255,255,255,.92) 0%,rgba(248,250,252,.95) 100%)',
+                  borderRadius:'28px',
+                  padding:'32px 28px 26px',
+                  border:'1.5px solid rgba(226,232,240,.9)',
+                  boxShadow:'0 10px 48px rgba(0,0,0,.07), 0 1px 0 rgba(255,255,255,.95) inset',
+                  overflow:'hidden'
+                }}>
+
+                  {/* Decorative orbs */}
+                  <div className="t-orb-1" style={{ position:'absolute', top:'-40px', right:'-40px', width:'180px', height:'180px', background:'radial-gradient(circle, rgba(99,102,241,.13) 0%, transparent 68%)', borderRadius:'50%', pointerEvents:'none' }} />
+                  <div className="t-orb-2" style={{ position:'absolute', bottom:'-30px', left:'-30px', width:'130px', height:'130px', background:'radial-gradient(circle, rgba(168,85,247,.1) 0%, transparent 68%)', borderRadius:'50%', pointerEvents:'none' }} />
+
                   {/* Header pill */}
-                  <div style={{ marginBottom: '18px', textAlign: 'center' }}>
-                    <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', background:'rgba(99,102,241,.09)', border:'1.5px solid rgba(99,102,241,.18)', borderRadius:'20px', padding:'5px 16px', fontSize:'.78rem', fontWeight:700, color:'var(--color-brand)', letterSpacing:'.02em' }}>
+                  <div style={{ textAlign:'center', marginBottom:'26px' }}>
+                    <span style={{
+                      display:'inline-flex', alignItems:'center', gap:'7px',
+                      background:'linear-gradient(135deg,rgba(99,102,241,.1),rgba(168,85,247,.08))',
+                      border:'1px solid rgba(99,102,241,.22)',
+                      borderRadius:'30px', padding:'7px 20px',
+                      fontSize:'.73rem', fontWeight:800, color:'#6366f1', letterSpacing:'.06em', textTransform:'uppercase'
+                    }}>
                       🔑 How Access Works
                     </span>
                   </div>
 
                   {/* Tier 1 – Browse */}
-                  <div className="tier-card-1" style={{ background:'#fff', borderRadius:'16px', padding:'13px 16px', display:'flex', alignItems:'center', gap:'13px', boxShadow:'0 2px 14px rgba(0,0,0,.06)', border:'1.5px solid #e2e8f0' }}>
-                    <div style={{ width:'42px', height:'42px', borderRadius:'12px', background:'linear-gradient(135deg,#10b981,#34d399)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.25rem', flexShrink:0 }}>🌐</div>
+                  <div className="tc1" style={{
+                    background:'#fff', borderRadius:'18px',
+                    padding:'18px 20px', display:'flex', alignItems:'center', gap:'16px',
+                    boxShadow:'0 2px 16px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.9) inset',
+                    border:'1px solid #f0fdf4', borderLeft:'4px solid #10b981'
+                  }}>
+                    <div style={{
+                      width:'52px', height:'52px', borderRadius:'16px', flexShrink:0,
+                      background:'linear-gradient(135deg,#10b981,#34d399)',
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:'1.4rem', boxShadow:'0 4px 14px rgba(16,185,129,.28)'
+                    }}>🌐</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:'.88rem', color:'#1e293b' }}>Browse &amp; Explore</div>
-                      <div style={{ fontSize:'.72rem', color:'#64748b', marginTop:'2px' }}>View all listings &amp; details freely</div>
+                      <div style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Browse &amp; Explore</div>
+                      <div style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>View all listings &amp; details — no upgrade needed</div>
                     </div>
-                    <span style={{ background:'#dcfce7', color:'#15803d', borderRadius:'20px', padding:'3px 10px', fontSize:'.68rem', fontWeight:700, flexShrink:0 }}>FREE</span>
+                    <div style={{
+                      background:'linear-gradient(135deg,#d1fae5,#a7f3d0)',
+                      color:'#065f46', borderRadius:'20px', flexShrink:0,
+                      padding:'5px 13px', fontSize:'.68rem', fontWeight:800, letterSpacing:'.05em'
+                    }}>FREE ✓</div>
                   </div>
 
-                  {/* Arrow */}
-                  <div className="tier-arrow" style={{ textAlign:'center', padding:'7px 0', color:'#94a3b8', fontSize:'1.05rem' }}>↓</div>
+                  {/* Connector 1 */}
+                  <div style={{ display:'flex', alignItems:'stretch', paddingLeft:'38px', height:'28px' }}>
+                    <div className="t-conn" style={{ width:'2px', background:'linear-gradient(to bottom,#10b981,#3b82f6)', borderRadius:'2px', margin:'0 auto' }} />
+                  </div>
 
                   {/* Tier 2 – Verified */}
-                  <div className="tier-card-2" style={{ background:'#fff', borderRadius:'16px', padding:'13px 16px', display:'flex', alignItems:'center', gap:'13px', boxShadow:'0 2px 14px rgba(0,0,0,.06)', border:'1.5px solid #bfdbfe' }}>
-                    <div style={{ width:'42px', height:'42px', borderRadius:'12px', background:'linear-gradient(135deg,#3b82f6,#60a5fa)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.25rem', flexShrink:0 }}>🎓</div>
+                  <div className="tc2" style={{
+                    background:'#fff', borderRadius:'18px',
+                    padding:'18px 20px', display:'flex', alignItems:'center', gap:'16px',
+                    boxShadow:'0 2px 16px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.9) inset',
+                    border:'1px solid #eff6ff', borderLeft:'4px solid #3b82f6'
+                  }}>
+                    <div style={{
+                      width:'52px', height:'52px', borderRadius:'16px', flexShrink:0,
+                      background:'linear-gradient(135deg,#3b82f6,#60a5fa)',
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:'1.4rem', boxShadow:'0 4px 14px rgba(59,130,246,.28)'
+                    }}>🎓</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:'.88rem', color:'#1e293b' }}>Student Verified</div>
-                      <div style={{ fontSize:'.72rem', color:'#64748b', marginTop:'2px' }}>Upload your student ID card</div>
+                      <div style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Student Verified</div>
+                      <div style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Upload your student ID card to confirm enrollment</div>
                     </div>
-                    <span style={{ background:'#dbeafe', color:'#1d4ed8', borderRadius:'20px', padding:'3px 10px', fontSize:'.68rem', fontWeight:700, flexShrink:0 }}>STEP 2</span>
+                    <div style={{
+                      background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',
+                      color:'#1e40af', borderRadius:'20px', flexShrink:0,
+                      padding:'5px 13px', fontSize:'.68rem', fontWeight:800, letterSpacing:'.05em'
+                    }}>STEP 2 →</div>
                   </div>
 
-                  {/* Arrow */}
-                  <div className="tier-arrow" style={{ textAlign:'center', padding:'7px 0', color:'#94a3b8', fontSize:'1.05rem' }}>↓</div>
+                  {/* Connector 2 */}
+                  <div style={{ display:'flex', alignItems:'stretch', paddingLeft:'38px', height:'28px' }}>
+                    <div className="t-conn" style={{ width:'2px', background:'linear-gradient(to bottom,#3b82f6,#6366f1)', borderRadius:'2px', margin:'0 auto' }} />
+                  </div>
 
                   {/* Tier 3 – Premium */}
-                  <div className="tier-card-3" style={{ background:'linear-gradient(135deg,rgba(99,102,241,.06),rgba(168,85,247,.06))', borderRadius:'16px', padding:'13px 16px', display:'flex', alignItems:'center', gap:'13px', border:'1.5px solid rgba(99,102,241,.3)' }}>
-                    <div style={{ width:'42px', height:'42px', borderRadius:'12px', background:'linear-gradient(135deg,#6366f1,#a855f7)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.25rem', flexShrink:0 }}>⭐</div>
+                  <div className="tc3" style={{
+                    background:'linear-gradient(135deg,#fafaff,#f5f3ff)',
+                    borderRadius:'18px', padding:'18px 20px',
+                    display:'flex', alignItems:'center', gap:'16px',
+                    border:'1px solid rgba(99,102,241,.18)', borderLeft:'4px solid #6366f1',
+                    position:'relative', overflow:'hidden'
+                  }}>
+                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(110deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%)', pointerEvents:'none' }} />
+                    <div style={{
+                      width:'52px', height:'52px', borderRadius:'16px', flexShrink:0,
+                      background:'linear-gradient(135deg,#6366f1,#a855f7)',
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:'1.4rem', boxShadow:'0 4px 16px rgba(99,102,241,.38)'
+                    }}>⭐</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:'.88rem', color:'#1e293b' }}>Premium Unlocked</div>
-                      <div style={{ fontSize:'.72rem', color:'#64748b', marginTop:'2px' }}>Contact owners · Sign contracts · Pay</div>
+                      <div style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Premium Unlocked</div>
+                      <div style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Contact owners · Sign contracts · Pay securely</div>
                     </div>
-                    <span style={{ background:'linear-gradient(135deg,#6366f1,#a855f7)', color:'#fff', borderRadius:'20px', padding:'3px 10px', fontSize:'.68rem', fontWeight:700, flexShrink:0, whiteSpace:'nowrap' }}>25 TND/yr</span>
+                    <div style={{
+                      background:'linear-gradient(135deg,#6366f1,#a855f7)',
+                      color:'#fff', borderRadius:'20px', flexShrink:0,
+                      padding:'5px 13px', fontSize:'.68rem', fontWeight:800,
+                      letterSpacing:'.04em', whiteSpace:'nowrap',
+                      boxShadow:'0 3px 10px rgba(99,102,241,.4)'
+                    }}>25 TND/yr</div>
                   </div>
 
-                  {/* Action pills */}
-                  <div style={{ display:'flex', gap:'8px', marginTop:'14px', background:'rgba(0,0,0,.03)', borderRadius:'12px', padding:'11px 14px' }}>
-                    {[['💬','Contact'],['📄','Contract'],['💳','Pay']].map(([icon, label]) => (
-                      <div key={label} style={{ flex:1, textAlign:'center' }}>
-                        <div className="tier-lock" style={{ fontSize:'1.15rem', cursor:'default' }}>{icon}</div>
-                        <div style={{ fontSize:'.63rem', color:'#64748b', fontWeight:600, marginTop:'3px' }}>{label}</div>
-                      </div>
-                    ))}
+                  {/* Premium actions row */}
+                  <div style={{
+                    marginTop:'20px',
+                    background:'linear-gradient(135deg,rgba(99,102,241,.06),rgba(168,85,247,.06))',
+                    border:'1px dashed rgba(99,102,241,.22)',
+                    borderRadius:'16px', padding:'16px 18px'
+                  }}>
+                    <div style={{ fontSize:'.67rem', fontWeight:800, color:'#6366f1', textTransform:'uppercase', letterSpacing:'.08em', textAlign:'center', marginBottom:'12px' }}>
+                      🔓 Premium-only Actions
+                    </div>
+                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'8px' }}>
+                      {[
+                        { icon:'💬', label:'Contact', sub:'Owner' },
+                        { icon:'📄', label:'Contract', sub:'Digital' },
+                        { icon:'💳', label:'Pay', sub:'Secure' }
+                      ].map(({ icon, label, sub }) => (
+                        <div key={label} style={{
+                          textAlign:'center', padding:'12px 6px',
+                          background:'rgba(255,255,255,.75)',
+                          borderRadius:'12px',
+                          border:'1px solid rgba(99,102,241,.1)',
+                          backdropFilter:'blur(6px)'
+                        }}>
+                          <div style={{ fontSize:'1.3rem', lineHeight:1 }}>{icon}</div>
+                          <div style={{ fontSize:'.74rem', fontWeight:700, color:'#1e293b', marginTop:'6px' }}>{label}</div>
+                          <div style={{ fontSize:'.62rem', color:'#94a3b8', marginTop:'2px' }}>{sub}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
                 </div>
               </div>
 
