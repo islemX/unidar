@@ -68,6 +68,7 @@ export default function ListingDetailPage() {
       <Script id="detail-logic" strategy="afterInteractive">{`
         const listingId = window.location.pathname.split('/').pop();
         let currentUser = null;
+        let authData = null;
         let currentListing = null;
         let isSaved = false;
         let currentImgIndex = 0;
@@ -106,6 +107,7 @@ export default function ListingDetailPage() {
               window.UNIDAR_API.SavedListings.getAll().catch(() => ({ listings: [], saved_listings: [] }))
             ]);
             
+            authData = authRes;
             currentUser = authRes.user;
             currentListing = listingRes.listing;
             window.currentListing = currentListing; // used by listing-map-init.js
@@ -138,7 +140,12 @@ export default function ListingDetailPage() {
           const mainImg = imgs[0];
           currentImgIndex = 0;
 
-          const canContract = currentUser && currentUser.role === 'student' && currentUser.id !== l.owner_id;
+          const isStudent = currentUser && currentUser.role === 'student';
+          const isValidated = currentUser?.verification_status === 'approved';
+          const isPremium = currentUser?.subscription_status === 'active';
+          // Owners are never blocked by student access gates
+          const hasFullAccess = !isStudent || (isValidated && isPremium);
+          const canContract = currentUser && isStudent && currentUser.id !== l.owner_id;
           const canMessageOwner = currentUser && currentUser.id !== l.owner_id;
           const remaining = Math.max(0, (l.beds_count || l.capacity || 1) - (l.occupant_count || 0));
 
@@ -209,9 +216,25 @@ export default function ListingDetailPage() {
                   </div>
 
                   <div style="display:flex;flex-direction:column;gap:12px">
-                    \${canMessageOwner ? \`<button onclick="window.messageOwner()" class="btn btn-primary hover-lift" style="width:100%;padding:16px;font-weight:700">💬 Contact owner</button>\` : ''}
-                    \${canContract ? \`<button onclick="window.startContract()" class="btn btn-primary" style="width:100%;padding:16px;font-weight:700">📄 Request Contract</button>\` : ''}
                     \${!currentUser ? \`<a href="/login" class="btn btn-primary" style="width:100%;text-align:center;padding:16px">Login to Reserve</a>\` : ''}
+                    \${canMessageOwner && hasFullAccess ? \`<button onclick="window.messageOwner()" class="btn btn-primary hover-lift" style="width:100%;padding:16px;font-weight:700">💬 Contact Owner</button>\` : ''}
+                    \${canContract && hasFullAccess ? \`<button onclick="window.startContract()" class="btn btn-primary" style="width:100%;padding:16px;font-weight:700">📄 Request Contract</button>\` : ''}
+                    \${(canMessageOwner || canContract) && !hasFullAccess ? \`
+                      <div style="border:1.5px dashed rgba(99,102,241,.35);border-radius:14px;padding:18px 16px;text-align:center;background:linear-gradient(135deg,rgba(99,102,241,.05),rgba(168,85,247,.05))">
+                        <div style="font-size:1.6rem;margin-bottom:8px">🔒</div>
+                        <div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:6px">
+                          \${!isValidated ? 'Verification Required' : 'Premium Required'}
+                        </div>
+                        <p style="font-size:.75rem;color:#64748b;margin:0 0 14px;line-height:1.5">
+                          \${!isValidated
+                            ? 'Get verified as a student first, then upgrade to Premium to contact owners, sign contracts and pay securely.'
+                            : 'You&rsquo;re verified! Upgrade to Premium (25&nbsp;TND/yr) to contact this owner, generate contracts and make payments.'}
+                        </p>
+                        <a href="/\${!isValidated ? 'verification' : 'subscription'}" class="btn btn-primary" style="width:100%;font-size:.82rem;padding:12px">
+                          \${!isValidated ? '🎓 Get Verified' : '⭐ Upgrade to Premium'}
+                        </a>
+                      </div>
+                    \` : ''}
                     
                     <div style="display:flex;gap:8px">
                       <button onclick="window.toggleSaveListing()" class="btn btn-secondary" style="flex:1">\${isSaved ? '✓ Saved' : '♡ Save'}</button>
