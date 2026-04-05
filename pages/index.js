@@ -101,54 +101,98 @@ export default function HomePage() {
           <div className="container">
             <div className="split-content">
               <div className="split-visual reveal">
-                <div className="visual-card-stack">
-                  <div className="visual-card visual-card-1">
-                    <div className="visual-card-header">
-                      <div className="visual-card-avatar" style={{ background: 'linear-gradient(135deg, #10b981, #34d399)' }}></div>
-                      <div>
-                        <div className="visual-card-title" data-i18n="home_visual_match">Perfect Match!</div>
-                        <div className="visual-card-subtitle" data-i18n="home_visual_compatibility">98% match</div>
-                      </div>
-                    </div>
-                    <div className="visual-card-content">
-                      <div className="visual-card-bar" style={{ width: '100%' }}></div>
-                      <div className="visual-card-bar" style={{ width: '80%', opacity: 0.6 }}></div>
-                      <div className="visual-card-bar" style={{ width: '60%', opacity: 0.3 }}></div>
-                    </div>
+                <style>{`
+                  @keyframes tierSlideIn {
+                    from { opacity: 0; transform: translateX(-18px); }
+                    to   { opacity: 1; transform: translateX(0); }
+                  }
+                  @keyframes arrowDrop {
+                    0%,100% { transform: translateY(0); opacity:.45; }
+                    50%      { transform: translateY(5px); opacity:1; }
+                  }
+                  @keyframes premiumPulse {
+                    0%,100% { box-shadow: 0 4px 24px rgba(99,102,241,.18); }
+                    50%      { box-shadow: 0 8px 36px rgba(99,102,241,.38); }
+                  }
+                  @keyframes lockPop {
+                    0%   { transform: scale(1); }
+                    40%  { transform: scale(1.18) rotate(-8deg); }
+                    70%  { transform: scale(0.95) rotate(4deg); }
+                    100% { transform: scale(1); }
+                  }
+                  .tier-card-1 { animation: tierSlideIn .55s ease forwards; animation-delay:.12s; opacity:0; }
+                  .tier-card-2 { animation: tierSlideIn .55s ease forwards; animation-delay:.32s; opacity:0; }
+                  .tier-card-3 { animation: tierSlideIn .55s ease forwards, premiumPulse 2.8s ease infinite; animation-delay:.52s, .9s; opacity:0; }
+                  .tier-arrow  { animation: arrowDrop 1.3s ease infinite; }
+                  .tier-lock:hover { animation: lockPop .4s ease; }
+                `}</style>
+
+                <div style={{ padding: '4px 0' }}>
+                  {/* Header pill */}
+                  <div style={{ marginBottom: '18px', textAlign: 'center' }}>
+                    <span style={{ display:'inline-flex', alignItems:'center', gap:'7px', background:'rgba(99,102,241,.09)', border:'1.5px solid rgba(99,102,241,.18)', borderRadius:'20px', padding:'5px 16px', fontSize:'.78rem', fontWeight:700, color:'var(--color-brand)', letterSpacing:'.02em' }}>
+                      🔑 How Access Works
+                    </span>
                   </div>
-                  <div className="visual-card visual-card-2">
-                    <div className="visual-card-header">
-                      <div className="visual-card-avatar" style={{ background: 'linear-gradient(135deg, #3b82f6, #60a5fa)' }}></div>
-                      <div>
-                        <div className="visual-card-title" data-i18n="home_visual_new_listing">New Listing!</div>
-                        <div className="visual-card-subtitle" data-i18n="home_visual_amenities_preview">2 bed • 5 min walk</div>
-                      </div>
+
+                  {/* Tier 1 – Browse */}
+                  <div className="tier-card-1" style={{ background:'#fff', borderRadius:'16px', padding:'13px 16px', display:'flex', alignItems:'center', gap:'13px', boxShadow:'0 2px 14px rgba(0,0,0,.06)', border:'1.5px solid #e2e8f0' }}>
+                    <div style={{ width:'42px', height:'42px', borderRadius:'12px', background:'linear-gradient(135deg,#10b981,#34d399)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.25rem', flexShrink:0 }}>🌐</div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontWeight:700, fontSize:'.88rem', color:'#1e293b' }}>Browse &amp; Explore</div>
+                      <div style={{ fontSize:'.72rem', color:'#64748b', marginTop:'2px' }}>View all listings &amp; details freely</div>
                     </div>
-                    <div className="visual-card-content">
-                      <div className="visual-card-bar" style={{ width: '100%', background: 'var(--color-primary-100)' }}></div>
-                    </div>
+                    <span style={{ background:'#dcfce7', color:'#15803d', borderRadius:'20px', padding:'3px 10px', fontSize:'.68rem', fontWeight:700, flexShrink:0 }}>FREE</span>
                   </div>
-                  <div className="visual-card visual-card-3">
-                    <div className="visual-card-header">
-                      <div className="visual-card-avatar" style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}></div>
-                      <div>
-                        <div className="visual-card-title" data-i18n="home_visual_verified">Verified!</div>
-                        <div className="visual-card-subtitle" data-i18n="home_visual_uni">University of Tunis</div>
-                      </div>
+
+                  {/* Arrow */}
+                  <div className="tier-arrow" style={{ textAlign:'center', padding:'7px 0', color:'#94a3b8', fontSize:'1.05rem' }}>↓</div>
+
+                  {/* Tier 2 – Verified */}
+                  <div className="tier-card-2" style={{ background:'#fff', borderRadius:'16px', padding:'13px 16px', display:'flex', alignItems:'center', gap:'13px', boxShadow:'0 2px 14px rgba(0,0,0,.06)', border:'1.5px solid #bfdbfe' }}>
+                    <div style={{ width:'42px', height:'42px', borderRadius:'12px', background:'linear-gradient(135deg,#3b82f6,#60a5fa)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.25rem', flexShrink:0 }}>🎓</div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontWeight:700, fontSize:'.88rem', color:'#1e293b' }}>Student Verified</div>
+                      <div style={{ fontSize:'.72rem', color:'#64748b', marginTop:'2px' }}>Upload your student ID card</div>
                     </div>
+                    <span style={{ background:'#dbeafe', color:'#1d4ed8', borderRadius:'20px', padding:'3px 10px', fontSize:'.68rem', fontWeight:700, flexShrink:0 }}>STEP 2</span>
+                  </div>
+
+                  {/* Arrow */}
+                  <div className="tier-arrow" style={{ textAlign:'center', padding:'7px 0', color:'#94a3b8', fontSize:'1.05rem' }}>↓</div>
+
+                  {/* Tier 3 – Premium */}
+                  <div className="tier-card-3" style={{ background:'linear-gradient(135deg,rgba(99,102,241,.06),rgba(168,85,247,.06))', borderRadius:'16px', padding:'13px 16px', display:'flex', alignItems:'center', gap:'13px', border:'1.5px solid rgba(99,102,241,.3)' }}>
+                    <div style={{ width:'42px', height:'42px', borderRadius:'12px', background:'linear-gradient(135deg,#6366f1,#a855f7)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.25rem', flexShrink:0 }}>⭐</div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontWeight:700, fontSize:'.88rem', color:'#1e293b' }}>Premium Unlocked</div>
+                      <div style={{ fontSize:'.72rem', color:'#64748b', marginTop:'2px' }}>Contact owners · Sign contracts · Pay</div>
+                    </div>
+                    <span style={{ background:'linear-gradient(135deg,#6366f1,#a855f7)', color:'#fff', borderRadius:'20px', padding:'3px 10px', fontSize:'.68rem', fontWeight:700, flexShrink:0, whiteSpace:'nowrap' }}>25 TND/yr</span>
+                  </div>
+
+                  {/* Action pills */}
+                  <div style={{ display:'flex', gap:'8px', marginTop:'14px', background:'rgba(0,0,0,.03)', borderRadius:'12px', padding:'11px 14px' }}>
+                    {[['💬','Contact'],['📄','Contract'],['💳','Pay']].map(([icon, label]) => (
+                      <div key={label} style={{ flex:1, textAlign:'center' }}>
+                        <div className="tier-lock" style={{ fontSize:'1.15rem', cursor:'default' }}>{icon}</div>
+                        <div style={{ fontSize:'.63rem', color:'#64748b', fontWeight:600, marginTop:'3px' }}>{label}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
+
               <div className="split-text reveal">
-                <div className="section-tag" data-i18n="home_why_tag">For Students</div>
-                <h2 data-i18n="home_students_title">Built for Students, By Students</h2>
-                <p data-i18n="home_students_subtitle">We understand the unique challenges of finding student housing in Tunisia.</p>
+                <div className="section-tag">For Students</div>
+                <h2>Built for Students, By Students</h2>
+                <p>We understand the unique challenges of finding student housing in Tunisia. Browse freely, get verified, and unlock full access with Premium.</p>
                 <ul className="benefit-list">
-                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit1">Verified listings</span></li>
-                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit2">Smart matching</span></li>
-                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit3">Secure messaging</span></li>
+                  <li><span className="benefit-icon">✓</span> <span>Browse all listings for free — no upgrade needed</span></li>
+                  <li><span className="benefit-icon">✓</span> <span>Get verified with your student ID card</span></li>
+                  <li><span className="benefit-icon">✓</span> <span>Go Premium to contact owners, sign digital contracts &amp; pay securely</span></li>
                 </ul>
-                <a href="/register" className="btn btn-primary btn-lg" data-i18n="home_students_cta">Start Your Search</a>
+                <a href="/register" className="btn btn-primary btn-lg">Start Your Search</a>
               </div>
             </div>
           </div>

@@ -29,14 +29,15 @@ export default function ListingsPage() {
             <span className="section-tag" data-i18n="listings_marketplace">Marketplace</span>
             <h1 className="title-pro" data-i18n="listings_title">Find Your Perfect Home</h1>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'var(--space-lg)',flexWrap:'wrap',gap:'16px'}}>
-              <p className="text-muted" style={{maxWidth:500}} data-i18n="explore_listings_text">
-                Explore high-quality student housing options verified for your safety and comfort.
+              <p className="text-muted" style={{maxWidth:500}}>
+                Browse all listings freely. To contact owners, sign contracts or make payments you need to be <strong>verified</strong> and have an active <strong>Premium</strong> plan.
               </p>
               <button id="toggleView" className="btn btn-secondary hover-lift" style={{display:'flex',alignItems:'center',gap:'8px'}}>
                 <span id="viewIcon">🗺️</span> <span id="viewText" data-i18n="listings_map_view">Map View</span>
               </button>
             </div>
           </header>
+          <div id="statusBanner" style={{marginTop:'16px'}}></div>
 
           {/* Filters */}
           <div
@@ -276,6 +277,38 @@ export default function ListingsPage() {
             return;
           }
           document.querySelectorAll('.auth-only').forEach(el => el.style.display = 'block');
+
+          const u = auth.user || {};
+          const isStudent = u.role === 'student';
+          const isValidated = u.verification_status === 'approved';
+          const isPremium = u.subscription_status === 'active';
+
+          if (isStudent && (!isValidated || !isPremium)) {
+            const banner = document.getElementById('statusBanner');
+            if (banner) {
+              const nextStep = !isValidated ? 'verification' : 'subscription';
+              const nextLabel = !isValidated ? '🎓 Get Verified' : '⭐ Upgrade to Premium';
+              const nextDesc = !isValidated
+                ? 'Upload your student ID to get verified, then upgrade to Premium.'
+                : 'You&rsquo;re verified! Upgrade to Premium to contact owners, sign contracts and pay.';
+              const stepBadge = !isValidated
+                ? '<span style="background:#dbeafe;color:#1d4ed8;border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-right:6px">Unverified</span>'
+                : '<span style="background:#fef3c7;color:#92400e;border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-right:6px">No Premium</span>';
+              banner.innerHTML = \`
+                <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(168,85,247,.07));border:1.5px solid rgba(99,102,241,.2);border-radius:16px;padding:14px 18px">
+                  <div style="font-size:1.5rem">🔒</div>
+                  <div style="flex:1;min-width:220px">
+                    <div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:3px">
+                      \${stepBadge}Restricted Actions
+                    </div>
+                    <div style="font-size:.78rem;color:#64748b">\${nextDesc}</div>
+                  </div>
+                  <a href="/\${nextStep}" class="btn btn-primary" style="font-size:.82rem;white-space:nowrap;flex-shrink:0">\${nextLabel}</a>
+                </div>
+              \`;
+            }
+          }
+
           loadListings();
         }
 
