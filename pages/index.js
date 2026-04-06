@@ -151,7 +151,7 @@ export default function HomePage() {
                       borderRadius:'30px', padding:'7px 20px',
                       fontSize:'.73rem', fontWeight:800, color:'#6366f1', letterSpacing:'.06em', textTransform:'uppercase'
                     }}>
-                      🔑 How Access Works
+                      🔑 <span data-i18n="tier_how_access">HOW ACCESS WORKS</span>
                     </span>
                   </div>
 
@@ -169,10 +169,10 @@ export default function HomePage() {
                       fontSize:'1.4rem', boxShadow:'0 4px 14px rgba(16,185,129,.28)'
                     }}>🌐</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Browse &amp; Explore</div>
-                      <div style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>View all listings &amp; details — no upgrade needed</div>
+                      <div data-i18n="tier_browse_title" style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Browse &amp; Explore</div>
+                      <div data-i18n="tier_browse_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>View all listings &amp; details — no upgrade needed</div>
                     </div>
-                    <div style={{
+                    <div data-i18n="tier_badge_free" style={{
                       background:'linear-gradient(135deg,#d1fae5,#a7f3d0)',
                       color:'#065f46', borderRadius:'20px', flexShrink:0,
                       padding:'5px 13px', fontSize:'.68rem', fontWeight:800, letterSpacing:'.05em'
@@ -198,10 +198,10 @@ export default function HomePage() {
                       fontSize:'1.4rem', boxShadow:'0 4px 14px rgba(59,130,246,.28)'
                     }}>🎓</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Student Verified</div>
-                      <div style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Upload your student ID card to confirm enrollment</div>
+                      <div data-i18n="tier_verify_title" style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Student Verified</div>
+                      <div data-i18n="tier_verify_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Upload your student ID card to confirm enrollment</div>
                     </div>
-                    <div style={{
+                    <div data-i18n="tier_badge_step2" style={{
                       background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',
                       color:'#1e40af', borderRadius:'20px', flexShrink:0,
                       padding:'5px 13px', fontSize:'.68rem', fontWeight:800, letterSpacing:'.05em'
@@ -229,8 +229,8 @@ export default function HomePage() {
                       fontSize:'1.4rem', boxShadow:'0 4px 16px rgba(99,102,241,.38)'
                     }}>⭐</div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Premium Unlocked</div>
-                      <div style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Contact owners · Sign contracts · Pay securely</div>
+                      <div data-i18n="tier_premium_title" style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Premium Unlocked</div>
+                      <div data-i18n="tier_premium_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Contact owners · Sign contracts · Pay securely</div>
                     </div>
                     <div style={{
                       background:'linear-gradient(135deg,#6366f1,#a855f7)',
@@ -249,15 +249,15 @@ export default function HomePage() {
                     borderRadius:'16px', padding:'16px 18px'
                   }}>
                     <div style={{ fontSize:'.67rem', fontWeight:800, color:'#6366f1', textTransform:'uppercase', letterSpacing:'.08em', textAlign:'center', marginBottom:'12px' }}>
-                      🔓 Premium-only Actions
+                      🔓 <span data-i18n="tier_premium_actions_label">Premium-only Actions</span>
                     </div>
                     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'8px' }}>
                       {[
-                        { icon:'💬', label:'Contact', sub:'Owner' },
-                        { icon:'📄', label:'Contract', sub:'Digital' },
-                        { icon:'💳', label:'Pay', sub:'Secure' }
-                      ].map(({ icon, label, sub }) => (
-                        <div key={label} style={{
+                        { icon:'💬', iKey:'tier_action_contact', sKey:'tier_action_contact_sub', label:'Contact', sub:'Owner' },
+                        { icon:'📄', iKey:'tier_action_contract', sKey:'tier_action_contract_sub', label:'Contract', sub:'Digital' },
+                        { icon:'💳', iKey:'tier_action_pay', sKey:'tier_action_pay_sub', label:'Pay', sub:'Secure' }
+                      ].map(({ icon, iKey, sKey, label, sub }) => (
+                        <div key={iKey} style={{
                           textAlign:'center', padding:'12px 6px',
                           background:'rgba(255,255,255,.75)',
                           borderRadius:'12px',
@@ -265,8 +265,8 @@ export default function HomePage() {
                           backdropFilter:'blur(6px)'
                         }}>
                           <div style={{ fontSize:'1.3rem', lineHeight:1 }}>{icon}</div>
-                          <div style={{ fontSize:'.74rem', fontWeight:700, color:'#1e293b', marginTop:'6px' }}>{label}</div>
-                          <div style={{ fontSize:'.62rem', color:'#94a3b8', marginTop:'2px' }}>{sub}</div>
+                          <div data-i18n={iKey} style={{ fontSize:'.74rem', fontWeight:700, color:'#1e293b', marginTop:'6px' }}>{label}</div>
+                          <div data-i18n={sKey} style={{ fontSize:'.62rem', color:'#94a3b8', marginTop:'2px' }}>{sub}</div>
                         </div>
                       ))}
                     </div>
@@ -276,15 +276,15 @@ export default function HomePage() {
               </div>
 
               <div className="split-text reveal">
-                <div className="section-tag">For Students</div>
-                <h2>Built for Students, By Students</h2>
-                <p>We understand the unique challenges of finding student housing in Tunisia. Browse freely, get verified, and unlock full access with Premium.</p>
+                <div className="section-tag" data-i18n="home_students_tag">For Students</div>
+                <h2 data-i18n="home_students_title">Built for Students, By Students</h2>
+                <p data-i18n="home_students_subtitle">We understand the unique challenges of finding student housing in Tunisia. Browse freely, get verified, and unlock full access with Premium.</p>
                 <ul className="benefit-list">
-                  <li><span className="benefit-icon">✓</span> <span>Browse all listings for free — no upgrade needed</span></li>
-                  <li><span className="benefit-icon">✓</span> <span>Get verified with your student ID card</span></li>
-                  <li><span className="benefit-icon">✓</span> <span>Go Premium to contact owners, sign digital contracts &amp; pay securely</span></li>
+                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit1">Browse all listings for free — no upgrade needed</span></li>
+                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit2">Get verified with your student ID card</span></li>
+                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit3">Go Premium to contact owners, sign digital contracts &amp; pay securely</span></li>
                 </ul>
-                <a href="/register" className="btn btn-primary btn-lg">Start Your Search</a>
+                <a href="/register" className="btn btn-primary btn-lg" data-i18n="home_students_cta">Start Your Search</a>
               </div>
             </div>
           </div>
