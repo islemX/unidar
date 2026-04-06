@@ -1,4 +1,5 @@
 // Contract and Payment Management System for UNIDAR
+const _t = k => window.UNIDAR_I18N?.t(k) || k;
 
 // Get base API URL dynamically (same logic as api.js)
 const getContractApiBase = () => {
@@ -40,7 +41,7 @@ const getContractApiBase = () => {
 const ContractManager = {
     async generateContract(listingId, startDate, duration) {
         try {
-            showLoadingModal('Préparation du contrat...');
+            showLoadingModal(_t('contract_loading'));
 
             // Prefer Next/React API when available (unidarreact/public/js/api.js)
             if (window.UNIDAR_API && window.UNIDAR_API.Contracts && typeof window.UNIDAR_API.Contracts.generate === 'function') {
@@ -52,7 +53,7 @@ const ContractManager = {
 
                 if (!result || !result.success) {
                     hideLoadingModal();
-                    showErrorModal((result && (result.error || result.message)) || 'Erreur lors de la génération du contrat');
+                    showErrorModal((result && (result.error || result.message)) || _t('contract_fill_all'));
                     return null;
                 }
 
@@ -101,7 +102,7 @@ const ContractManager = {
                 return legacy;
             }
 
-            showErrorModal(legacy.error || 'Erreur lors de la génération du contrat');
+            showErrorModal(legacy.error || _t('contract_fill_all'));
             return null;
         } catch (error) {
             hideLoadingModal();
@@ -133,31 +134,31 @@ const ContractManager = {
             modal.innerHTML = `
             <div class="modal-content" style="max-width: 500px; position: relative; z-index: 10001;">
                 <div class="modal-header">
-                    <h3>Paramètres du Contrat</h3>
+                    <h3>${_t('contract_setup_title')}</h3>
                     <button class="modal-close" id="closeSetupModal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--color-text-muted);">&times;</button>
                 </div>
-                
+
                 <div class="modal-body">
-                    <p class="text-muted mb-md">Veuillez définir la durée et la date de début de votre location.</p>
-                    
+                    <p class="text-muted mb-md">${_t('contract_setup_desc')}</p>
+
                     <form id="contractSetupForm">
                         <div class="form-group mb-md">
-                            <label class="form-label" for="startMonth">Mois de début</label>
+                            <label class="form-label" for="startMonth">${_t('contract_start_month_label')}</label>
                             <input type="month" id="startMonth" class="form-input" value="${defaultMonth}" required>
-                            <p class="text-small text-muted mt-xs">La location commencera le 1er du mois sélectionné.</p>
+                            <p class="text-small text-muted mt-xs">${_t('contract_start_hint')}</p>
                         </div>
-                        
+
                         <div class="form-group mb-xl">
-                            <label class="form-label" for="duration">Durée (Mois)</label>
+                            <label class="form-label" for="duration">${_t('contract_duration_label')}</label>
                             <select id="duration" class="form-input" required>
                                 ${Array.from({ length: 12 }, (_, i) => i + 1).map(n =>
-                `<option value="${n}" ${n === 9 ? 'selected' : ''}>${n} mois</option>`
+                `<option value="${n}" ${n === 9 ? 'selected' : ''}>${n} ${_t('contract_month_unit')}</option>`
             ).join('')}
                             </select>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-primary" style="width: 100%;">
-                            Générer le Contrat
+                            ${_t('contract_generate_btn')}
                         </button>
                     </form>
                 </div>
@@ -198,7 +199,7 @@ const ContractManager = {
                         const duration = document.getElementById('duration').value;
 
                         if (!startMonth || !duration) {
-                            showErrorModal('Veuillez remplir tous les champs.');
+                            showErrorModal(_t('contract_fill_all'));
                             return;
                         }
 
@@ -241,28 +242,28 @@ const ContractManager = {
             if (isStudent && !isSigned) {
                 actionBoxHTML = `
                     <div style="margin-top: 20px; border: 1px solid #e2e8f0; padding: 20px; border-radius: 16px; background: #fff;">
-                        <h4 style="margin: 0 0 10px 0; color: #4f46e5;">✍️ Signature Numérique</h4>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Signez ci-dessous pour valider votre contrat.</p>
+                        <h4 style="margin: 0 0 10px 0; color: #4f46e5;">${_t('contract_sign_title')}</h4>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">${_t('contract_sign_desc')}</p>
                         <div id="student-signature-pad" style="height: 150px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px;"></div>
-                        <button id="btn-sign-contract" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: bold;">Valider la Signature</button>
+                        <button id="btn-sign-contract" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: bold;">${_t('contract_sign_btn')}</button>
                     </div>
                 `;
             } else if (isStudent && isSigned && !isPaid) {
                 actionBoxHTML = `
                     <div style="margin-top: 20px; border: 2px solid #4f46e5; padding: 20px; border-radius: 16px; background: rgba(79, 70, 229, 0.05); text-align: center;">
-                        <h4 style="margin: 0 0 10px 0;">✅ Contrat Signé</h4>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Dernière étape : Réglez les frais pour activer la location.</p>
+                        <h4 style="margin: 0 0 10px 0;">${_t('contract_signed_title')}</h4>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">${_t('contract_signed_desc')}</p>
                         <button class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: bold;" onclick="PaymentManager.showPaymentModal(${listingId}, ${contractId})">
-                            💳 Aller au Paiement
+                            ${_t('contract_go_payment')}
                         </button>
                     </div>
                 `;
             } else if (isOwner) {
                 actionBoxHTML = `
                     <div style="margin-top: 20px; padding: 15px; border-radius: 12px; background: #f8fafc; text-align: center; border: 1px solid #e2e8f0;">
-                        <p style="font-size: 0.75rem; font-weight: bold; color: #64748b; text-transform: uppercase;">Statut du Paiement</p>
+                        <p style="font-size: 0.75rem; font-weight: bold; color: #64748b; text-transform: uppercase;">${_t('contract_payment_status')}</p>
                         <div style="margin-top: 10px; font-weight: bold; color: ${isPaid ? '#10b981' : '#f59e0b'};">
-                            ${isPaid ? '✅ Payé & Actif' : '⏳ Attente Paiement Étudiant'}
+                            ${isPaid ? _t('contract_paid_active') : _t('contract_awaiting_pay')}
                         </div>
                     </div>
                 `;
@@ -271,7 +272,7 @@ const ContractManager = {
             modal.innerHTML = `
                 <div class="unidar-contract-content">
                     <div class="unidar-contract-header">
-                        <h2 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: var(--color-surface-900);">📄 Visualisation du Contrat</h2>
+                        <h2 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: var(--color-surface-900);">${_t('contract_view_title')}</h2>
                         <button onclick="ContractManager.closeModal()" style="border: none; background: none; font-size: 2.2rem; line-height: 1; cursor: pointer; color: #94a3b8; transition: color 0.2s;">&times;</button>
                     </div>
                     
@@ -280,17 +281,17 @@ const ContractManager = {
                             <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
                                 <div style="font-size: 3rem; background: white; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">📑</div>
                                 <div style="flex: 1;">
-                                    <h4 style="margin: 0 0 5px 0; color: #1e293b; font-size: 1.25rem; font-weight: 700;">Document Officiel</h4>
-                                    <p style="font-size: 0.95rem; color: #64748b; margin: 0;">Identifiant de contrat: <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #475569;">#${contractId}</code></p>
-                                    <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">Généré le ${new Date().toLocaleDateString()} par UNIDAR</p>
+                                    <h4 style="margin: 0 0 5px 0; color: #1e293b; font-size: 1.25rem; font-weight: 700;">${_t('contract_official_doc')}</h4>
+                                    <p style="font-size: 0.95rem; color: #64748b; margin: 0;">${_t('contract_id_label')} <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #475569;">#${contractId}</code></p>
+                                    <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">${_t('contract_generated_on')} ${new Date().toLocaleDateString()} par UNIDAR</p>
                                 </div>
                             </div>
                             
                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                 <a href="${contractUrl}" target="_blank" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; font-weight: 800; border-radius: 12px; text-decoration: none; background: var(--color-brand); color: white; transition: all 0.3s ease;">
-                                    <span>👁️ Voir le Contrat PDF Complet</span>
+                                    <span>${_t('contract_view_pdf')}</span>
                                 </a>
-                                <p style="text-align: center; font-size: 0.75rem; color: #94a3b8;">Le document s'ouvrira dans un nouvel onglet pour signature physique ou impression si nécessaire.</p>
+                                <p style="text-align: center; font-size: 0.75rem; color: #94a3b8;">${_t('contract_opens_tab')}</p>
                             </div>
                         </div>
                         
@@ -302,7 +303,7 @@ const ContractManager = {
                     </div>
 
                     <div class="unidar-contract-footer">
-                        <button class="btn btn-secondary" onclick="ContractManager.closeModal()" style="padding: 10px 32px; font-weight: 700; border-radius: 12px; margin-right: 8px;">Fermer</button>
+                        <button class="btn btn-secondary" onclick="ContractManager.closeModal()" style="padding: 10px 32px; font-weight: 700; border-radius: 12px; margin-right: 8px;">${_t('contract_close')}</button>
                     </div>
                 </div>
             `;
@@ -724,8 +725,8 @@ const PaymentManager = {
                 <!-- Header -->
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 28px;background:linear-gradient(135deg,#0f172a,#1e1b4b);color:white">
                     <div>
-                        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);padding:3px 10px;border-radius:100px;font-size:0.7rem;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">🔒 Sécurisé par UNIDAR Pay</div>
-                        <h2 style="margin:0;font-size:1.25rem;font-weight:800;letter-spacing:-0.5px">Paiement Sécurisé</h2>
+                        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);padding:3px 10px;border-radius:100px;font-size:0.7rem;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">${_t('pay_secured_by')}</div>
+                        <h2 style="margin:0;font-size:1.25rem;font-weight:800;letter-spacing:-0.5px">${_t('pay_title')}</h2>
                     </div>
                     <button class="pm-close" onclick="PaymentManager.closeModal(this)" style="background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:34px;height:34px;color:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
                 </div>
@@ -760,11 +761,11 @@ const PaymentManager = {
                                     <div id="pm-cf-number" style="font-family:'Courier New',monospace;font-size:clamp(0.9rem,2.2vw,1.15rem);letter-spacing:0.2em;text-shadow:0 2px 6px rgba(0,0,0,0.4);margin-bottom:14px;flex:1;display:flex;align-items:flex-end;color:white">•••• •••• •••• ••••</div>
                                     <div style="display:flex;align-items:flex-end;gap:16px">
                                         <div style="flex:1;min-width:0">
-                                            <div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;color:white">Titulaire</div>
+                                            <div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;color:white">${_t('pay_card_holder_label')}</div>
                                             <div id="pm-cf-name" style="font-size:0.8rem;font-weight:600;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:white">NOM PRENOM</div>
                                         </div>
                                         <div>
-                                            <div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;color:white">Expire</div>
+                                            <div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;color:white">${_t('pay_card_expires_label')}</div>
                                             <div id="pm-cf-expiry" style="font-size:0.8rem;font-weight:600;white-space:nowrap;color:white">MM/YY</div>
                                         </div>
                                         <div id="pm-cf-brand" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center"></div>
@@ -786,11 +787,11 @@ const PaymentManager = {
                         </div>
                         <!-- Summary -->
                         <div style="background:white;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px">
-                            <div style="font-size:0.68rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">Récapitulatif</div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.875rem;color:#475569;margin-bottom:7px"><span>Loyer mensuel</span><span id="monthlyRent" style="font-weight:700">--</span></div>
-                            <div style="display:flex;justify-content:space-between;font-size:0.875rem;color:#475569;margin-bottom:7px"><span>Commission (5%)</span><span id="commissionAmount" style="font-weight:700">--</span></div>
+                            <div style="font-size:0.68rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:12px">${_t('pay_summary')}</div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.875rem;color:#475569;margin-bottom:7px"><span>${_t('pay_monthly_rent')}</span><span id="monthlyRent" style="font-weight:700">--</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.875rem;color:#475569;margin-bottom:7px"><span>${_t('pay_commission')}</span><span id="commissionAmount" style="font-weight:700">--</span></div>
                             <div style="height:1px;background:#e2e8f0;margin:8px 0"></div>
-                            <div style="display:flex;justify-content:space-between;font-weight:800;font-size:0.95rem;color:#0f172a"><span>Total à payer</span><span id="totalAmount" style="color:#6366f1;font-size:1.05rem">--</span></div>
+                            <div style="display:flex;justify-content:space-between;font-weight:800;font-size:0.95rem;color:#0f172a"><span>${_t('pay_total')}</span><span id="totalAmount" style="color:#6366f1;font-size:1.05rem">--</span></div>
                         </div>
                     </div>
                     <!-- RIGHT: Form -->
@@ -799,25 +800,25 @@ const PaymentManager = {
                         <div style="display:flex;gap:6px;background:#f1f5f9;border-radius:12px;padding:4px">
                             <button id="tab-card" onclick="PaymentManager.switchTab('card')" style="flex:1;padding:9px 10px;border:none;border-radius:9px;background:white;color:#0f172a;font-size:0.85rem;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.1);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                                Carte Bancaire
+                                ${_t('pay_tab_card')}
                             </button>
                             <button id="tab-transfer" onclick="PaymentManager.switchTab('transfer')" style="flex:1;padding:9px 10px;border:none;border-radius:9px;background:transparent;color:#64748b;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M16 3v4M8 3v4M2 11h20"/></svg>
-                                Virement
+                                ${_t('pay_tab_transfer')}
                             </button>
                         </div>
                         <!-- Form area (hid during processing) -->
                         <div id="paymentMethodsContainer" style="display:flex;flex-direction:column;gap:12px;flex:1">
                             <div id="card-form">
                                 <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
-                                    <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">Nom sur la Carte</label>
+                                    <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">${_t('pay_holder_name')}</label>
                                     <input type="text" id="cc-name" placeholder="NOM COMPLET" autocomplete="cc-name"
                                         style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:inherit;width:100%;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s"
                                         onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
                                         onblur="this.style.borderColor='#e2e8f0';this.style.boxShadow='none';this.style.background='#f8fafc'">
                                 </div>
                                 <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px">
-                                    <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">Numéro de Carte</label>
+                                    <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">${_t('pay_card_number')}</label>
                                     <div style="position:relative">
                                         <input type="text" id="cc-number" placeholder="0000  0000  0000  0000" maxlength="22" autocomplete="cc-number" inputmode="numeric"
                                             style="padding:11px 90px 11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:'Courier New',monospace;width:100%;box-sizing:border-box;transition:border-color 0.2s,box-shadow 0.2s"
@@ -828,14 +829,14 @@ const PaymentManager = {
                                 </div>
                                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
                                     <div style="display:flex;flex-direction:column;gap:5px">
-                                        <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">Expiration</label>
+                                        <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">${_t('pay_expiration')}</label>
                                         <input type="text" id="cc-expiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" inputmode="numeric"
                                             style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:inherit;width:100%;box-sizing:border-box;text-align:center;transition:border-color 0.2s,box-shadow 0.2s"
                                             onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
                                             onblur="this.style.borderColor='';this.style.boxShadow='none';this.style.background='#f8fafc'">
                                     </div>
                                     <div style="display:flex;flex-direction:column;gap:5px">
-                                        <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">CVC <span title="3 chiffres au dos de votre carte" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:800;cursor:help;vertical-align:middle;margin-left:2px">?</span></label>
+                                        <label style="font-size:0.68rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:#64748b">${_t('pay_cvc')} <span title="${_t('pay_cvc_tooltip')}" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:800;cursor:help;vertical-align:middle;margin-left:2px">?</span></label>
                                         <input type="text" id="cc-cvv" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric"
                                             style="padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:11px;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;font-family:inherit;width:100%;box-sizing:border-box;text-align:center;transition:border-color 0.2s,box-shadow 0.2s"
                                             onfocus="this.style.borderColor='#6366f1';this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';this.style.background='white'"
@@ -854,7 +855,7 @@ const PaymentManager = {
                         <!-- Processing -->
                         <div id="payment-processing" style="display:none;text-align:center;padding:20px 0">
                             <div class="pm-processing-icon">⚡</div>
-                            <p id="processing-text" style="font-weight:700;color:#0f172a;margin:0 0 4px">Traitement...</p>
+                            <p id="processing-text" style="font-weight:700;color:#0f172a;margin:0 0 4px">${_t('pay_processing')}</p>
                             <p id="processing-substep" style="font-size:0.78rem;color:#94a3b8;margin:0 0 12px"></p>
                             <div style="width:100%;height:6px;background:#e2e8f0;border-radius:100px;overflow:hidden">
                                 <div id="payment-progress" style="height:100%;background:linear-gradient(90deg,#6366f1,#a78bfa);border-radius:100px;width:0;transition:width 0.5s ease"></div>
@@ -865,11 +866,11 @@ const PaymentManager = {
                             style="width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;font-size:1rem;font-weight:800;box-shadow:0 4px 20px rgba(99,102,241,0.4);transition:transform 0.15s,box-shadow 0.15s;margin-top:auto"
                             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(99,102,241,0.55)'"
                             onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 20px rgba(99,102,241,0.4)'">
-                            🔐 Payer Maintenant
+                            ${_t('pay_btn')}
                         </button>
                         <div style="text-align:center;font-size:0.7rem;color:#94a3b8;font-weight:600;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
                             <span>🛡️ SSL / TLS 1.3</span>
-                            <span>🔒 Aucune donnée stockée</span>
+                            <span>${_t('pay_no_store')}</span>
                             <span>✓ 3D Secure</span>
                         </div>
                     </div>
@@ -1027,29 +1028,29 @@ const PaymentManager = {
             const name = document.getElementById('cc-name').value;
 
             if (!cc || !exp || !cvv || !name) {
-                showErrorModal('Veuillez remplir tous les champs de la carte.');
+                showErrorModal(_t('pay_err_fill_card'));
                 return;
             }
 
             // Validate card number with Luhn
             const cardDigits = cc.replace(/\D/g, '');
             if (cardDigits.length < 13) {
-                showErrorModal('Veuillez entrer un numéro de carte complet.');
+                showErrorModal(_t('pay_err_card_number'));
                 return;
             }
 
             if (!CardValidator.luhnCheck(cardDigits)) {
-                showErrorModal('Le numéro de carte est invalide. Veuillez vérifier.');
+                showErrorModal(_t('pay_err_invalid_card'));
                 return;
             }
 
             if (!CardValidator.isValidExpiry(exp)) {
-                showErrorModal('La date d\'expiration est invalide ou dépassée.');
+                showErrorModal(_t('pay_err_expiry'));
                 return;
             }
         } else {
             // Virement logic - simply close and show success info
-            showSuccessModal('Demande de virement enregistrée. Votre contrat sera activé dès réception des fonds.');
+            showSuccessModal(_t('pay_transfer_ok'));
             PaymentManager.closeModal();
             loadUserContracts();
             return;
@@ -1057,11 +1058,11 @@ const PaymentManager = {
 
         // Realistic processing steps
         const steps = [
-            { text: 'Identification de la banque...', progress: 15 },
-            { text: 'Chiffrement de la transaction...', progress: 35 },
-            { text: 'Attente d\'autorisation bancaire...', progress: 60 },
-            { text: 'Validation du contrat...', progress: 85 },
-            { text: 'Paiement autorisé !', progress: 100 }
+            { text: _t('pay_step_bank'), progress: 15 },
+            { text: _t('pay_step_encrypt'), progress: 35 },
+            { text: _t('pay_step_auth'), progress: 60 },
+            { text: _t('pay_step_validate'), progress: 85 },
+            { text: _t('pay_step_done'), progress: 100 }
         ];
 
         document.getElementById('paymentMethodsContainer').style.display = 'none';
@@ -1080,10 +1081,10 @@ const PaymentManager = {
 
                 // Add sub-step detail for realism
                 if (substep) {
-                    if (step.progress === 15) substep.textContent = 'Connexion sécurisée TLS 1.3...';
-                    if (step.progress === 35) substep.textContent = 'Cryptage AES-256...';
-                    if (step.progress === 60) substep.textContent = 'Vérification 3D Secure...';
-                    if (step.progress === 85) substep.textContent = 'Enregistrement de l\'acte...';
+                    if (step.progress === 15) substep.textContent = _t('pay_substep_tls');
+                    if (step.progress === 35) substep.textContent = _t('pay_substep_aes');
+                    if (step.progress === 60) substep.textContent = _t('pay_substep_3ds');
+                    if (step.progress === 85) substep.textContent = _t('pay_substep_record');
                 }
 
                 await new Promise(r => setTimeout(r, 800 + Math.random() * 500));
@@ -1107,8 +1108,8 @@ const PaymentManager = {
                 if (container) {
                     container.innerHTML = `
                         <div class="success-check">✓</div>
-                        <h3 class="mb-sm">Paiement Réussi !</h3>
-                        <p class="text-muted">Votre contrat est maintenant actif.</p>
+                        <h3 class="mb-sm">${_t('pay_success_title')}</h3>
+                        <p class="text-muted">${_t('pay_success_body')}</p>
                         <div style="margin-top: 20px;">
                              <p class="text-tiny text-muted">Transaction: ${result.transaction_id || 'TRX-SUCCESS'}</p>
                         </div>
@@ -1118,17 +1119,17 @@ const PaymentManager = {
                 setTimeout(() => {
                     PaymentManager.closeModal();
                     loadUserContracts();
-                    showSuccessModal('Félicitations ! Votre paiement a été traité et votre contrat est désormais actif.');
+                    showSuccessModal(_t('pay_congrats'));
                 }, 2500);
             } else {
-                showErrorModal(result.error || 'Échec du paiement');
+                showErrorModal(result.error || _t('pay_err_connection'));
                 document.getElementById('paymentMethodsContainer').style.display = 'block';
                 document.getElementById('btn-confirm-payment').style.display = 'block';
                 document.getElementById('payment-processing').style.display = 'none';
             }
         } catch (error) {
             console.error('Payment error:', error);
-            showErrorModal('Erreur de connexion lors du paiement');
+            showErrorModal(_t('pay_err_connection'));
             if (document.getElementById('paymentMethodsContainer')) {
                 document.getElementById('paymentMethodsContainer').style.display = 'block';
                 document.getElementById('btn-confirm-payment').style.display = 'block';
@@ -1176,7 +1177,8 @@ const PaymentManager = {
 window.PaymentManager = PaymentManager;
 
 // Helper functions
-function showLoadingModal(message = 'Chargement...') {
+function showLoadingModal(message) {
+    if (message === undefined) message = _t('pay_processing');
     // Remove any existing loading modals first
     hideLoadingModal();
 
@@ -1225,13 +1227,13 @@ function showErrorModal(message) {
     modal.innerHTML = `
         <div class="modal-content" style="max-width: 400px;">
             <div class="modal-header">
-                <h3>Erreur</h3>
+                <h3>${_t('modal_error_title')}</h3>
                 <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">&times;</button>
             </div>
             <div class="modal-body">
                 <p style="color: var(--color-error);">${message}</p>
                 <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()" style="margin-top: var(--space-md);">
-                    OK
+                    ${_t('modal_ok')}
                 </button>
             </div>
         </div>
@@ -1247,10 +1249,10 @@ function showSuccessModal(message) {
         <div class="modal-content" style="max-width: 400px; text-align: center;">
             <div class="modal-body">
                 <div style="font-size: 4rem; margin-bottom: var(--space-md);">✅</div>
-                <h3>Succès!</h3>
+                <h3>${_t('modal_success_title')}</h3>
                 <p>${message}</p>
                 <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()" style="margin-top: var(--space-md);">
-                    OK
+                    ${_t('modal_ok')}
                 </button>
             </div>
         </div>
@@ -1637,34 +1639,34 @@ function getStatusBadge(status) {
         case 'generated':
         case 'draft':
             color = 'warning';
-            label = 'Brouillon';
+            label = _t('status_draft');
             break;
         case 'signed_by_student':
             color = 'info';
-            label = 'Signé (Etud.)';
+            label = _t('status_signed_student');
             break;
         case 'signed_by_owner':
             color = 'info';
-            label = 'Signé (Propria.)';
+            label = _t('status_signed_owner');
             break;
         case 'pending_payment':
             color = 'brand';
-            label = 'À Payer';
+            label = _t('status_pending_pay');
             break;
         case 'paid':
         case 'active':
         case 'completed':
             color = 'success';
-            label = 'Actif';
+            label = _t('status_active_label');
             break;
         case 'terminated':
         case 'expired':
             color = 'white';
-            label = 'Terminé';
+            label = _t('status_terminated');
             break;
         case 'signed':
             color = 'info';
-            label = 'Signé';
+            label = _t('status_signed');
             break;
         default:
             label = status.replace(/_/g, ' ');

@@ -22,14 +22,14 @@ export default function UserDashboardPage() {
             <span style={{ color: 'var(--color-brand)' }}>UNI</span>DAR
           </a>
           <div className="nav-links">
-            <a href="/listings" className="nav-link">Listings</a>
-            <a href="/roommates" className="nav-link">Roommates</a>
-            <a href="/messages" className="nav-link">Messages</a>
+            <a href="/listings" className="nav-link" data-i18n="nav_listings">Listings</a>
+            <a href="/roommates" className="nav-link" data-i18n="nav_roommates">Roommates</a>
+            <a href="/messages" className="nav-link" data-i18n="nav_messages">Messages</a>
             <a href="/verification" className="nav-link">Verification</a>
             <a href="/subscription" className="nav-link">Premium</a>
           </div>
           <div className="flex items-center gap-md">
-            <button id="logoutBtn" className="btn btn-secondary btn-sm">Logout</button>
+            <button id="logoutBtn" className="btn btn-secondary btn-sm" data-i18n="nav_logout">Logout</button>
           </div>
         </div>
       </nav>
@@ -44,21 +44,21 @@ export default function UserDashboardPage() {
                 <p id="userEmail" className="text-bento-muted mb-xl">user@email.com</p>
 
                 <div className="flex-column gap-md">
-                  <div className="flex justify-between items-center p-md bg-surface-50 rounded-xl">
-                    <span className="text-tiny uppercase font-bold text-bento-muted">Statut</span>
-                    <span className="stat-badge">Actif</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
+                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_status">Status</span>
+                    <span className="stat-badge" data-i18n="dash_active">Active</span>
                   </div>
-                  <div className="flex justify-between items-center p-md bg-surface-50 rounded-xl">
-                    <span className="text-tiny uppercase font-bold text-bento-muted">Subscription</span>
-                    <span className="font-bold color-brand" id="subscriptionStatusCard">—</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
+                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_subscription">Subscription</span>
+                    <span style={{ fontWeight:700, color:'var(--color-brand)', fontSize:'0.8rem', maxWidth:'55%', textAlign:'right', lineHeight:1.3 }} id="subscriptionStatusCard">—</span>
                   </div>
-                  <div className="flex justify-between items-center p-md bg-surface-50 rounded-xl">
-                    <span className="text-tiny uppercase font-bold text-bento-muted">Favoris</span>
-                    <span className="font-bold color-brand" id="statSavedCard">0</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
+                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_favorites">Favorites</span>
+                    <span className="stat-badge" id="statSavedCard">0</span>
                   </div>
-                  <div className="flex justify-between items-center p-md bg-surface-50 rounded-xl">
-                    <span className="text-tiny uppercase font-bold text-bento-muted">Contrats</span>
-                    <span className="font-bold color-brand" id="statContractsCard">0</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
+                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_contracts_label">Contracts</span>
+                    <span className="stat-badge" id="statContractsCard">0</span>
                   </div>
                 </div>
               </div>
@@ -71,45 +71,45 @@ export default function UserDashboardPage() {
               <section className="bento-tile tile-hero stagger-1">
                 <h1 id="welcomeTitle" className="mb-sm" style={{ fontSize: '2.8rem', letterSpacing: '-1.5px', color: 'white' }}>Welcome Back!</h1>
                 <p id="welcomeSub" style={{ color: 'white', opacity: 0.9, fontSize: '1.1rem', maxWidth: '500px' }}>
-                  Managing your university life just got a "pro" upgrade.
+                  Managing your university life just got a &ldquo;pro&rdquo; upgrade.
                 </p>
               </section>
 
               <section className="bento-tile tile-map stagger-2">
                  <div className="p-lg flex justify-between items-center glass" style={{ position: 'absolute', top: 20, left: 20, right: 20, zIndex: 10, borderRadius: 100 }}>
-                    <h3 className="text-bento-muted font-bold m-0">Neighborhood Watch</h3>
-                    <div className="stat-badge" id="mapCounter">0 nearby</div>
+                    <h3 className="text-bento-muted font-bold m-0" data-i18n="dash_neighborhood">Neighborhood Watch</h3>
+                    <div className="stat-badge" id="mapCounter">0</div>
                  </div>
                  <div id="dashboardMap" style={{ height: '100%', minHeight: 250, borderRadius: 'inherit' }}></div>
               </section>
 
               <section className="bento-tile tile-contracts stagger-3">
                 <div className="flex justify-between items-center mb-lg">
-                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }}>📄 Contracts</h3>
-                  <button className="btn btn-secondary btn-sm" id="refreshContracts" style={{ borderRadius: 50 }}>Refresh</button>
+                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_contracts_title">📄 Contracts</h3>
+                  <button className="btn btn-secondary btn-sm" id="refreshContracts" style={{ borderRadius: 50 }} data-i18n="dash_refresh">Refresh</button>
                 </div>
                 <div id="contractsContainer" className="flex-column gap-sm">
-                  <p className="text-muted">Loading contracts…</p>
+                  <p className="text-muted" data-i18n="dash_loading_contracts">Loading contracts…</p>
                 </div>
               </section>
 
               <section className="bento-tile tile-messages stagger-4">
                 <div className="flex justify-between items-center mb-lg">
-                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }}>💬 Messages</h3>
-                  <a href="/messages" className="stat-badge" style={{ textDecoration: 'none' }}>Inbox</a>
+                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_messages_title">💬 Messages</h3>
+                  <a href="/messages" className="stat-badge" style={{ textDecoration: 'none' }} data-i18n="dash_inbox">Inbox</a>
                 </div>
                 <div id="messagesList" className="flex-column gap-md" style={{ overflowY: 'auto' }}>
-                  <p className="text-muted">Loading messages…</p>
+                  <p className="text-muted" data-i18n="dash_loading_messages">Loading messages…</p>
                 </div>
               </section>
 
               <section className="bento-tile tile-saved stagger-5">
                 <div className="flex justify-between items-center mb-lg">
-                  <h3 className="title-bento m-0" style={{ fontSize: '1.6rem' }}>✨ Saved for Later</h3>
-                  <a href="/listings" className="btn btn-primary btn-sm" style={{ borderRadius: 50 }}>Browse More</a>
+                  <h3 className="title-bento m-0" style={{ fontSize: '1.6rem' }} data-i18n="dash_saved_title">✨ Saved for Later</h3>
+                  <a href="/listings" className="btn btn-primary btn-sm" style={{ borderRadius: 50 }} data-i18n="dash_browse_more">Browse More</a>
                 </div>
                 <div id="savedContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 'var(--space-md)' }}>
-                  <p className="text-muted">Loading saved listings…</p>
+                  <p className="text-muted" data-i18n="dash_loading_saved">Loading saved listings…</p>
                 </div>
               </section>
             </div>
@@ -197,7 +197,7 @@ export default function UserDashboardPage() {
                 iconSize: [24, 24],
                 iconAnchor: [12, 12]
               })
-            }).addTo(dashboardMap).bindPopup('<strong>Your Preferred Location</strong><br>' + (currentUser.preferred_address || ''));
+            }).addTo(dashboardMap).bindPopup('<strong>' + _t('dash_preferred_location') + '</strong><br>' + (currentUser.preferred_address || ''));
             dashboardMarkers.push(userMarker);
           }
 
@@ -207,7 +207,7 @@ export default function UserDashboardPage() {
             const res = await api.Listings.getAll({});
             const listings = res.listings || [];
             const nearby = listings.filter(l => l && l.latitude && l.longitude && getDistanceKm(centerLat, centerLng, Number(l.latitude), Number(l.longitude)) <= 10);
-            if (counterEl) counterEl.textContent = String(nearby.length) + ' nearby';
+            if (counterEl) counterEl.textContent = String(nearby.length) + ' ' + _t('dash_nearby');
 
             nearby.forEach(l => {
               const marker = L.marker([Number(l.latitude), Number(l.longitude)]).addTo(dashboardMap);
@@ -220,9 +220,11 @@ export default function UserDashboardPage() {
             });
           } catch (e) {
             console.error('Error loading dashboard map listings:', e);
-            if (counterEl) counterEl.textContent = '0 nearby';
+            if (counterEl) counterEl.textContent = '0 ' + _t('dash_nearby');
           }
         }
+
+        const _t = k => window.UNIDAR_I18N?.t(k) || k;
 
         async function init() {
           try {
@@ -237,10 +239,10 @@ export default function UserDashboardPage() {
             const u = auth.user;
             const firstName = u.full_name ? u.full_name.split(' ')[0] : 'User';
             const initials = u.full_name ? u.full_name.split(' ').map(n=>n[0]).join('').toUpperCase().substring(0,2) : 'U';
-            
+
             if (document.getElementById('welcomeTitle')) document.getElementById('welcomeTitle').textContent = 'Welcome back, ' + firstName + '!';
             if (document.getElementById('userName')) document.getElementById('userName').textContent = u.full_name;
-            if (document.getElementById('userEmail')) document.getElementById('userEmail').textContent = u.email || 'Étudiant';
+            if (document.getElementById('userEmail')) document.getElementById('userEmail').textContent = u.email || '';
             if (document.getElementById('avatarInitials')) document.getElementById('avatarInitials').textContent = initials;
 
             // Banners (Priority)
@@ -269,11 +271,11 @@ export default function UserDashboardPage() {
             if (subscriptionCard) {
               const exp = u.subscription_expires_at || u.subscription_expiry || '';
               if (u.subscription_status === 'active') {
-                subscriptionCard.textContent = exp ? ('Active · until ' + formatDateShort(exp)) : 'Active';
+                subscriptionCard.textContent = exp ? (_t('dash_sub_active_prefix') + formatDateShort(exp)) : _t('dash_active');
               } else if (u.subscription_status === 'expired') {
-                subscriptionCard.textContent = exp ? ('Expired · ' + formatDateShort(exp)) : 'Expired';
+                subscriptionCard.textContent = exp ? (_t('dash_sub_expired_prefix') + formatDateShort(exp)) : _t('dash_sub_expired_prefix').trim();
               } else {
-                subscriptionCard.textContent = 'No active Pro';
+                subscriptionCard.textContent = _t('dash_sub_none');
               }
             }
 
@@ -288,7 +290,7 @@ export default function UserDashboardPage() {
               const cCont = document.getElementById('contractsContainer');
               if (cCont) {
                 if (!contracts.length) {
-                  cCont.innerHTML = '<p class="text-muted">No contracts yet.</p>';
+                  cCont.innerHTML = '<p class="text-muted">' + _t('dash_no_contracts') + '</p>';
                 } else {
                   cCont.innerHTML = contracts.map(c => {
                     const statusColor = {
@@ -316,8 +318,8 @@ export default function UserDashboardPage() {
                         '</div>' +
                         '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
                           '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
-                          (needsPay ? '<button onclick="payContract(' + c.listing_id + ',' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981">💳 Pay Now</button>' : '') +
-                          (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">✕ Cancel</button>' : '') +
+                          (needsPay ? '<button onclick="payContract(' + c.listing_id + ',' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981">' + _t('dash_pay_now') + '</button>' : '') +
+                          (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">' + _t('dash_cancel_contract') + '</button>' : '') +
                         '</div>' +
                       '</div>' +
                     '</div>';
@@ -345,7 +347,7 @@ export default function UserDashboardPage() {
                       '<button onclick="unsaveListing(' + l.id + ')" class="btn btn-secondary btn-sm" style="padding:2px 8px;font-size:0.7rem">✕</button>' +
                     '</div>' +
                   '</div>';
-                }).join('') : '<p class="text-muted">No saved listings yet.</p>';
+                }).join('') : '<p class="text-muted">' + _t('dash_no_saved') + '</p>';
               }
             } catch (e) { console.error('Error loading saved listings:', e); }
 
@@ -366,7 +368,7 @@ export default function UserDashboardPage() {
                       '<p class="text-muted text-tiny text-truncate m-0">' + (conv.last_message || '') + '</p>' +
                     '</div>' +
                   '</div>';
-                }).join('') : '<p class="text-muted">No messages yet.</p>';
+                }).join('') : '<p class="text-muted">' + _t('dash_no_messages') + '</p>';
               }
             } catch (e) { console.error('Error loading messages:', e); }
 
@@ -382,23 +384,26 @@ export default function UserDashboardPage() {
           const cont = document.getElementById('bannerContainer');
           if (!cont) return;
           let icon = '⚠️', bgColor = 'linear-gradient(135deg, #fffbeb, #fef3c7)', borderColor = '#f59e0b', textColor = '#92400e';
-          let msg = '<strong>Account Not Verified</strong><br>Please submit your ID to access all features.';
-          let btnText = 'Verify Now';
+          let title = _t('dash_verify_title');
+          let body = _t('dash_verify_body');
+          let btnText = _t('dash_verify_btn');
           if (status === 'pending') {
              icon = '🕐'; bgColor = 'linear-gradient(135deg, #eff6ff, #dbeafe)'; borderColor = '#3b82f6'; textColor = '#1e40af';
-             msg = '<strong>Verification Pending</strong><br>Your documents are being reviewed by our team.';
-             btnText = 'Check Status';
+             title = _t('dash_pending_title');
+             body = _t('dash_pending_body');
+             btnText = _t('dash_pending_btn');
           } else if (status === 'rejected') {
              icon = '❌'; bgColor = 'linear-gradient(135deg, #fef2f2, #fee2e2)'; borderColor = '#ef4444'; textColor = '#991b1b';
-             msg = '<strong>Verification Rejected</strong><br>Please resubmit your documents.';
-             btnText = 'Resubmit';
+             title = _t('dash_rejected_title');
+             body = _t('dash_rejected_body');
+             btnText = _t('dash_rejected_btn');
           }
           const div = document.createElement('div');
           div.className = 'glass';
           div.style.cssText = 'grid-column:span 6;padding:20px;border-radius:16px;border:1px solid ' + borderColor + ';background:' + bgColor + ';color:' + textColor + ';display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:12px';
           div.innerHTML = '<div style="display:flex;align-items:center;gap:20px">' +
               '<div style="font-size:2rem">' + icon + '</div>' +
-              '<div><p style="margin:0;line-height:1.4">' + msg + '</p></div>' +
+              '<div><p style="margin:0;line-height:1.4"><strong>' + title + '</strong><br>' + body + '</p></div>' +
             '</div>' +
             '<button onclick="window.location.href=\\'/verification\\'" class="btn btn-primary" style="background:' + borderColor + ';border:none;white-space:nowrap;padding:10px 20px">' + btnText + ' →</button>';
           cont.appendChild(div);
@@ -407,12 +412,12 @@ export default function UserDashboardPage() {
         function showSubscriptionBanner(status, expiresAt) {
           const cont = document.getElementById('bannerContainer');
           if (!cont) return;
-          let title = 'Subscription Required';
-          let body = '25 TND/year for full access.';
+          let title = _t('dash_sub_required_title');
+          let body = _t('dash_sub_required_body');
           if (status === 'expired') {
             const dateText = expiresAt ? formatDateShort(expiresAt) : '—';
-            title = 'Subscription Expired';
-            body = 'Your yearly access ended on ' + dateText + '. Renew for 25 TND/year.';
+            title = _t('dash_sub_expired_title');
+            body = _t('dash_sub_expired_body_prefix') + dateText + _t('dash_sub_expired_body_suffix');
           }
           const div = document.createElement('div');
           div.className = 'glass';
@@ -421,7 +426,7 @@ export default function UserDashboardPage() {
               '<div style="font-size:2rem">💳</div>' +
               '<div><p style="margin:0;line-height:1.4"><strong>' + title + '</strong><br>' + body + '</p></div>' +
             '</div>' +
-            '<button onclick="window.location.href=\\'/subscription\\'" class="btn btn-primary" style="background:#10b981;border:none;white-space:nowrap;padding:10px 20px">Subscribe Now →</button>';
+            '<button onclick="window.location.href=\\'/subscription\\'" class="btn btn-primary" style="background:#10b981;border:none;white-space:nowrap;padding:10px 20px">' + _t('dash_subscribe_now') + '</button>';
           cont.appendChild(div);
         }
 
