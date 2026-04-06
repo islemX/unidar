@@ -134,6 +134,7 @@ export default function ListingDetailPage() {
         }
 
         function renderContent() {
+          const _t = k => window.UNIDAR_I18N?.t(k) || k;
           const l = currentListing;
           const imgs = (l.images || []).map(i => window.resolveImageUrl(i.image_path || i));
           if (!imgs.length) imgs.push('/placeholder.jpg');
@@ -161,7 +162,7 @@ export default function ListingDetailPage() {
                         <button class="gallery-btn" onclick="event.stopPropagation(); window.navigateGallery(1)">→</button>
                       </div>
                       <div class="gallery-badge" style="position:absolute;top:20px;right:20px;background:rgba(0,0,0,0.5);color:white;padding:5px 12px;border-radius:20px;backdrop-filter:blur(10px);font-size:0.8rem;font-weight:600;z-index:102;">
-                        <span id="galleryCounter">1</span> / \${imgs.length} Photo(s)
+                        <span id="galleryCounter">1</span> / \${imgs.length} \${_t('detail_photos_count')}
                       </div>
                     \` : ''}
                   </div>
@@ -181,20 +182,20 @@ export default function ListingDetailPage() {
                   <p class="text-muted" style="font-size:1.1rem">📍 \${l.address || 'Tunisia'}</p>
                   
                   <div style="margin-top:var(--space-xl);padding-top:var(--space-xl);border-top:1px solid var(--color-surface-100)">
-                    <h3>About this property</h3>
-                    <p id="descriptionText" class="description-content">\${l.description || 'No description available.'}</p>
+                    <h3>\${_t('detail_about_prop')}</h3>
+                    <p id="descriptionText" class="description-content">\${l.description || _t('card_no_description')}</p>
                     <button id="readMoreBtn" class="read-more-btn" onclick="window.toggleDescription()">
-                      <span>Show more</span> <span>↓</span>
+                      <span>\${_t('detail_show_more')}</span> <span>↓</span>
                     </button>
                   </div>
 
                   <div style="margin-top:var(--space-xl);padding-top:var(--space-xl);border-top:1px solid var(--color-surface-100)">
-                    <h3>Amenities & Features</h3>
+                    <h3>\${_t('detail_amenities_features')}</h3>
                     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:16px">
-                      <div class="amenity-card"><span>🛏️</span> <div><small>Bedrooms</small><b>\${l.bedrooms || 1}</b></div></div>
-                      <div class="amenity-card"><span>🚿</span> <div><small>Bathrooms</small><b>\${l.bathrooms || 1}</b></div></div>
-                      <div class="amenity-card"><span>📐</span> <div><small>Surface</small><b>\${l.size || '?'} m²</b></div></div>
-                      <div class="amenity-card"><span>👥</span> <div><small>Capacity</small><b>\${l.capacity || 1} Guests</b></div></div>
+                      <div class="amenity-card"><span>🛏️</span> <div><small>\${_t('detail_bedrooms')}</small><b>\${l.bedrooms || 1}</b></div></div>
+                      <div class="amenity-card"><span>🚿</span> <div><small>\${_t('detail_bathrooms')}</small><b>\${l.bathrooms || 1}</b></div></div>
+                      <div class="amenity-card"><span>📐</span> <div><small>\${_t('detail_surface')}</small><b>\${l.size || '?'} \${_t('sqm')}</b></div></div>
+                      <div class="amenity-card"><span>👥</span> <div><small>\${_t('detail_capacity')}</small><b>\${l.capacity || 1} \${_t('detail_guests')}</b></div></div>
                     </div>
                   </div>
                 </div>
@@ -202,51 +203,49 @@ export default function ListingDetailPage() {
 
               <div class="sidebar-premium">
                 <div class="card premium-card" style="padding:var(--space-xl);position:sticky;top:100px">
-                  <div style="font-size:2.5rem;font-weight:800;color:var(--color-surface-900)">\${l.price} <small style="font-size:1rem;color:var(--color-text-muted)">TND/mo</small></div>
+                  <div style="font-size:2.5rem;font-weight:800;color:var(--color-surface-900)">\${l.price} <small style="font-size:1rem;color:var(--color-text-muted)">\${_t('detail_tnd_mo')}</small></div>
                   
                   <div style="background:var(--color-surface-50);padding:16px;border-radius:var(--radius-xl);margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px">
                     <div style="text-align:center">
                       <div style="font-size:1.2rem;font-weight:700;color:var(--color-brand)">\${remaining}</div>
-                      <div style="font-size:0.6rem;text-transform:uppercase" class="text-muted">Places Left</div>
+                      <div style="font-size:0.6rem;text-transform:uppercase" class="text-muted">\${_t('detail_places_left_label')}</div>
                     </div>
                     <div style="text-align:center;border-left:1px solid var(--color-surface-200)">
                       <div style="font-size:1.2rem;font-weight:700">\${l.floor || 0}</div>
-                      <div style="font-size:0.6rem;text-transform:uppercase" class="text-muted">Floor</div>
+                      <div style="font-size:0.6rem;text-transform:uppercase" class="text-muted">\${_t('detail_floor_label')}</div>
                     </div>
                   </div>
 
                   <div style="display:flex;flex-direction:column;gap:12px">
-                    \${!currentUser ? \`<a href="/login" class="btn btn-primary" style="width:100%;text-align:center;padding:16px">Login to Reserve</a>\` : ''}
-                    \${canMessageOwner && hasFullAccess ? \`<button onclick="window.messageOwner()" class="btn btn-primary hover-lift" style="width:100%;padding:16px;font-weight:700">💬 Contact Owner</button>\` : ''}
-                    \${canContract && hasFullAccess ? \`<button onclick="window.startContract()" class="btn btn-primary" style="width:100%;padding:16px;font-weight:700">📄 Request Contract</button>\` : ''}
+                    \${!currentUser ? \`<a href="/login" class="btn btn-primary" style="width:100%;text-align:center;padding:16px">\${_t('detail_login_reserve')}</a>\` : ''}
+                    \${canMessageOwner && hasFullAccess ? \`<button onclick="window.messageOwner()" class="btn btn-primary hover-lift" style="width:100%;padding:16px;font-weight:700">💬 \${_t('detail_contact_owner')}</button>\` : ''}
+                    \${canContract && hasFullAccess ? \`<button onclick="window.startContract()" class="btn btn-primary" style="width:100%;padding:16px;font-weight:700">📄 \${_t('detail_request_contract')}</button>\` : ''}
                     \${(canMessageOwner || canContract) && !hasFullAccess ? \`
                       <div style="border:1.5px dashed rgba(99,102,241,.35);border-radius:14px;padding:18px 16px;text-align:center;background:linear-gradient(135deg,rgba(99,102,241,.05),rgba(168,85,247,.05))">
                         <div style="font-size:1.6rem;margin-bottom:8px">🔒</div>
                         <div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:6px">
-                          \${!isValidated ? 'Verification Required' : 'Premium Required'}
+                          \${!isValidated ? _t('access_locked_verify_title') : _t('access_locked_premium_title')}
                         </div>
                         <p style="font-size:.75rem;color:#64748b;margin:0 0 14px;line-height:1.5">
-                          \${!isValidated
-                            ? 'Get verified as a student first, then upgrade to Premium to contact owners, sign contracts and pay securely.'
-                            : 'You&rsquo;re verified! Upgrade to Premium (25&nbsp;TND/yr) to contact this owner, generate contracts and make payments.'}
+                          \${!isValidated ? _t('access_locked_verify_desc') : _t('access_locked_premium_desc')}
                         </p>
                         <a href="/\${!isValidated ? 'verification' : 'subscription'}" class="btn btn-primary" style="width:100%;font-size:.82rem;padding:12px">
-                          \${!isValidated ? '🎓 Get Verified' : '⭐ Upgrade to Premium'}
+                          \${!isValidated ? '🎓 ' + _t('access_btn_verify') : '⭐ ' + _t('access_btn_premium')}
                         </a>
                       </div>
                     \` : ''}
                     
                     <div style="display:flex;gap:8px">
-                      <button onclick="window.toggleSaveListing()" class="btn btn-secondary" style="flex:1">\${isSaved ? '✓ Saved' : '♡ Save'}</button>
+                      <button onclick="window.toggleSaveListing()" class="btn btn-secondary" style="flex:1">\${isSaved ? '✓ ' + _t('detail_saved') : '♡ ' + _t('detail_save_listing')}</button>
                       <button onclick="window.shareListing()" class="btn btn-secondary">📤</button>
                     </div>
 
-                    <button onclick="document.getElementById('reportModal').style.display='flex'" style="background:none;border:none;color:var(--color-error);font-size:0.75rem;text-decoration:underline;cursor:pointer;margin-top:8px">Report this listing</button>
+                    <button onclick="document.getElementById('reportModal').style.display='flex'" style="background:none;border:none;color:var(--color-error);font-size:0.75rem;text-decoration:underline;cursor:pointer;margin-top:8px">\${_t('detail_report_listing')}</button>
                   </div>
 
                   <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--color-surface-100)">
-                    <p style="font-size:0.85rem">Owned by <b>\${l.owner_name}</b> \${l.owner_verified === 'approved' ? '✅' : ''}</p>
-                    <p class="text-muted" style="font-size:0.75rem;margin-top:4px">Member since \${window.formatDate(l.created_at)}</p>
+                    <p style="font-size:0.85rem">\${_t('detail_owned_by')} <b>\${l.owner_name}</b> \${l.owner_verified === 'approved' ? '✅' : ''}</p>
+                    <p class="text-muted" style="font-size:0.75rem;margin-top:4px">\${_t('detail_member_since')} \${window.formatDate(l.created_at)}</p>
                   </div>
                 </div>
               </div>
@@ -254,16 +253,16 @@ export default function ListingDetailPage() {
 
             \${l.roommates && l.roommates.length ? \`
               <div class="card premium-card mt-2xl fade-in-up" style="padding:var(--space-xl);margin-top:var(--space-2xl)">
-                <h3 class="mb-lg">👥 Future roommates (\${l.roommates.length})</h3>
+                <h3 class="mb-lg">👥 \${_t('detail_future_roommates')} (\${l.roommates.length})</h3>
                 <div class="grid grid-3 gap-md" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
                   \${l.roommates.map(rm => \`
                     <div class="p-md" style="background:var(--color-surface-50);border-radius:var(--radius-xl);border:1px solid var(--color-surface-100);padding:12px">
                       <div class="flex justify-between items-center" style="display:flex;justify-content:space-between;align-items:center;gap:12px">
                         <div>
                           <div style="font-weight:700">\${rm.full_name || 'Student'}</div>
-                          <div class="text-tiny text-muted uppercase tracking-wider">Student</div>
+                          <div class="text-tiny text-muted uppercase tracking-wider">\${_t('student')}</div>
                         </div>
-                        <button class="btn btn-secondary btn-sm" onclick="window.messageRoommate(\${rm.student_id})" style="padding:6px 12px;font-size:0.75rem">💬 Chat</button>
+                        <button class="btn btn-secondary btn-sm" onclick="window.messageRoommate(\${rm.student_id})" style="padding:6px 12px;font-size:0.75rem">💬 \${_t('roommates_message_btn')}</button>
                       </div>
                     </div>
                   \`).join('')}
@@ -272,28 +271,28 @@ export default function ListingDetailPage() {
             \` : ''}
 
             <div class="card premium-card mt-2xl fade-in-up" style="padding:var(--space-xl);margin-top:var(--space-2xl)" id="mapSection">
-              <h3 class="mb-md">📍 Location & Directions</h3>
-              <p class="text-muted mb-lg" style="font-size:0.95rem">Calculate your route from any university in Tunisia</p>
+              <h3 class="mb-md">📍 \${_t('detail_location_directions')}</h3>
+              <p class="text-muted mb-lg" style="font-size:0.95rem">\${_t('detail_directions_desc')}</p>
               <div class="faculty-selector-container mb-lg" style="background:var(--color-surface-50);padding:var(--space-lg);border-radius:var(--radius-xl);border:1px solid var(--color-surface-100);margin-bottom:16px">
                 <div class="grid grid-2 gap-md items-end mb-md" style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end">
                   <div class="form-group mb-0" style="margin:0">
-                    <label class="form-label" style="font-weight:600">🎓 Choose your university</label>
+                    <label class="form-label" style="font-weight:600">🎓 \${_t('detail_choose_university')}</label>
                     <select id="facultySelector" class="form-input" style="cursor:pointer">
-                      <option value="">-- Select a university --</option>
+                      <option value="">\${_t('detail_select_uni')}</option>
                     </select>
                   </div>
                   <button id="getDirectionsBtn" class="btn btn-primary hover-lift" style="height:46px" disabled>
-                    <span id="transportEmoji">🚗</span> Get directions
+                    <span id="transportEmoji">🚗</span> \${_t('detail_get_directions')}
                   </button>
                 </div>
                 <div class="flex justify-between items-center" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
                   <div class="map-controls-premium" style="display:flex;gap:8px">
-                    <button class="map-mode-btn active" id="modeDriving" onclick="window.setTravelMode('driving')">🚗 Driving</button>
-                    <button class="map-mode-btn" id="modeWalking" onclick="window.setTravelMode('walking')">🚶 Walking</button>
+                    <button class="map-mode-btn active" id="modeDriving" onclick="window.setTravelMode('driving')">🚗 \${_t('detail_driving')}</button>
+                    <button class="map-mode-btn" id="modeWalking" onclick="window.setTravelMode('walking')">🚶 \${_t('detail_walking')}</button>
                   </div>
                   <button class="compass-btn" id="compassBtn" onclick="window.toggleCompass()" title="Animate route pointer">
                     <span class="compass-emoji" style="font-size:1.4rem">🧭</span>
-                    <span class="compass-label">Start</span>
+                    <span class="compass-label">\${_t('detail_compass_start')}</span>
                   </button>
                 </div>
               </div>
@@ -321,9 +320,10 @@ export default function ListingDetailPage() {
           const btn = document.getElementById('readMoreBtn');
           if (!container || !btn) return;
           const expanded = container.classList.toggle('expanded');
+          const _t2 = k => window.UNIDAR_I18N?.t(k) || k;
           const parts = btn.querySelectorAll('span');
           if (parts && parts.length >= 2) {
-            parts[0].textContent = expanded ? 'Show less' : 'Show more';
+            parts[0].textContent = expanded ? _t2('detail_show_less') : _t2('detail_show_more');
             parts[1].textContent = expanded ? '↑' : '↓';
           }
         };
@@ -413,10 +413,14 @@ export default function ListingDetailPage() {
 
         window.travelMode = 'driving';
         window.setTravelMode = (mode) => {
+          const _t3 = k => window.UNIDAR_I18N?.t(k) || k;
           window.travelMode = mode;
           document.querySelectorAll('.map-mode-btn').forEach(btn => btn.classList.remove('active'));
           const target = document.getElementById(mode === 'walking' ? 'modeWalking' : 'modeDriving');
-          if (target) target.classList.add('active');
+          if (target) {
+            target.classList.add('active');
+            target.textContent = (mode === 'walking' ? '🚶 ' : '🚗 ') + _t3(mode === 'walking' ? 'detail_walking' : 'detail_driving');
+          }
           const emoji = mode === 'walking' ? '🚶' : '🚗';
           const transportEmoji = document.getElementById('transportEmoji');
           if (transportEmoji) transportEmoji.textContent = emoji;
@@ -431,7 +435,8 @@ export default function ListingDetailPage() {
           const btn = document.getElementById('compassBtn');
           const label = btn ? btn.querySelector('.compass-label') : null;
           const isActive = btn ? btn.classList.toggle('active') : false;
-          if (label) label.textContent = isActive ? 'Stop' : 'Start';
+          const _tc = k => window.UNIDAR_I18N?.t(k) || k;
+          if (label) label.textContent = isActive ? _tc('detail_compass_stop') : _tc('detail_compass_start');
           if (window.MapUtils) window.MapUtils.setCompassActive(!!isActive);
         };
 

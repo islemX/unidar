@@ -29,8 +29,8 @@ export default function ListingsPage() {
             <span className="section-tag" data-i18n="listings_marketplace">Marketplace</span>
             <h1 className="title-pro" data-i18n="listings_title">Find Your Perfect Home</h1>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'var(--space-lg)',flexWrap:'wrap',gap:'16px'}}>
-              <p className="text-muted" style={{maxWidth:500}}>
-                Browse all listings freely. To contact owners, sign contracts or make payments you need to be <strong>verified</strong> and have an active <strong>Premium</strong> plan.
+              <p className="text-muted" data-i18n="explore_listings_text" style={{maxWidth:500}}>
+                Browse all listings freely. To contact owners, sign contracts or make payments you need to be verified and have an active Premium plan.
               </p>
               <button id="toggleView" className="btn btn-secondary hover-lift" style={{display:'flex',alignItems:'center',gap:'8px'}}>
                 <span id="viewIcon">🗺️</span> <span id="viewText" data-i18n="listings_map_view">Map View</span>
@@ -86,11 +86,11 @@ export default function ListingsPage() {
                 </select>
               </div>
               <div className="form-group mb-0">
-                <label className="form-label">Gender Preference</label>
+                <label className="form-label" data-i18n="filter_gender_pref">Gender Preference</label>
                 <select id="filterGender" className="form-input">
-                  <option value="">Any Gender</option>
-                  <option value="male">Male Only</option>
-                  <option value="female">Female Only</option>
+                  <option value="" data-i18n="filter_any_gender">Any Gender</option>
+                  <option value="male" data-i18n="filter_male_only">Male Only</option>
+                  <option value="female" data-i18n="filter_female_only">Female Only</option>
                 </select>
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function ListingsPage() {
                 <span style="font-size:0.8rem;font-weight:600">👤 \${remaining} Places</span>
                 \${l.size ? \`<span style="font-size:0.8rem;font-weight:600">📐 \${l.size}m²</span>\` : ''}
               </div>
-              <button class="btn btn-secondary" style="width:100%;margin-top:12px;font-size:0.8rem">Discover Details</button>
+              <button class="btn btn-secondary" style="width:100%;margin-top:12px;font-size:0.8rem">\${window.UNIDAR_I18N?.t('detail_discover_details') || 'Discover Details'}</button>
             </div>
           </article>\`;
         }
@@ -286,20 +286,19 @@ export default function ListingsPage() {
           if (isStudent && (!isValidated || !isPremium)) {
             const banner = document.getElementById('statusBanner');
             if (banner) {
+              const _t = k => (window.UNIDAR_I18N?.t(k) || k);
               const nextStep = !isValidated ? 'verification' : 'subscription';
-              const nextLabel = !isValidated ? '🎓 Get Verified' : '⭐ Upgrade to Premium';
-              const nextDesc = !isValidated
-                ? 'Upload your student ID to get verified, then upgrade to Premium.'
-                : 'You&rsquo;re verified! Upgrade to Premium to contact owners, sign contracts and pay.';
-              const stepBadge = !isValidated
-                ? '<span style="background:#dbeafe;color:#1d4ed8;border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-right:6px">Unverified</span>'
-                : '<span style="background:#fef3c7;color:#92400e;border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-right:6px">No Premium</span>';
+              const nextLabel = !isValidated ? _t('access_btn_verify') : _t('access_btn_premium');
+              const nextDesc = !isValidated ? _t('access_verify_cta_desc') : _t('access_premium_cta_desc');
+              const badgeText = !isValidated ? _t('access_unverified_badge') : _t('access_no_premium_badge');
+              const badgeBg = !isValidated ? '#dbeafe' : '#fef3c7';
+              const badgeColor = !isValidated ? '#1d4ed8' : '#92400e';
               banner.innerHTML = \`
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(168,85,247,.07));border:1.5px solid rgba(99,102,241,.2);border-radius:16px;padding:14px 18px">
                   <div style="font-size:1.5rem">🔒</div>
                   <div style="flex:1;min-width:220px">
                     <div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:3px">
-                      \${stepBadge}Restricted Actions
+                      <span style="background:\${badgeBg};color:\${badgeColor};border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-right:6px">\${badgeText}</span>\${_t('access_restricted_title')}
                     </div>
                     <div style="font-size:.78rem;color:#64748b">\${nextDesc}</div>
                   </div>

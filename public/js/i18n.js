@@ -57,10 +57,10 @@ const UNIDAR_I18N = {
 
             // Home - For Students
             home_students_title: 'Built for Students, By Students',
-            home_students_subtitle: "We understand the unique challenges of finding student housing in Tunisia. That's why we've created a platform that addresses every pain point—from verifying listings to finding the right roommate.",
-            home_students_benefit1: 'Browse hundreds of verified listings near your university',
-            home_students_benefit2: 'Get matched with roommates who share your lifestyle',
-            home_students_benefit3: 'Contact property owners directly through secure messaging',
+            home_students_subtitle: 'We understand the unique challenges of finding student housing in Tunisia. Browse freely, get verified, and unlock full access with Premium.',
+            home_students_benefit1: 'Browse all listings for free — no upgrade needed',
+            home_students_benefit2: 'Get verified with your student ID card',
+            home_students_benefit3: 'Go Premium to contact owners, sign digital contracts & pay securely',
             home_students_benefit4: 'Read authentic reviews from fellow students',
             home_students_cta: 'Start Your Search',
             home_visual_match: 'Perfect Match Found!',
@@ -362,7 +362,7 @@ const UNIDAR_I18N = {
             footer_terms: 'Terms',
 
             // Common UI
-            explore_listings_text: 'Explore high-quality student housing options verified for your safety and comfort.',
+            explore_listings_text: 'Browse all listings freely. Verify your student ID and upgrade to Premium to contact owners, sign contracts and pay.',
             per_month: '/mo',
             month_abbr: '/mo',
             sqm: 'm²',
@@ -374,7 +374,74 @@ const UNIDAR_I18N = {
             bedroom_4: '4+ Bedrooms',
 
             // Map Popup
-            view_details_link: 'View Details'
+            view_details_link: 'View Details',
+
+            // Tier access component (home page)
+            home_students_tag: 'For Students',
+            tier_how_access: 'HOW ACCESS WORKS',
+            tier_browse_title: 'Browse & Explore',
+            tier_browse_desc: 'View all listings & details — no upgrade needed',
+            tier_badge_free: 'FREE ✓',
+            tier_verify_title: 'Student Verified',
+            tier_verify_desc: 'Upload your student ID card to confirm enrollment',
+            tier_badge_step2: 'STEP 2 →',
+            tier_premium_title: 'Premium Unlocked',
+            tier_premium_desc: 'Contact owners · Sign contracts · Pay securely',
+            tier_premium_actions_label: 'Premium-only Actions',
+            tier_action_contact: 'Contact',
+            tier_action_contact_sub: 'Owner',
+            tier_action_contract: 'Contract',
+            tier_action_contract_sub: 'Digital',
+            tier_action_pay: 'Pay',
+            tier_action_pay_sub: 'Secure',
+
+            // Access banners & locked state
+            access_restricted_title: 'Restricted Actions',
+            access_unverified_badge: 'Unverified',
+            access_no_premium_badge: 'No Premium',
+            access_verify_cta_desc: 'Upload your student ID to get verified, then upgrade to Premium.',
+            access_premium_cta_desc: "You're verified! Upgrade to Premium to contact owners, sign contracts and pay.",
+            access_btn_verify: 'Get Verified',
+            access_btn_premium: 'Upgrade to Premium',
+            access_locked_verify_title: 'Verification Required',
+            access_locked_premium_title: 'Premium Required',
+            access_locked_verify_desc: 'Get verified as a student first, then upgrade to Premium to contact owners, sign contracts and pay securely.',
+            access_locked_premium_desc: "You're verified! Upgrade to Premium (25 TND/yr) to contact this owner, generate contracts and make payments.",
+
+            // Gender filter
+            filter_gender_pref: 'Gender Preference',
+            filter_any_gender: 'Any Gender',
+            filter_male_only: 'Male Only',
+            filter_female_only: 'Female Only',
+
+            // Listing detail — missing keys
+            detail_about_prop: 'About this property',
+            detail_amenities_features: 'Amenities & Features',
+            detail_show_more: 'Show more',
+            detail_show_less: 'Show less',
+            detail_surface: 'Surface',
+            detail_capacity: 'Capacity',
+            detail_guests: 'Guests',
+            detail_tnd_mo: 'TND/mo',
+            detail_places_left_label: 'Places Left',
+            detail_floor_label: 'Floor',
+            detail_request_contract: 'Request Contract',
+            detail_login_reserve: 'Login to Reserve',
+            detail_report_listing: 'Report this listing',
+            detail_owned_by: 'Owned by',
+            detail_member_since: 'Member since',
+            detail_photos_count: 'Photo(s)',
+            detail_future_roommates: 'Future roommates',
+            detail_location_directions: 'Location & Directions',
+            detail_directions_desc: 'Calculate your route from any university in Tunisia',
+            detail_choose_university: 'Choose your university',
+            detail_select_uni: '-- Select a university --',
+            detail_get_directions: 'Get directions',
+            detail_driving: 'Driving',
+            detail_walking: 'Walking',
+            detail_compass_start: 'Start',
+            detail_compass_stop: 'Stop',
+            detail_discover_details: 'Discover Details'
         },
 
         fr: {
@@ -418,10 +485,10 @@ const UNIDAR_I18N = {
 
             // Home - For Students
             home_students_title: 'Conçu pour les étudiants, par des étudiants',
-            home_students_subtitle: "Nous comprenons les défis uniques de la recherche de logement étudiant en Tunisie. C'est pourquoi nous avons créé une plateforme qui répond à chaque problème — de la vérification des annonces à la recherche du bon colocataire.",
-            home_students_benefit1: 'Parcourez des centaines d\'annonces vérifiées près de votre université',
-            home_students_benefit2: 'Soyez mis en relation avec des colocataires qui partagent votre style de vie',
-            home_students_benefit3: 'Contactez les propriétaires directement via une messagerie sécurisée',
+            home_students_subtitle: "Nous comprenons les défis uniques de la recherche de logement étudiant en Tunisie. Parcourez librement, obtenez la vérification et débloquez l'accès complet avec Premium.",
+            home_students_benefit1: 'Parcourez toutes les annonces gratuitement — sans mise à niveau',
+            home_students_benefit2: "Obtenez la vérification avec votre carte d'étudiant",
+            home_students_benefit3: 'Passez Premium pour contacter les propriétaires, signer des contrats et payer en toute sécurité',
             home_students_benefit4: 'Lisez des avis authentiques d\'autres étudiants',
             home_students_cta: 'Commencer votre recherche',
             home_visual_match: 'Correspondance parfaite trouvée !',
@@ -723,7 +790,7 @@ const UNIDAR_I18N = {
             footer_terms: 'Conditions',
 
             // Common UI
-            explore_listings_text: 'Explorez des options de logement étudiant de haute qualité vérifiées pour votre sécurité et votre confort.',
+            explore_listings_text: "Parcourez toutes les annonces librement. Vérifiez votre carte d'étudiant et passez Premium pour contacter les propriétaires, signer des contrats et payer.",
             per_month: '/mois',
             month_abbr: '/mois',
             sqm: 'm²',
@@ -735,7 +802,74 @@ const UNIDAR_I18N = {
             bedroom_4: '4+ Chambres',
 
             // Map Popup
-            view_details_link: 'Voir les détails'
+            view_details_link: 'Voir les détails',
+
+            // Tier access component (home page)
+            home_students_tag: 'Pour les étudiants',
+            tier_how_access: "COMMENT L'ACCÈS FONCTIONNE",
+            tier_browse_title: 'Parcourir & Explorer',
+            tier_browse_desc: 'Voir toutes les annonces & détails — sans mise à niveau',
+            tier_badge_free: 'GRATUIT ✓',
+            tier_verify_title: 'Étudiant vérifié',
+            tier_verify_desc: "Téléchargez votre carte d'étudiant pour confirmer votre inscription",
+            tier_badge_step2: 'ÉTAPE 2 →',
+            tier_premium_title: 'Premium débloqué',
+            tier_premium_desc: 'Contacter les propriétaires · Signer des contrats · Payer',
+            tier_premium_actions_label: 'Actions Premium uniquement',
+            tier_action_contact: 'Contact',
+            tier_action_contact_sub: 'Propriétaire',
+            tier_action_contract: 'Contrat',
+            tier_action_contract_sub: 'Numérique',
+            tier_action_pay: 'Payer',
+            tier_action_pay_sub: 'Sécurisé',
+
+            // Access banners & locked state
+            access_restricted_title: 'Actions restreintes',
+            access_unverified_badge: 'Non vérifié',
+            access_no_premium_badge: 'Sans Premium',
+            access_verify_cta_desc: "Téléchargez votre carte d'étudiant pour être vérifié, puis passez Premium.",
+            access_premium_cta_desc: 'Vous êtes vérifié ! Passez Premium pour contacter les propriétaires, signer des contrats et payer.',
+            access_btn_verify: 'Obtenir la vérification',
+            access_btn_premium: 'Passer Premium',
+            access_locked_verify_title: 'Vérification requise',
+            access_locked_premium_title: 'Premium requis',
+            access_locked_verify_desc: "Faites d'abord vérifier votre statut d'étudiant, puis passez Premium pour contacter les propriétaires, signer des contrats et payer en toute sécurité.",
+            access_locked_premium_desc: 'Vous êtes vérifié ! Passez Premium (25 TND/an) pour contacter ce propriétaire, générer des contrats et effectuer des paiements.',
+
+            // Gender filter
+            filter_gender_pref: 'Préférence de genre',
+            filter_any_gender: 'Tous genres',
+            filter_male_only: 'Hommes uniquement',
+            filter_female_only: 'Femmes uniquement',
+
+            // Listing detail — missing keys
+            detail_about_prop: 'À propos de ce logement',
+            detail_amenities_features: 'Équipements & Caractéristiques',
+            detail_show_more: 'Voir plus',
+            detail_show_less: 'Voir moins',
+            detail_surface: 'Surface',
+            detail_capacity: 'Capacité',
+            detail_guests: 'Occupants',
+            detail_tnd_mo: 'TND/mois',
+            detail_places_left_label: 'Places restantes',
+            detail_floor_label: 'Étage',
+            detail_request_contract: 'Demander un contrat',
+            detail_login_reserve: 'Se connecter pour réserver',
+            detail_report_listing: 'Signaler cette annonce',
+            detail_owned_by: 'Propriété de',
+            detail_member_since: 'Membre depuis',
+            detail_photos_count: 'Photo(s)',
+            detail_future_roommates: 'Futurs colocataires',
+            detail_location_directions: 'Localisation & Itinéraires',
+            detail_directions_desc: "Calculez votre itinéraire depuis n'importe quelle université en Tunisie",
+            detail_choose_university: 'Choisir votre université',
+            detail_select_uni: '-- Sélectionner une université --',
+            detail_get_directions: 'Obtenir un itinéraire',
+            detail_driving: 'En voiture',
+            detail_walking: 'À pied',
+            detail_compass_start: 'Démarrer',
+            detail_compass_stop: 'Arrêter',
+            detail_discover_details: 'Découvrir les détails'
         },
 
         ar: {
@@ -779,10 +913,10 @@ const UNIDAR_I18N = {
 
             // Home - For Students
             home_students_title: 'بني للطلاب، بواسطة الطلاب',
-            home_students_subtitle: 'نحن نتفهم التحديات الفريدة للبحث عن سكن طلابي في تونس. لهذا السبب أنشأنا منصة تعالج كل نقاط الألم - من توثيق الإعلانات إلى العثور على زميل السكن المناسب.',
-            home_students_benefit1: 'تصفح مئات الإعلانات الموثقة بالقرب من جامعتك',
-            home_students_benefit2: 'احصل على مطابقة مع زملاء سكن يشاركونك نمط حياتك',
-            home_students_benefit3: 'تواصل مع أصحاب العقارات مباشرة من خلال رسائل آمنة',
+            home_students_subtitle: 'نحن نتفهم التحديات الفريدة للبحث عن سكن طلابي في تونس. تصفح بحرية، واحصل على التوثيق، وافتح وصولاً كاملاً مع Premium.',
+            home_students_benefit1: 'تصفح جميع الإعلانات مجاناً — بدون ترقية',
+            home_students_benefit2: 'احصل على التوثيق ببطاقة طالبك',
+            home_students_benefit3: 'انتقل إلى Premium للتواصل مع المالكين وتوقيع العقود الرقمية والدفع بأمان',
             home_students_benefit4: 'اقرأ مراجعات حقيقية من زملائك الطلاب',
             home_students_cta: 'ابدأ بحثك',
             home_visual_match: 'تم العثور على المطابقة المثالية!',
@@ -1084,7 +1218,7 @@ const UNIDAR_I18N = {
             footer_terms: 'الشروط',
 
             // Common UI
-            explore_listings_text: 'استكشف خيارات السكن الطلابي عالية الجودة والمعتمدة لسلامتك وراحتك.',
+            explore_listings_text: 'تصفح جميع الإعلانات بحرية. تحقق من بطاقة طالبك وقم بالترقية إلى Premium للتواصل مع المالكين وتوقيع العقود والدفع.',
             per_month: '/شهر',
             month_abbr: '/شهر',
             sqm: 'م²',
@@ -1096,7 +1230,74 @@ const UNIDAR_I18N = {
             bedroom_4: '4+ غرف نوم',
 
             // Map Popup
-            view_details_link: 'عرض التفاصيل'
+            view_details_link: 'عرض التفاصيل',
+
+            // Tier access component (home page)
+            home_students_tag: 'للطلاب',
+            tier_how_access: 'كيف يعمل الوصول',
+            tier_browse_title: 'تصفح واستكشف',
+            tier_browse_desc: 'اطلع على جميع الإعلانات والتفاصيل — بدون ترقية',
+            tier_badge_free: 'مجاني ✓',
+            tier_verify_title: 'طالب موثق',
+            tier_verify_desc: 'حمّل بطاقة طالبك لتأكيد التسجيل',
+            tier_badge_step2: 'الخطوة 2 ←',
+            tier_premium_title: 'Premium مفعّل',
+            tier_premium_desc: 'تواصل مع المالكين · وقّع العقود · ادفع بأمان',
+            tier_premium_actions_label: 'إجراءات حصرية للـ Premium',
+            tier_action_contact: 'تواصل',
+            tier_action_contact_sub: 'المالك',
+            tier_action_contract: 'عقد',
+            tier_action_contract_sub: 'رقمي',
+            tier_action_pay: 'دفع',
+            tier_action_pay_sub: 'آمن',
+
+            // Access banners & locked state
+            access_restricted_title: 'إجراءات مقيدة',
+            access_unverified_badge: 'غير موثق',
+            access_no_premium_badge: 'بدون Premium',
+            access_verify_cta_desc: 'حمّل بطاقة طالبك للتحقق، ثم قم بالترقية إلى Premium.',
+            access_premium_cta_desc: 'أنت موثق! قم بالترقية إلى Premium للتواصل مع المالكين وتوقيع العقود والدفع.',
+            access_btn_verify: 'احصل على التوثيق',
+            access_btn_premium: 'الترقية إلى Premium',
+            access_locked_verify_title: 'التوثيق مطلوب',
+            access_locked_premium_title: 'Premium مطلوب',
+            access_locked_verify_desc: 'احصل على توثيق حسابك كطالب أولاً، ثم قم بالترقية إلى Premium للتواصل مع المالكين وتوقيع العقود والدفع بأمان.',
+            access_locked_premium_desc: 'أنت موثق! قم بالترقية إلى Premium (25 د.ت / سنة) للتواصل مع هذا المالك وإنشاء العقود وإجراء المدفوعات.',
+
+            // Gender filter
+            filter_gender_pref: 'تفضيل الجنس',
+            filter_any_gender: 'أي جنس',
+            filter_male_only: 'للذكور فقط',
+            filter_female_only: 'للإناث فقط',
+
+            // Listing detail — missing keys
+            detail_about_prop: 'حول هذا العقار',
+            detail_amenities_features: 'المرافق والميزات',
+            detail_show_more: 'عرض المزيد',
+            detail_show_less: 'عرض أقل',
+            detail_surface: 'المساحة',
+            detail_capacity: 'السعة',
+            detail_guests: 'أشخاص',
+            detail_tnd_mo: 'د.ت/شهر',
+            detail_places_left_label: 'الأماكن المتبقية',
+            detail_floor_label: 'الطابق',
+            detail_request_contract: 'طلب عقد',
+            detail_login_reserve: 'سجّل الدخول للحجز',
+            detail_report_listing: 'الإبلاغ عن هذا الإعلان',
+            detail_owned_by: 'مملوك من قِبل',
+            detail_member_since: 'عضو منذ',
+            detail_photos_count: 'صورة',
+            detail_future_roommates: 'زملاء السكن المستقبليون',
+            detail_location_directions: 'الموقع والاتجاهات',
+            detail_directions_desc: 'احسب مسارك من أي جامعة في تونس',
+            detail_choose_university: 'اختر جامعتك',
+            detail_select_uni: '-- اختر جامعة --',
+            detail_get_directions: 'احصل على الاتجاهات',
+            detail_driving: 'بالسيارة',
+            detail_walking: 'سيراً',
+            detail_compass_start: 'ابدأ',
+            detail_compass_stop: 'أوقف',
+            detail_discover_details: 'اكتشف التفاصيل'
         }
     },
 
