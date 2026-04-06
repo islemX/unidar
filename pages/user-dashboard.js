@@ -37,28 +37,28 @@ export default function UserDashboardPage() {
       <main className="section page-transition">
         <div className="container">
           <div className="dashboard-container">
-            <aside className="profile-side-card stagger-1">
-              <div className="profile-content">
+            <aside className="profile-side-card stagger-1" style={{ overflow:'hidden' }}>
+              <div className="profile-content" style={{ width:'100%', boxSizing:'border-box', overflow:'hidden' }}>
                 <div className="profile-avatar-pro" id="avatarInitials">U</div>
                 <h2 id="userName" className="title-bento mb-xs" style={{ fontSize: '1.5rem', fontWeight: 800 }}>User</h2>
                 <p id="userEmail" className="text-bento-muted mb-xl">user@email.com</p>
 
-                <div className="flex-column gap-md">
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
-                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_status">Status</span>
-                    <span className="stat-badge" data-i18n="dash_active">Active</span>
+                <div style={{ display:'flex', flexDirection:'column', gap:8, width:'100%', overflow:'hidden' }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12, gap:8, overflow:'hidden' }}>
+                    <span style={{ flexShrink:0, fontSize:'0.65rem', textTransform:'uppercase', fontWeight:700, color:'var(--color-text-muted,#94a3b8)', letterSpacing:'0.05em' }} data-i18n="dash_status">Status</span>
+                    <span className="stat-badge" style={{ flexShrink:0 }} data-i18n="dash_active">Active</span>
                   </div>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
-                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_subscription">Subscription</span>
-                    <span style={{ fontWeight:700, color:'var(--color-brand)', fontSize:'0.8rem', maxWidth:'55%', textAlign:'right', lineHeight:1.3 }} id="subscriptionStatusCard">—</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12, gap:8, overflow:'hidden' }}>
+                    <span style={{ flexShrink:0, fontSize:'0.65rem', textTransform:'uppercase', fontWeight:700, color:'var(--color-text-muted,#94a3b8)', letterSpacing:'0.05em' }} data-i18n="dash_subscription">Sub</span>
+                    <span style={{ fontWeight:700, color:'var(--color-brand)', fontSize:'0.75rem', textAlign:'right', lineHeight:1.3, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', minWidth:0, maxWidth:'65%' }} id="subscriptionStatusCard">—</span>
                   </div>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
-                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_favorites">Favorites</span>
-                    <span className="stat-badge" id="statSavedCard">0</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12, gap:8, overflow:'hidden' }}>
+                    <span style={{ flexShrink:0, fontSize:'0.65rem', textTransform:'uppercase', fontWeight:700, color:'var(--color-text-muted,#94a3b8)', letterSpacing:'0.05em' }} data-i18n="dash_favorites">Favorites</span>
+                    <span className="stat-badge" style={{ flexShrink:0 }} id="statSavedCard">0</span>
                   </div>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12 }}>
-                    <span className="text-tiny uppercase font-bold text-bento-muted" data-i18n="dash_contracts_label">Contracts</span>
-                    <span className="stat-badge" id="statContractsCard">0</span>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12, gap:8, overflow:'hidden' }}>
+                    <span style={{ flexShrink:0, fontSize:'0.65rem', textTransform:'uppercase', fontWeight:700, color:'var(--color-text-muted,#94a3b8)', letterSpacing:'0.05em' }} data-i18n="dash_contracts_label">Contracts</span>
+                    <span className="stat-badge" style={{ flexShrink:0 }} id="statContractsCard">0</span>
                   </div>
                 </div>
               </div>
@@ -83,12 +83,12 @@ export default function UserDashboardPage() {
                  <div id="dashboardMap" style={{ height: '100%', minHeight: 250, borderRadius: 'inherit' }}></div>
               </section>
 
-              <section className="bento-tile tile-contracts stagger-3">
+              <section className="bento-tile tile-contracts stagger-3" style={{ overflow:'hidden' }}>
                 <div className="flex justify-between items-center mb-lg">
                   <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_contracts_title">📄 Contracts</h3>
-                  <button className="btn btn-secondary btn-sm" id="refreshContracts" style={{ borderRadius: 50 }} data-i18n="dash_refresh">Refresh</button>
+                  <button className="btn btn-secondary btn-sm" id="refreshContracts" style={{ borderRadius: 50, flexShrink:0 }} data-i18n="dash_refresh">Refresh</button>
                 </div>
-                <div id="contractsContainer" className="flex-column gap-sm">
+                <div id="contractsContainer" className="flex-column gap-sm" style={{ overflow:'hidden', width:'100%' }}>
                   <p className="text-muted" data-i18n="dash_loading_contracts">Loading contracts…</p>
                 </div>
               </section>
@@ -305,21 +305,21 @@ export default function UserDashboardPage() {
                     // Cancel button: show for non-terminal statuses
                     const canCancel = !['terminated','expired','cancelled','rejected','completed'].includes(c.status);
 
-                    return '<div class="glass" style="border-radius:14px;padding:14px;margin-bottom:10px">' +
-                      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' +
-                        '<div style="flex:1;min-width:0">' +
-                          '<strong style="color:#1e293b;display:block;margin-bottom:2px">' + (c.listing_title || 'Listing') + '</strong>' +
-                          '<p class="text-muted text-small m-0">' +
-                            '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + statusColor + ';margin-right:4px;vertical-align:middle"></span>' +
+                    return '<div class="glass" style="border-radius:14px;padding:12px;margin-bottom:8px;overflow:hidden;width:100%;box-sizing:border-box">' +
+                      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;min-width:0">' +
+                        '<div style="flex:1;min-width:0;overflow:hidden">' +
+                          '<strong style="color:#1e293b;display:block;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.listing_title || 'Listing') + '</strong>' +
+                          '<p class="text-muted text-small m-0" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+                            '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + statusColor + ';margin-right:4px;vertical-align:middle;flex-shrink:0"></span>' +
                             (c.status || '') + ' · ' + (c.start_date ? c.start_date.slice(0,10) : '') +
                             (c.end_date ? ' → ' + c.end_date.slice(0,10) : '') +
                           '</p>' +
                           (c.monthly_rent ? '<p class="text-small m-0 mt-xs" style="color:var(--color-brand);font-weight:700">' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</p>' : '') +
                         '</div>' +
-                        '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
-                          '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
-                          (needsPay ? '<button onclick="payContract(' + c.listing_id + ',' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981">' + _t('dash_pay_now') + '</button>' : '') +
-                          (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">' + _t('dash_cancel_contract') + '</button>' : '') +
+                        '<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;align-items:flex-end">' +
+                          '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm" style="white-space:nowrap">📄 Doc</a>' +
+                          (needsPay ? '<button onclick="payContract(' + c.listing_id + ',' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981;white-space:nowrap">' + _t('dash_pay_now') + '</button>' : '') +
+                          (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;white-space:nowrap">' + _t('dash_cancel_contract') + '</button>' : '') +
                         '</div>' +
                       '</div>' +
                     '</div>';
