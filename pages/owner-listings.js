@@ -24,15 +24,15 @@ export default function OwnerListingsPage() {
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-xl)' }}>
             <div>
-              <h1>My Listings</h1>
-              <p className="text-muted" id="ownerName">Manage your properties</p>
+              <h1 data-i18n="owner_my_listings">My Listings</h1>
+              <p className="text-muted" id="ownerName" data-i18n="owner_manage_props">Manage your properties</p>
             </div>
-            <button id="createListingBtn" className="btn btn-primary">+ Add Listing</button>
+            <button id="createListingBtn" className="btn btn-primary" data-i18n="owner_add_listing">+ Add Listing</button>
           </div>
 
           {/* Contracts / Active Tenants */}
           <div className="card" style={{ padding: 'var(--space-xl)', marginBottom: 'var(--space-xl)' }}>
-            <h2 style={{ marginBottom: 'var(--space-lg)' }}>Active Contracts</h2>
+            <h2 style={{ marginBottom: 'var(--space-lg)' }} data-i18n="owner_active_contracts">Active Contracts</h2>
             <div id="contractsList"><p className="text-muted">Loading…</p></div>
           </div>
 
@@ -49,52 +49,54 @@ export default function OwnerListingsPage() {
       <div id="createModal" style={{ display: 'none', position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center', overflow: 'auto' }}>
         <div className="card" style={{ maxWidth: 600, width: '90%', margin: '40px auto', padding: 'var(--space-xl)', maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}>
           <button id="closeCreateModal" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
-          <h2>Create New Listing</h2>
+          <h2 data-i18n="owner_create_listing">Create New Listing</h2>
           <form id="createListingForm">
             {[
-              { id: 'lTitle', label: 'Title', type: 'text', required: true },
-              { id: 'lAddress', label: 'Address', type: 'text', required: true },
-              { id: 'lPrice', label: 'Price (TND/month)', type: 'number', required: true },
-              { id: 'lBedrooms', label: 'Bedrooms', type: 'number', required: true },
-              { id: 'lBathrooms', label: 'Bathrooms', type: 'number', required: false },
-              { id: 'lCapacity', label: 'Capacity (persons)', type: 'number', required: false },
+              { id: 'lTitle', label: 'Title', i18nKey: 'owner_field_title', type: 'text', required: true },
+              { id: 'lAddress', label: 'Address', i18nKey: 'owner_field_address', type: 'text', required: true },
+              { id: 'lPrice', label: 'Price (TND/month)', i18nKey: 'owner_field_price', type: 'number', required: true },
+              { id: 'lBedrooms', label: 'Bedrooms', i18nKey: 'owner_field_bedrooms', type: 'number', required: true },
+              { id: 'lBathrooms', label: 'Bathrooms', i18nKey: 'owner_field_bathrooms', type: 'number', required: false },
+              { id: 'lCapacity', label: 'Capacity (persons)', i18nKey: 'owner_field_capacity', type: 'number', required: false },
             ].map(f => (
               <div key={f.id} className="form-group">
-                <label className="form-label" htmlFor={f.id}>{f.label}</label>
+                <label className="form-label" htmlFor={f.id} data-i18n={f.i18nKey}>{f.label}</label>
                 <input type={f.type} id={f.id} className="form-input" required={f.required} />
               </div>
             ))}
             <div className="form-group">
-              <label className="form-label">Property Type</label>
+              <label className="form-label" data-i18n="owner_field_type">Property Type</label>
               <select id="lType" className="form-input">
                 {['apartment', 'house', 'studio', 'room'].map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             </div>
             <div className="form-group">
-              <label className="form-label">Gender Preference</label>
+              <label className="form-label" data-i18n="owner_field_gender">Gender Preference</label>
               <select id="lGender" className="form-input">
-                <option value="any">Any</option>
-                <option value="male">Male only</option>
-                <option value="female">Female only</option>
+                <option value="any" data-i18n="filter_any_gender">Any</option>
+                <option value="male" data-i18n="filter_male_only">Male only</option>
+                <option value="female" data-i18n="filter_female_only">Female only</option>
               </select>
             </div>
             <div className="form-group">
-              <label className="form-label">Description</label>
+              <label className="form-label" data-i18n="owner_field_desc">Description</label>
               <textarea id="lDesc" className="form-input" rows={3}></textarea>
             </div>
             <div className="form-group">
-              <label className="form-label">Listing Images</label>
+              <label className="form-label" data-i18n="owner_field_images">Listing Images</label>
               <input type="file" id="lImages" className="form-input" multiple accept="image/*" />
-              <p className="text-tiny text-muted mt-xs">You can select multiple images</p>
+              <p className="text-tiny text-muted mt-xs" data-i18n="owner_images_hint">You can select multiple images</p>
             </div>
             <div id="createError" className="alert alert-error" style={{ display: 'none' }}></div>
             <div id="createSuccess" className="alert alert-success" style={{ display: 'none' }}></div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Create Listing</button>
+            <button type="submit" className="btn btn-primary" style={{ width: '100%' }} data-i18n="owner_create_btn">Create Listing</button>
           </form>
         </div>
       </div>
 
       <Script id="owner-logic" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+        const _t = k => window.UNIDAR_I18N?.t(k) || k;
+
         async function initOwner() {
           const api = window.UNIDAR_API;
           if (!api) return;
@@ -109,7 +111,7 @@ export default function OwnerListingsPage() {
           if (!grid) return;
           
           if (!listings.length) {
-            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px"><p class="text-muted">No listings yet. Create your first one!</p></div>';
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px"><p class="text-muted">' + _t('owner_no_listings') + '</p></div>';
           } else {
             grid.innerHTML = listings.map(l => {
               const thumb = l.thumbnail ? '/' + l.thumbnail : '/placeholder.jpg';
@@ -127,8 +129,8 @@ export default function OwnerListingsPage() {
                     '<span class="badge badge-' + badgeClass + '">' + l.status + '</span>' +
                   '</div>' +
                   '<div style="display:flex;gap:8px;margin-top:12px">' +
-                    '<a href="/listings/' + l.id + '" class="btn btn-secondary btn-sm" style="flex:1;text-align:center">View</a>' +
-                    '<button onclick="removeListing(' + l.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;flex:1">Delete</button>' +
+                    '<a href="/listings/' + l.id + '" class="btn btn-secondary btn-sm" style="flex:1;text-align:center">' + _t('owner_view_btn') + '</a>' +
+                    '<button onclick="removeListing(' + l.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;flex:1">' + _t('owner_delete_btn') + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -147,7 +149,7 @@ export default function OwnerListingsPage() {
           const cList = document.getElementById('contractsList');
           if (cList) {
             if (!activeContracts.length) {
-              cList.innerHTML = '<p class="text-muted">No active contracts.</p>';
+              cList.innerHTML = '<p class="text-muted">' + _t('owner_no_contracts') + '</p>';
             } else {
               cList.innerHTML = activeContracts.map(c => {
                 const statusColor = {
@@ -166,11 +168,11 @@ export default function OwnerListingsPage() {
                     '<p class="text-small m-0 text-muted">' + (c.start_date ? c.start_date.slice(0,10) : '') + ' → ' + (c.end_date ? c.end_date.slice(0,10) : '') +
                       (c.monthly_rent ? ' · <strong>' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</strong>' : '') +
                     '</p>' +
-                    (c.status === 'termination_requested' ? '<p class="text-small mt-xs" style="color:#f97316;font-weight:600">⚠️ Student requested cancellation</p>' : '') +
+                    (c.status === 'termination_requested' ? '<p class="text-small mt-xs" style="color:#f97316;font-weight:600">' + _t('owner_cancel_requested') + '</p>' : '') +
                   '</div>' +
                   '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
                     '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
-                    (canTerminate ? '<button onclick="terminateContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">🚫 Terminate</button>' : '') +
+                    (canTerminate ? '<button onclick="terminateContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">' + _t('owner_terminate_btn') + '</button>' : '') +
                   '</div>' +
                 '</div>';
               }).join('');
@@ -179,16 +181,16 @@ export default function OwnerListingsPage() {
         }
 
         window.removeListing = async (id) => {
-          if (!confirm('Remove this listing?')) return;
+          if (!confirm(_t('owner_remove_confirm'))) return;
           try { await window.UNIDAR_API.Listings.delete(id); initOwner(); } catch (e) { alert(e.message); }
         };
 
         window.terminateContract = async (contractId) => {
-          const reason = prompt('Reason for termination (optional):') ?? '';
+          const reason = prompt(_t('owner_terminate_reason')) ?? '';
           if (reason === null) return;
           try {
             await window.UNIDAR_API.Contracts.terminate(contractId, reason);
-            alert('✅ Contract terminated. The listing is now available again.');
+            alert(_t('owner_terminated_ok'));
             initOwner();
           } catch (e) {
             alert('Error: ' + (e.message || 'Unknown error'));
@@ -229,7 +231,7 @@ export default function OwnerListingsPage() {
             }
 
             await window.UNIDAR_API.Listings.create(fd);
-            if (okDiv) { okDiv.textContent = 'Listing created!'; okDiv.style.display = 'block'; }
+            if (okDiv) { okDiv.textContent = _t('owner_created_ok'); okDiv.style.display = 'block'; }
             setTimeout(() => { 
                 const mod = document.getElementById('createModal');
                 if (mod) mod.style.display = 'none'; 

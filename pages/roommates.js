@@ -29,15 +29,15 @@ export default function RoommatesPage() {
         <div className="modal-content glow-card-premium" style={{ maxWidth: 550, width: '95%', margin: '40px auto', position: 'relative' }}>
             <div className="matching-overlay" id="matchingOverlay">
                 <div className="matching-pulse"><span style={{ fontSize: '3rem' }}>🤝</span></div>
-                <h3 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', fontWeight: 800 }}>Finding Matches</h3>
-                <p className="text-muted">Analyzing compatibility scores...</p>
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '0.5rem', fontWeight: 800 }} data-i18n="roommate_overlay_title">Finding Matches</h3>
+                <p className="text-muted" data-i18n="roommate_overlay_sub">Analyzing compatibility scores...</p>
             </div>
 
             <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxHeight: '80vh' }}>
                 <div className="flex justify-between items-center mb-lg">
                     <div>
-                        <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--color-brand)' }}>Preferences</h2>
-                        <p className="text-muted">Tell us who you&apos;re looking for</p>
+                        <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--color-brand)' }} data-i18n="roommate_prefs_title">Preferences</h2>
+                        <p className="text-muted" data-i18n="roommate_prefs_subtitle">Tell us who you&apos;re looking for</p>
                     </div>
                     <button id="closePrefs" className="btn btn-secondary" style={{ borderRadius: '50%', width: 40, height: 40, padding: 0 }}>✕</button>
                 </div>
@@ -45,7 +45,7 @@ export default function RoommatesPage() {
                 <form id="preferencesForm" style={{ overflowY: 'auto', paddingRight: 10 }}>
                     <div className="flex-column gap-lg">
                         <div className="form-group">
-                            <label className="form-label uppercase font-bold text-tiny text-muted">Monthly Budget (TND)</label>
+                            <label className="form-label uppercase font-bold text-tiny text-muted" data-i18n="pref_monthly_budget">Monthly Budget (TND)</label>
                             <div className="grid grid-2 gap-md">
                                 <input type="number" id="budget_min" className="form-input" placeholder="Min" />
                                 <input type="number" id="budget_max" className="form-input" placeholder="Max" />
@@ -54,13 +54,18 @@ export default function RoommatesPage() {
 
                         {/* Cleanliness Visual Selector */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Cleanliness</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_cleanliness">Cleanliness</span>
                             <div className="visual-selector" id="cleanlinessSelectors">
-                                {['relaxed', 'moderate', 'clean', 'very_clean'].map(v => (
+                                {[
+                                  { v:'relaxed', icon:'🧸', labelKey:'pref_relaxed' },
+                                  { v:'moderate', icon:'🧹', labelKey:'pref_moderate' },
+                                  { v:'clean', icon:'✨', labelKey:'pref_clean' },
+                                  { v:'very_clean', icon:'🧼', labelKey:'pref_very_clean' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="cleanliness" data-value={v}>
                                         <input type="radio" name="cleanliness" value={v} />
-                                        <span className="visual-option-icon">{v === 'relaxed' ? '🧸' : v === 'moderate' ? '🧹' : v === 'clean' ? '✨' : '🧼'}</span>
-                                        <span className="visual-option-label">{v.replace('_', ' ')}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -68,13 +73,17 @@ export default function RoommatesPage() {
 
                         {/* Sleep Schedule */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Sleep Schedule</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_sleep">Sleep Schedule</span>
                             <div className="visual-selector">
-                                {['early_riser', 'normal', 'night_owl'].map(v => (
+                                {[
+                                  { v:'early_riser', icon:'☀️', labelKey:'pref_early_riser' },
+                                  { v:'normal', icon:'☕', labelKey:'pref_normal' },
+                                  { v:'night_owl', icon:'🦉', labelKey:'pref_night_owl' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="sleep" data-value={v}>
                                         <input type="radio" name="sleep_schedule" value={v} />
-                                        <span className="visual-option-icon">{v === 'early_riser' ? '☀️' : v === 'normal' ? '☕' : '🦉'}</span>
-                                        <span className="visual-option-label">{v.replace('_', ' ')}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -82,13 +91,17 @@ export default function RoommatesPage() {
 
                         {/* Gender Pref */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Gender Preference</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_gender">Gender Preference</span>
                             <div className="visual-selector">
-                                {['male', 'female', 'no_preference'].map(v => (
+                                {[
+                                  { v:'male', icon:'👨', labelKey:'pref_male' },
+                                  { v:'female', icon:'👩', labelKey:'pref_female' },
+                                  { v:'no_preference', icon:'🤷', labelKey:'pref_no_preference' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="gender" data-value={v}>
                                         <input type="radio" name="gender_preference" value={v} />
-                                        <span className="visual-option-icon">{v === 'male' ? '👨' : v === 'female' ? '👩' : '🤷'}</span>
-                                        <span className="visual-option-label">{v.replace('_', ' ')}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -96,13 +109,17 @@ export default function RoommatesPage() {
 
                         {/* Smoking */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Smoking</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_smoking">Smoking</span>
                             <div className="visual-selector">
-                                {['non_smoker', 'smoker', 'no_preference'].map(v => (
+                                {[
+                                  { v:'non_smoker', icon:'🚭', labelKey:'pref_non_smoker' },
+                                  { v:'smoker', icon:'🚬', labelKey:'pref_smoker' },
+                                  { v:'no_preference', icon:'🤷‍♂️', labelKey:'pref_any' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="smoking" data-value={v}>
                                         <input type="radio" name="smoking_preference" value={v} />
-                                        <span className="visual-option-icon">{v === 'smoker' ? '🚬' : v === 'non_smoker' ? '🚭' : '🤷‍♂️'}</span>
-                                        <span className="visual-option-label">{v === 'non_smoker' ? 'No' : v === 'smoker' ? 'Yes' : 'Any'}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -110,13 +127,18 @@ export default function RoommatesPage() {
 
                         {/* Noise Tolerance */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Noise Tolerance</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_noise">Noise Tolerance</span>
                             <div className="visual-selector">
-                                {['quiet', 'moderate', 'social', 'no_preference'].map(v => (
+                                {[
+                                  { v:'quiet', icon:'🤫', labelKey:'pref_quiet' },
+                                  { v:'moderate', icon:'🔉', labelKey:'pref_moderate' },
+                                  { v:'social', icon:'🎉', labelKey:'pref_social' },
+                                  { v:'no_preference', icon:'🤷', labelKey:'pref_any' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="noise" data-value={v}>
                                         <input type="radio" name="noise_tolerance" value={v} />
-                                        <span className="visual-option-icon">{v === 'quiet' ? '🤫' : v === 'moderate' ? '🔉' : v === 'social' ? '🎉' : '🤷'}</span>
-                                        <span className="visual-option-label">{v === 'no_preference' ? 'Any' : v}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -124,13 +146,17 @@ export default function RoommatesPage() {
 
                         {/* Guests */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Guests Policy</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_guests">Guests Policy</span>
                             <div className="visual-selector">
-                                {['no_guests', 'occasional', 'no_preference'].map(v => (
+                                {[
+                                  { v:'no_guests', icon:'🚫', labelKey:'pref_no_guests' },
+                                  { v:'occasional', icon:'👥', labelKey:'pref_occasional' },
+                                  { v:'no_preference', icon:'🤷‍♂️', labelKey:'pref_any' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="guests" data-value={v}>
                                         <input type="radio" name="guests" value={v} />
-                                        <span className="visual-option-icon">{v === 'no_guests' ? '🚫' : v === 'occasional' ? '👥' : '🤷‍♂️'}</span>
-                                        <span className="visual-option-label">{v === 'no_guests' ? 'No Guests' : v === 'occasional' ? 'Occasional' : 'Any'}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -138,13 +164,17 @@ export default function RoommatesPage() {
 
                         {/* Pets */}
                         <div>
-                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block">Pets</span>
+                            <span className="form-label uppercase font-bold text-tiny text-muted mb-sm block" data-i18n="pref_pets">Pets</span>
                             <div className="visual-selector">
-                                {['no_pets', 'pets_ok', 'no_preference'].map(v => (
+                                {[
+                                  { v:'no_pets', icon:'🚫', labelKey:'pref_no_pets' },
+                                  { v:'pets_ok', icon:'🐾', labelKey:'pref_pets_ok' },
+                                  { v:'no_preference', icon:'🤷', labelKey:'pref_any' }
+                                ].map(({ v, icon, labelKey }) => (
                                     <label key={v} className="visual-option" data-group="pets" data-value={v}>
                                         <input type="radio" name="pets" value={v} />
-                                        <span className="visual-option-icon">{v === 'no_pets' ? '🚫' : v === 'pets_ok' ? '🐾' : '🤷'}</span>
-                                        <span className="visual-option-label">{v === 'no_pets' ? 'No Pets' : v === 'pets_ok' ? 'Pets OK' : 'Any'}</span>
+                                        <span className="visual-option-icon">{icon}</span>
+                                        <span className="visual-option-label" data-i18n={labelKey}>{v.replace('_', ' ')}</span>
                                     </label>
                                 ))}
                             </div>
@@ -152,17 +182,17 @@ export default function RoommatesPage() {
 
                         {/* Age Range */}
                         <div className="form-group">
-                            <label className="form-label uppercase font-bold text-tiny text-muted">Age Range</label>
+                            <label className="form-label uppercase font-bold text-tiny text-muted" data-i18n="pref_age_range">Age Range</label>
                             <div className="grid grid-2 gap-md">
-                                <input type="number" id="age_min" className="form-input" placeholder="Min age" min="18" max="100" />
-                                <input type="number" id="age_max" className="form-input" placeholder="Max age" min="18" max="100" />
+                                <input type="number" id="age_min" className="form-input" data-i18n-placeholder="pref_age_min_placeholder" placeholder="Min age" min="18" max="100" />
+                                <input type="number" id="age_max" className="form-input" data-i18n-placeholder="pref_age_max_placeholder" placeholder="Max age" min="18" max="100" />
                             </div>
                         </div>
                     </div>
                     
                     <div style={{ marginTop: '2rem' }}>
-                        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: 16, borderRadius: 12, fontWeight: 800 }}>
-                           Save & Find Matches
+                        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: 16, borderRadius: 12, fontWeight: 800 }} data-i18n="roommate_save_matches">
+                           Save &amp; Find Matches
                         </button>
                     </div>
                 </form>
@@ -179,12 +209,12 @@ export default function RoommatesPage() {
               <div className="shape" style={{ width: 250, height: 250, background: 'rgba(255,255,255,0.03)', bottom: -50, left: -50, filter: 'blur(30px)' }}></div>
             </div>
             <div style={{ position: 'relative', zIndex: 2, maxWidth: 650 }}>
-              <div className="hero-badge" style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }}>✨ Smart Matching</div>
-              <h1 style={{ color: 'white', marginBottom: '1.5rem', fontSize: '3.5rem', fontWeight: 800 }}>Find Your Ideal Roommate</h1>
-              <p style={{ fontSize: '1.25rem', opacity: 0.9, marginBottom: '2rem', color: 'white' }}>
+              <div className="hero-badge" style={{ background: 'rgba(255,255,255,0.15)', color: 'white' }} data-i18n="roommate_hero_badge">✨ Smart Matching</div>
+              <h1 style={{ color: 'white', marginBottom: '1.5rem', fontSize: '3.5rem', fontWeight: 800 }} data-i18n="roommate_hero_title">Find Your Ideal Roommate</h1>
+              <p style={{ fontSize: '1.25rem', opacity: 0.9, marginBottom: '2rem', color: 'white' }} data-i18n="roommate_hero_subtitle">
                 Don&apos;t settle for just anyone. Our algorithm matches you with students who share your lifestyle and habits.
               </p>
-              <button className="btn" id="openPrefsBtn" style={{ background: 'white', color: 'var(--color-brand)', fontWeight: 800, borderRadius: 14 }}>
+              <button className="btn" id="openPrefsBtn" style={{ background: 'white', color: 'var(--color-brand)', fontWeight: 800, borderRadius: 14 }} data-i18n="roommate_open_prefs">
                 ⚙️ Update My Preferences
               </button>
             </div>
@@ -201,6 +231,7 @@ export default function RoommatesPage() {
       </main>
 
       <Script id="roommate-logic" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+        const _t = k => window.UNIDAR_I18N?.t(k) || k;
         let currentUser = null;
 
         async function loadMatches() {
@@ -215,8 +246,8 @@ export default function RoommatesPage() {
             
             if (!matches.length) {
               container.innerHTML = '<div class="glass p-2xl text-center" style="grid-column:1/-1;border-radius:24px">' +
-                '<h2 style="font-size:2rem;font-weight:800">No Matches Yet</h2>' +
-                '<p class="text-muted">Try broadening your preferences.</p>' +
+                '<h2 style="font-size:2rem;font-weight:800">' + _t('roommate_no_matches') + '</h2>' +
+                '<p class="text-muted">' + _t('roommate_no_matches_sub') + '</p>' +
               '</div>';
               return;
             }
@@ -243,7 +274,7 @@ export default function RoommatesPage() {
                     '<span class="badge badge-premium">☕ ' + (m.preferences?.sleep_schedule || 'Normal') + '</span>' +
                   '</div>' +
                 '</div>' +
-                '<button onclick="startRoommateChat(' + m.user_id + ')" class="btn btn-primary" style="width:100%;border-radius:12px;font-weight:800">💬 Message</button>' +
+                '<button onclick="startRoommateChat(' + m.user_id + ')" class="btn btn-primary" style="width:100%;border-radius:12px;font-weight:800">' + _t('roommate_message') + '</button>' +
               '</div>';
             }).join('');
 
