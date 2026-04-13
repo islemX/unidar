@@ -29,11 +29,11 @@ async function handleRegister(req, res) {
   const existing = await query('SELECT id FROM users WHERE email = ?', [email]);
   if (existing.length > 0) return res.status(409).json({ error: 'Email already registered' });
 
-  const password_hash = await bcrypt.hash(password, 10);
+  const hashed = await bcrypt.hash(password, 10);
   const result = await query(
-    `INSERT INTO users (email, password_hash, full_name, role, gender, status)
+    `INSERT INTO users (email, password, full_name, role, gender, status)
      VALUES (?, ?, ?, ?, ?, 'active')`,
-    [email, password_hash, full_name, role, gender || null]
+    [email, hashed, full_name, role, gender || null]
   );
 
   const userId = result.insertId;
@@ -48,13 +48,13 @@ async function handleLogin(req, res) {
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
 
   const rows = await query(
-    'SELECT id, email, password_hash, full_name, role, status FROM users WHERE email = ?',
+    'SELECT id, email, password, full_name, role, status FROM users WHERE email = ?',
     [email]
   );
   const user = rows[0];
   if (!user) return res.status(401).json({ error: 'Invalid credentials' });
   
-  const valid = await bcrypt.compare(password, user.password_hash);
+  const valid = await bcrypt.compare(password, user.password);
   if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
   if (user.status !== 'active') return res.status(403).json({ error: 'Account disabled' });
 
