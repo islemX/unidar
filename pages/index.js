@@ -1,5 +1,5 @@
 /**
- * UNIDAR – Premium Home Page
+ * UNIDAR â€“ Premium Home Page
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -16,7 +16,7 @@ export default function HomePage() {
       <nav className="navbar" id="navbar">
         <div className="nav-container">
           <a href="/" className="nav-logo" aria-label="UNIDAR">
-            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
+            <img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links" id="navLinks">
             <a href="/" className="nav-link active" data-i18n="nav_home">Home</a>
@@ -45,22 +45,22 @@ export default function HomePage() {
                 <span data-i18n="home_hero_badge">Trusted by Students Across Tunisia</span>
               </div>
               <h1 data-i18n="home_hero_title">Find Your <span>Perfect</span><br />Student Home</h1>
-              <p data-i18n="home_hero_subtitle">The premier platform for Tunisian university students. Discover verified listings, find compatible roommates, and secure safe housing near your campus—all in one place.</p>
+              <p data-i18n="home_hero_subtitle">The premier platform for Tunisian university students. Discover verified listings, find compatible roommates, and secure safe housing near your campusâ€”all in one place.</p>
               <div className="hero-actions">
                 <a href="/listings" className="btn btn-primary" data-i18n="home_hero_explore">Explore Listings</a>
                 <a href="/roommates" className="btn btn-secondary" data-i18n="home_hero_roommates">Find Roommates</a>
               </div>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <span className="hero-stat-number" id="stat_listings">—</span>
+                  <span className="hero-stat-number" id="stat_listings">â€”</span>
                   <span className="hero-stat-label" data-i18n="home_hero_stat_listings">Verified Listings</span>
                 </div>
                 <div className="hero-stat">
-                  <span className="hero-stat-number" id="stat_students">—</span>
+                  <span className="hero-stat-number" id="stat_students">â€”</span>
                   <span className="hero-stat-label" data-i18n="home_hero_stat_students">Active Students</span>
                 </div>
                 <div className="hero-stat">
-                  <span className="hero-stat-number" id="stat_unis">—</span>
+                  <span className="hero-stat-number" id="stat_unis">â€”</span>
                   <span className="hero-stat-label" data-i18n="home_hero_stat_unis">Universities Covered</span>
                 </div>
               </div>
@@ -79,12 +79,12 @@ export default function HomePage() {
             </div>
             <div className="feature-grid">
                {[
-                 { icon: '🛡️', color: 'blue', key: '1' },
-                 { icon: '📍', color: 'green', key: '2' },
-                 { icon: '🤝', color: 'purple', key: '3' },
-                 { icon: '💬', color: 'orange', key: '4' },
-                 { icon: '📋', color: 'pink', key: '5' },
-                 { icon: '⚡', color: 'cyan', key: '6' }
+                 { icon: 'ðŸ›¡ï¸', color: 'blue', key: '1' },
+                 { icon: 'ðŸ“', color: 'green', key: '2' },
+                 { icon: 'ðŸ¤', color: 'purple', key: '3' },
+                 { icon: 'ðŸ’¬', color: 'orange', key: '4' },
+                 { icon: 'ðŸ“‹', color: 'pink', key: '5' },
+                 { icon: 'âš¡', color: 'cyan', key: '6' }
                ].map(f => (
                  <div key={f.key} className="feature-card reveal">
                     <div className={`feature-icon ${f.color}`}>{f.icon}</div>
@@ -151,11 +151,11 @@ export default function HomePage() {
                       borderRadius:'30px', padding:'7px 20px',
                       fontSize:'.73rem', fontWeight:800, color:'#6366f1', letterSpacing:'.06em', textTransform:'uppercase'
                     }}>
-                      🔑 <span data-i18n="tier_how_access">HOW ACCESS WORKS</span>
+                      ðŸ”‘ <span data-i18n="tier_how_access">HOW ACCESS WORKS</span>
                     </span>
                   </div>
 
-                  {/* Tier 1 – Browse */}
+                  {/* Tier 1 â€“ Browse */}
                   <div className="tc1" style={{
                     background:'#fff', borderRadius:'18px',
                     padding:'18px 20px', display:'flex', alignItems:'center', gap:'16px',
@@ -167,16 +167,16 @@ export default function HomePage() {
                       background:'linear-gradient(135deg,#10b981,#34d399)',
                       display:'flex', alignItems:'center', justifyContent:'center',
                       fontSize:'1.4rem', boxShadow:'0 4px 14px rgba(16,185,129,.28)'
-                    }}>🌐</div>
+                    }}>ðŸŒ</div>
                     <div style={{ flex:1, minWidth:0 }}>
                       <div data-i18n="tier_browse_title" style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Browse &amp; Explore</div>
-                      <div data-i18n="tier_browse_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>View all listings &amp; details — no upgrade needed</div>
+                      <div data-i18n="tier_browse_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>View all listings &amp; details â€” no upgrade needed</div>
                     </div>
                     <div data-i18n="tier_badge_free" style={{
                       background:'linear-gradient(135deg,#d1fae5,#a7f3d0)',
                       color:'#065f46', borderRadius:'20px', flexShrink:0,
                       padding:'5px 13px', fontSize:'.68rem', fontWeight:800, letterSpacing:'.05em'
-                    }}>FREE ✓</div>
+                    }}>FREE âœ“</div>
                   </div>
 
                   {/* Connector 1 */}
@@ -184,7 +184,7 @@ export default function HomePage() {
                     <div className="t-conn" style={{ width:'2px', background:'linear-gradient(to bottom,#10b981,#3b82f6)', borderRadius:'2px', margin:'0 auto' }} />
                   </div>
 
-                  {/* Tier 2 – Verified */}
+                  {/* Tier 2 â€“ Verified */}
                   <div className="tc2" style={{
                     background:'#fff', borderRadius:'18px',
                     padding:'18px 20px', display:'flex', alignItems:'center', gap:'16px',
@@ -196,7 +196,7 @@ export default function HomePage() {
                       background:'linear-gradient(135deg,#3b82f6,#60a5fa)',
                       display:'flex', alignItems:'center', justifyContent:'center',
                       fontSize:'1.4rem', boxShadow:'0 4px 14px rgba(59,130,246,.28)'
-                    }}>🎓</div>
+                    }}>ðŸŽ“</div>
                     <div style={{ flex:1, minWidth:0 }}>
                       <div data-i18n="tier_verify_title" style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Student Verified</div>
                       <div data-i18n="tier_verify_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Upload your student ID card to confirm enrollment</div>
@@ -205,7 +205,7 @@ export default function HomePage() {
                       background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',
                       color:'#1e40af', borderRadius:'20px', flexShrink:0,
                       padding:'5px 13px', fontSize:'.68rem', fontWeight:800, letterSpacing:'.05em'
-                    }}>STEP 2 →</div>
+                    }}>STEP 2 â†’</div>
                   </div>
 
                   {/* Connector 2 */}
@@ -213,7 +213,7 @@ export default function HomePage() {
                     <div className="t-conn" style={{ width:'2px', background:'linear-gradient(to bottom,#3b82f6,#6366f1)', borderRadius:'2px', margin:'0 auto' }} />
                   </div>
 
-                  {/* Tier 3 – Premium */}
+                  {/* Tier 3 â€“ Premium */}
                   <div className="tc3" style={{
                     background:'linear-gradient(135deg,#fafaff,#f5f3ff)',
                     borderRadius:'18px', padding:'18px 20px',
@@ -227,10 +227,10 @@ export default function HomePage() {
                       background:'linear-gradient(135deg,#6366f1,#a855f7)',
                       display:'flex', alignItems:'center', justifyContent:'center',
                       fontSize:'1.4rem', boxShadow:'0 4px 16px rgba(99,102,241,.38)'
-                    }}>⭐</div>
+                    }}>â­</div>
                     <div style={{ flex:1, minWidth:0 }}>
                       <div data-i18n="tier_premium_title" style={{ fontWeight:700, fontSize:'.95rem', color:'#0f172a', letterSpacing:'-.015em' }}>Premium Unlocked</div>
-                      <div data-i18n="tier_premium_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Contact owners · Sign contracts · Pay securely</div>
+                      <div data-i18n="tier_premium_desc" style={{ fontSize:'.77rem', color:'#64748b', marginTop:'4px', lineHeight:1.4 }}>Contact owners Â· Sign contracts Â· Pay securely</div>
                     </div>
                     <div style={{
                       background:'linear-gradient(135deg,#6366f1,#a855f7)',
@@ -249,13 +249,13 @@ export default function HomePage() {
                     borderRadius:'16px', padding:'16px 18px'
                   }}>
                     <div style={{ fontSize:'.67rem', fontWeight:800, color:'#6366f1', textTransform:'uppercase', letterSpacing:'.08em', textAlign:'center', marginBottom:'12px' }}>
-                      🔓 <span data-i18n="tier_premium_actions_label">Premium-only Actions</span>
+                      ðŸ”“ <span data-i18n="tier_premium_actions_label">Premium-only Actions</span>
                     </div>
                     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'8px' }}>
                       {[
-                        { icon:'💬', iKey:'tier_action_contact', sKey:'tier_action_contact_sub', label:'Contact', sub:'Owner' },
-                        { icon:'📄', iKey:'tier_action_contract', sKey:'tier_action_contract_sub', label:'Contract', sub:'Digital' },
-                        { icon:'💳', iKey:'tier_action_pay', sKey:'tier_action_pay_sub', label:'Pay', sub:'Secure' }
+                        { icon:'ðŸ’¬', iKey:'tier_action_contact', sKey:'tier_action_contact_sub', label:'Contact', sub:'Owner' },
+                        { icon:'ðŸ“„', iKey:'tier_action_contract', sKey:'tier_action_contract_sub', label:'Contract', sub:'Digital' },
+                        { icon:'ðŸ’³', iKey:'tier_action_pay', sKey:'tier_action_pay_sub', label:'Pay', sub:'Secure' }
                       ].map(({ icon, iKey, sKey, label, sub }) => (
                         <div key={iKey} style={{
                           textAlign:'center', padding:'12px 6px',
@@ -280,9 +280,9 @@ export default function HomePage() {
                 <h2 data-i18n="home_students_title">Built for Students, By Students</h2>
                 <p data-i18n="home_students_subtitle">We understand the unique challenges of finding student housing in Tunisia. Browse freely, get verified, and unlock full access with Premium.</p>
                 <ul className="benefit-list">
-                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit1">Browse all listings for free — no upgrade needed</span></li>
-                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit2">Get verified with your student ID card</span></li>
-                  <li><span className="benefit-icon">✓</span> <span data-i18n="home_students_benefit3">Go Premium to contact owners, sign digital contracts &amp; pay securely</span></li>
+                  <li><span className="benefit-icon">âœ“</span> <span data-i18n="home_students_benefit1">Browse all listings for free â€” no upgrade needed</span></li>
+                  <li><span className="benefit-icon">âœ“</span> <span data-i18n="home_students_benefit2">Get verified with your student ID card</span></li>
+                  <li><span className="benefit-icon">âœ“</span> <span data-i18n="home_students_benefit3">Go Premium to contact owners, sign digital contracts &amp; pay securely</span></li>
                 </ul>
                 <a href="/register" className="btn btn-primary btn-lg" data-i18n="home_students_cta">Start Your Search</a>
               </div>
@@ -299,9 +299,9 @@ export default function HomePage() {
                 <h2 data-i18n="home_owners_title">Reach Thousands of Verified Students</h2>
                 <p data-i18n="home_owners_subtitle">List your property on UNIDAR and connect with verified university students.</p>
                 <ul className="benefit-list">
-                  <li><span className="benefit-icon" style={{ background: 'linear-gradient(135deg, #fbbf24, #fb923c)' }}>✓</span> <span data-i18n="home_owners_benefit1">Free listing creation</span></li>
-                  <li><span className="benefit-icon" style={{ background: 'linear-gradient(135deg, #fbbf24, #fb923c)' }}>✓</span> <span data-i18n="home_owners_benefit2">Direct messaging</span></li>
-                  <li><span className="benefit-icon" style={{ background: 'linear-gradient(135deg, #fbbf24, #fb923c)' }}>✓</span> <span data-i18n="home_owners_benefit3">Manage bookings</span></li>
+                  <li><span className="benefit-icon" style={{ background: 'linear-gradient(135deg, #fbbf24, #fb923c)' }}>âœ“</span> <span data-i18n="home_owners_benefit1">Free listing creation</span></li>
+                  <li><span className="benefit-icon" style={{ background: 'linear-gradient(135deg, #fbbf24, #fb923c)' }}>âœ“</span> <span data-i18n="home_owners_benefit2">Direct messaging</span></li>
+                  <li><span className="benefit-icon" style={{ background: 'linear-gradient(135deg, #fbbf24, #fb923c)' }}>âœ“</span> <span data-i18n="home_owners_benefit3">Manage bookings</span></li>
                 </ul>
                 <a href="/register" className="btn btn-primary btn-lg" data-i18n="home_owners_cta">List Your Property</a>
               </div>
@@ -363,7 +363,7 @@ export default function HomePage() {
                 <div className="trust-badges">
                     {[1,2,3,4,5].map(i => (
                         <div key={i} className="trust-badge reveal">
-                            <span className="trust-badge-icon">{['🎓','🔒','✅','🛡️','⭐'][i-1]}</span>
+                            <span className="trust-badge-icon">{['ðŸŽ“','ðŸ”’','âœ…','ðŸ›¡ï¸','â­'][i-1]}</span>
                             <span className="trust-badge-text" data-i18n={`home_trust_badge${i}`}>...</span>
                         </div>
                     ))}
@@ -376,7 +376,7 @@ export default function HomePage() {
           <div className="container">
             <div className="cta-content reveal">
               <h2 data-i18n="home_cta_title">Ready to Find Your Perfect Home?</h2>
-              <p data-i18n="home_cta_subtitle">Join thousands of Tunisian students who have already found their ideal housing through UNIDAR. Start your search today—it's free!</p>
+              <p data-i18n="home_cta_subtitle">Join thousands of Tunisian students who have already found their ideal housing through UNIDAR. Start your search todayâ€”it's free!</p>
               <a href="/register" className="btn btn-primary" data-i18n="home_cta_btn">Get Started for Free</a>
             </div>
           </div>
@@ -412,7 +412,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p data-i18n="footer_copyright">© 2026 UNIDAR. All rights reserved.</p>
+            <p data-i18n="footer_copyright">Â© 2026 UNIDAR. All rights reserved.</p>
           </div>
         </div>
       </footer>

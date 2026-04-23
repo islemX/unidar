@@ -2,9 +2,9 @@
  * Public stats endpoint — used by the home page hero counters.
  * No auth required, returns aggregate counts only.
  */
-const { query } = require('../../../lib/db');
+import { query } from '../../../lib/db';
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

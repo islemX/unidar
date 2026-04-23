@@ -1,5 +1,5 @@
 /**
- * UNIDAR – Listings Browse Page
+ * UNIDAR â€“ Listings Browse Page
  * Reuses existing listings.html logic/CSS fully
  */
 import Head from 'next/head';
@@ -13,7 +13,7 @@ export default function ListingsPage() {
 
       <nav className="navbar glass" id="navbar">
         <div className="nav-container">
-          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} /></a>
+          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} /></a>
           <div className="nav-links">
             <a href="/listings" className="nav-link active auth-only" style={{ display: 'none' }} data-i18n="nav_listings">Listings</a>
             <a href="/roommates" className="nav-link auth-only" style={{ display: 'none' }} data-i18n="nav_roommates">Roommates</a>
@@ -33,7 +33,7 @@ export default function ListingsPage() {
                 Browse all listings freely. To contact owners, sign contracts or make payments you need to be verified and have an active Premium plan.
               </p>
               <button id="toggleView" className="btn btn-secondary hover-lift" style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                <span id="viewIcon">🗺️</span> <span id="viewText" data-i18n="listings_map_view">Map View</span>
+                <span id="viewIcon">ðŸ—ºï¸</span> <span id="viewText" data-i18n="listings_map_view">Map View</span>
               </button>
             </div>
           </header>
@@ -105,7 +105,7 @@ export default function ListingsPage() {
               }}
             >
               <button id="applyFilters" className="btn btn-primary hover-lift" data-i18n="btn_apply_filters" style={{minWidth: 200}}>Apply Filters</button>
-              <button id="resetFilters" className="btn btn-secondary hover-lift" title="Reset">🔄</button>
+              <button id="resetFilters" className="btn btn-secondary hover-lift" title="Reset">ðŸ”„</button>
             </div>
           </div>
 
@@ -146,13 +146,13 @@ export default function ListingsPage() {
               <button class="btn \${isSaved ? 'btn-primary' : 'btn-secondary'}" 
                       style="position:absolute;top:12px;right:12px;z-index:10;padding:0;border-radius:50%;width:36px;height:36px;border:none;box-shadow:var(--shadow-md)"
                       onclick="toggleSaveListing(\${l.id}, event)">
-                \${isSaved ? '✓' : '♡'}
+                \${isSaved ? 'âœ“' : 'â™¡'}
               </button>
               <img src="\${img}" class="card-image" style="width:100%;height:100%;object-fit:cover;\${isFull ? 'filter:grayscale(0.5)' : ''}" onerror="this.src='/placeholder.jpg'">
               \${isFull ? '<div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:5"><span class="badge" style="background:var(--color-error);color:white">FULL</span></div>' : ''}
               <div style="position:absolute;bottom:12px;left:12px;z-index:10;display:flex;gap:4px">
                 <span class="badge" style="background:rgba(255,255,255,0.9);backdrop-filter:blur(4px);color:var(--color-text-primary)">\${l.property_type || 'Property'}</span>
-                \${l.gender_preference && l.gender_preference !== 'any' ? \`<span class="badge" style="background:rgba(255,255,255,0.9);backdrop-filter:blur(4px);color:var(--color-text-primary)">\${l.gender_preference === 'male' ? '♂️' : '♀️'} Only</span>\` : ''}
+                \${l.gender_preference && l.gender_preference !== 'any' ? \`<span class="badge" style="background:rgba(255,255,255,0.9);backdrop-filter:blur(4px);color:var(--color-text-primary)">\${l.gender_preference === 'male' ? 'â™‚ï¸' : 'â™€ï¸'} Only</span>\` : ''}
               </div>
             </div>
             <div class="card-body" style="padding:var(--space-lg)">
@@ -160,11 +160,11 @@ export default function ListingsPage() {
                 <h3 style="margin:0;font-size:1.1rem;flex:1">\${l.title}</h3>
                 <div style="font-weight:700;color:var(--color-brand);font-size:1.2rem;white-space:nowrap">\${l.price} <small style="font-size:0.7rem">TND/mo</small></div>
               </div>
-              <p class="text-muted" style="font-size:0.85rem;margin:4px 0">📍 \${l.address || l.location || 'Tunisia'}</p>
+              <p class="text-muted" style="font-size:0.85rem;margin:4px 0">ðŸ“ \${l.address || l.location || 'Tunisia'}</p>
               <div style="display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--color-surface-50);margin-top:12px">
-                <span style="font-size:0.8rem;font-weight:600">🛏️ \${l.bedrooms || 1} Bed</span>
-                <span style="font-size:0.8rem;font-weight:600">👤 \${remaining} Places</span>
-                \${l.size ? \`<span style="font-size:0.8rem;font-weight:600">📐 \${l.size}m²</span>\` : ''}
+                <span style="font-size:0.8rem;font-weight:600">ðŸ›ï¸ \${l.bedrooms || 1} Bed</span>
+                <span style="font-size:0.8rem;font-weight:600">ðŸ‘¤ \${remaining} Places</span>
+                \${l.size ? \`<span style="font-size:0.8rem;font-weight:600">ðŸ“ \${l.size}mÂ²</span>\` : ''}
               </div>
               <button class="btn btn-secondary" style="width:100%;margin-top:12px;font-size:0.8rem">\${window.UNIDAR_I18N?.t('detail_discover_details') || 'Discover Details'}</button>
             </div>
@@ -182,7 +182,7 @@ export default function ListingsPage() {
             savedIds = savedList.map(l => l.id || l.listing_id).filter(Boolean);
             allListings = listingsRes.listings || [];
             if (!allListings.length) {
-              grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 0" class="card premium-card">🏠 <h3>No listings found</h3><p class="text-muted">Adjust your filters and try again</p></div>';
+              grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 0" class="card premium-card">ðŸ  <h3>No listings found</h3><p class="text-muted">Adjust your filters and try again</p></div>';
               return;
             }
             grid.innerHTML = allListings.map((l, i) => renderListingCard(l, i)).join('');
@@ -202,12 +202,12 @@ export default function ListingsPage() {
             if (isSaved) {
               await window.UNIDAR_API.SavedListings.unsave(id);
               savedIds = savedIds.filter(sid => sid !== id);
-              btn.innerHTML = '♡';
+              btn.innerHTML = 'â™¡';
               btn.className = 'btn btn-secondary';
             } else {
               await window.UNIDAR_API.SavedListings.save(id);
               savedIds.push(id);
-              btn.innerHTML = '✓';
+              btn.innerHTML = 'âœ“';
               btn.className = 'btn btn-primary';
             }
           } catch (err) { alert('Action failed'); }
@@ -238,10 +238,10 @@ export default function ListingsPage() {
           const icon = document.getElementById('viewIcon');
           if (list.style.display === 'none') {
             list.style.display = 'block'; mv.style.display = 'none';
-            text.textContent = 'Map View'; icon.textContent = '🗺️';
+            text.textContent = 'Map View'; icon.textContent = 'ðŸ—ºï¸';
           } else {
             list.style.display = 'none'; mv.style.display = 'block';
-            text.textContent = 'List View'; icon.textContent = '📋';
+            text.textContent = 'List View'; icon.textContent = 'ðŸ“‹';
             setTimeout(() => { initMap(); map.invalidateSize(); }, 100);
           }
         });
@@ -295,7 +295,7 @@ export default function ListingsPage() {
               const badgeColor = !isValidated ? '#1d4ed8' : '#92400e';
               banner.innerHTML = \`
                 <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(168,85,247,.07));border:1.5px solid rgba(99,102,241,.2);border-radius:16px;padding:14px 18px">
-                  <div style="font-size:1.5rem">🔒</div>
+                  <div style="font-size:1.5rem">ðŸ”’</div>
                   <div style="flex:1;min-width:220px">
                     <div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:3px">
                       <span style="background:\${badgeBg};color:\${badgeColor};border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:700;margin-right:6px">\${badgeText}</span>\${_t('access_restricted_title')}

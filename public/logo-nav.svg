@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" width="460" height="120"
+     role="img" aria-label="UNIDAR">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&amp;display=swap');
+      .u-word { font-family: 'Sora', 'Segoe UI', sans-serif; font-weight: 800;
+                font-feature-settings: "ss01","ss02"; }
+    </style>
+
+    <linearGradient id="navMarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1">
+        <animate attributeName="stop-color"
+                 values="#6366f1;#0ea5e9;#8b5cf6;#ec4899;#6366f1"
+                 dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#0ea5e9">
+        <animate attributeName="stop-color"
+                 values="#0ea5e9;#8b5cf6;#ec4899;#6366f1;#0ea5e9"
+                 dur="6s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <linearGradient id="navTextGrad" x1="-30%" y1="0%" x2="30%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1">
+        <animate attributeName="stop-color"
+                 values="#6366f1;#0ea5e9;#8b5cf6;#ec4899;#6366f1"
+                 dur="5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" stop-color="#0ea5e9">
+        <animate attributeName="stop-color"
+                 values="#0ea5e9;#8b5cf6;#ec4899;#6366f1;#0ea5e9"
+                 dur="5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#ec4899">
+        <animate attributeName="stop-color"
+                 values="#ec4899;#6366f1;#0ea5e9;#8b5cf6;#ec4899"
+                 dur="5s" repeatCount="indefinite"/>
+      </stop>
+      <animate attributeName="x1" values="-50%;50%;-50%" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="50%;150%;50%"  dur="5s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <linearGradient id="navShine" x1="-100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="45%"  stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="55%"  stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      <animate attributeName="x1" values="-100%;120%" dur="4s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="0%;220%"    dur="4s" begin="1s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <symbol id="navHouseMark" viewBox="0 0 100 110">
+      <path d="M50 4 L92 22 V60 C92 84 74 100 50 106 C26 100 8 84 8 60 V22 Z"
+            fill="url(#navMarkGrad)"/>
+      <path d="M50 28 L74 44 V70 H58 V56 H42 V70 H26 V44 Z"
+            fill="#ffffff" fill-opacity="0.95"/>
+      <rect x="44" y="58" width="12" height="12" fill="#fbbf24">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite"/>
+      </rect>
+      <circle cx="66" cy="36" r="3" fill="#ffffff" fill-opacity="0.9"/>
+    </symbol>
+  </defs>
+
+  <!-- Mark: vertically centered (viewBox 120 high, mark 100 high, y=10) -->
+  <g transform="translate(8 10)">
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+                        values="0 0; 0 -3; 0 0" dur="3.2s" repeatCount="indefinite"
+                        calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"/>
+      <use href="#navHouseMark" width="100" height="100"/>
+    </g>
+  </g>
+
+  <!-- Wordmark: vertically centered. Cap height ~70 baseline at y≈82 in 120 viewBox -->
+  <g transform="translate(120 0)">
+    <text x="0" y="86" class="u-word" font-size="84" letter-spacing="0.5"
+          fill="url(#navTextGrad)">UNIDAR</text>
+    <text x="0" y="86" class="u-word" font-size="84" letter-spacing="0.5"
+          fill="url(#navShine)">UNIDAR</text>
+  </g>
+</svg>

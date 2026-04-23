@@ -1,5 +1,5 @@
 /**
- * UNIDAR – Admin Payments Record
+ * UNIDAR â€“ Admin Payments Record
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -10,7 +10,7 @@ export default function AdminPaymentsPage() {
       <Head><title>Payments Ledger - UNIDAR</title></Head>
       <nav className="navbar black" style={{background:'#0f172a',color:'white'}}>
         <div className="nav-container">
-          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} /></a>
+          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} /></a>
           <div className="nav-links">
             <a href="/admin" className="nav-link" style={{color:'white'}}>Overview</a>
             <a href="/admin/payments" className="nav-link active" style={{color:'white'}}>Payments Ledger</a>
@@ -24,7 +24,7 @@ export default function AdminPaymentsPage() {
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:32}}>
             <h1 style={{margin:0,fontSize:'2.5rem',fontWeight:800}}>Payments Ledger</h1>
             <div style={{display:'flex',gap:12}}>
-               <button id="refreshBtn" className="btn btn-secondary btn-sm">🔄 Refresh</button>
+               <button id="refreshBtn" className="btn btn-secondary btn-sm">ðŸ”„ Refresh</button>
                <select id="periodFilter" className="form-input" style={{width:150,padding:'4px 12px'}}>
                   <option value="all">All Time</option>
                   <option value="today">Today</option>
@@ -49,7 +49,7 @@ export default function AdminPaymentsPage() {
                   </tr>
                 </thead>
                 <tbody id="paymentTableBody">
-                  <tr><td colSpan="7" style={{padding:40,textAlign:'center',color:'#94a3b8'}}>Loading payments…</td></tr>
+                  <tr><td colSpan="7" style={{padding:40,textAlign:'center',color:'#94a3b8'}}>Loading paymentsâ€¦</td></tr>
                 </tbody>
               </table>
             </div>

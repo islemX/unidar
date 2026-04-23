@@ -1,5 +1,5 @@
 /**
- * UNIDAR – Messages Page
+ * UNIDAR â€“ Messages Page
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -11,7 +11,7 @@ export default function MessagesPage() {
       <nav className="navbar glass">
         <div className="nav-container">
           <a href="/" className="nav-logo">
-            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
+            <img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links">
             <a href="/listings" className="nav-link">Listings</a>
@@ -28,7 +28,7 @@ export default function MessagesPage() {
               <h2 style={{ margin: 0, fontSize: '1.2rem' }}>Inbox</h2>
             </div>
             <div id="inboxList" style={{ flex: 1, overflowY: 'auto' }}>
-              <p style={{ padding: 20, textAlign: 'center', color: 'var(--color-text-muted)' }}>Loading conversations…</p>
+              <p style={{ padding: 20, textAlign: 'center', color: 'var(--color-text-muted)' }}>Loading conversationsâ€¦</p>
             </div>
           </div>
 
@@ -39,13 +39,13 @@ export default function MessagesPage() {
             </div>
             <div id="messagesArea" style={{ flex: 1, padding: 24, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{ margin: 'auto', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: 16 }}>💬</div>
+                <div style={{ fontSize: '3rem', marginBottom: 16 }}>ðŸ’¬</div>
                 <p>Select a conversation to start messaging</p>
               </div>
             </div>
             <div id="chatInputArea" style={{ padding: 20, background: 'white', borderTop: '1px solid var(--color-border)', display: 'none' }}>
               <form id="msgForm" style={{ display: 'flex', gap: 12 }}>
-                <input type="text" id="msgInput" className="form-input" placeholder="Type a message…" required style={{ borderRadius: 24 }} />
+                <input type="text" id="msgInput" className="form-input" placeholder="Type a messageâ€¦" required style={{ borderRadius: 24 }} />
                 <button type="submit" className="btn btn-primary" style={{ borderRadius: 24, padding: '0 24px' }}>Send</button>
               </form>
             </div>

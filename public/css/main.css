@@ -233,7 +233,7 @@ input, textarea, select {
 }
 .nav-logo:hover { opacity: 0.85; color: var(--color-surface-900); }
 .nav-logo span { color: var(--color-brand); }
-.nav-logo img { height: 40px; width: auto; display: block; }
+.nav-logo img { height: 44px; width: auto; display: block; }
 
 .nav-links {
   display: flex;

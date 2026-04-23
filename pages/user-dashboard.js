@@ -1,5 +1,5 @@
 /**
- * UNIDAR – User Dashboard (Student)
+ * UNIDAR â€“ User Dashboard (Student)
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -19,7 +19,7 @@ export default function UserDashboardPage() {
       <nav className="navbar glass">
         <div className="nav-container">
           <a href="/" className="nav-logo">
-            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
+            <img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links">
             <a href="/listings" className="nav-link" data-i18n="nav_listings">Listings</a>
@@ -50,7 +50,7 @@ export default function UserDashboardPage() {
                   </div>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12, gap:8, overflow:'hidden' }}>
                     <span style={{ flexShrink:0, fontSize:'0.65rem', textTransform:'uppercase', fontWeight:700, color:'var(--color-text-muted,#94a3b8)', letterSpacing:'0.05em' }} data-i18n="dash_subscription">Sub</span>
-                    <span style={{ fontWeight:700, color:'var(--color-brand)', fontSize:'0.75rem', textAlign:'right', lineHeight:1.3, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', minWidth:0, maxWidth:'65%' }} id="subscriptionStatusCard">—</span>
+                    <span style={{ fontWeight:700, color:'var(--color-brand)', fontSize:'0.75rem', textAlign:'right', lineHeight:1.3, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', minWidth:0, maxWidth:'65%' }} id="subscriptionStatusCard">â€”</span>
                   </div>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'var(--color-surface-50,#f8fafc)', borderRadius:12, gap:8, overflow:'hidden' }}>
                     <span style={{ flexShrink:0, fontSize:'0.65rem', textTransform:'uppercase', fontWeight:700, color:'var(--color-text-muted,#94a3b8)', letterSpacing:'0.05em' }} data-i18n="dash_favorites">Favorites</span>
@@ -85,31 +85,31 @@ export default function UserDashboardPage() {
 
               <section className="bento-tile tile-contracts stagger-3" style={{ overflow:'hidden' }}>
                 <div className="flex justify-between items-center mb-lg">
-                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_contracts_title">📄 Contracts</h3>
+                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_contracts_title">ðŸ“„ Contracts</h3>
                   <button className="btn btn-secondary btn-sm" id="refreshContracts" style={{ borderRadius: 50, flexShrink:0 }} data-i18n="dash_refresh">Refresh</button>
                 </div>
                 <div id="contractsContainer" className="flex-column gap-sm" style={{ overflow:'hidden', width:'100%' }}>
-                  <p className="text-muted" data-i18n="dash_loading_contracts">Loading contracts…</p>
+                  <p className="text-muted" data-i18n="dash_loading_contracts">Loading contractsâ€¦</p>
                 </div>
               </section>
 
               <section className="bento-tile tile-messages stagger-4">
                 <div className="flex justify-between items-center mb-lg">
-                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_messages_title">💬 Messages</h3>
+                  <h3 className="title-bento m-0" style={{ fontSize: '1.4rem' }} data-i18n="dash_messages_title">ðŸ’¬ Messages</h3>
                   <a href="/messages" className="stat-badge" style={{ textDecoration: 'none' }} data-i18n="dash_inbox">Inbox</a>
                 </div>
                 <div id="messagesList" className="flex-column gap-md" style={{ overflowY: 'auto' }}>
-                  <p className="text-muted" data-i18n="dash_loading_messages">Loading messages…</p>
+                  <p className="text-muted" data-i18n="dash_loading_messages">Loading messagesâ€¦</p>
                 </div>
               </section>
 
               <section className="bento-tile tile-saved stagger-5">
                 <div className="flex justify-between items-center mb-lg">
-                  <h3 className="title-bento m-0" style={{ fontSize: '1.6rem' }} data-i18n="dash_saved_title">✨ Saved for Later</h3>
+                  <h3 className="title-bento m-0" style={{ fontSize: '1.6rem' }} data-i18n="dash_saved_title">âœ¨ Saved for Later</h3>
                   <a href="/listings" className="btn btn-primary btn-sm" style={{ borderRadius: 50 }} data-i18n="dash_browse_more">Browse More</a>
                 </div>
                 <div id="savedContainer" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 'var(--space-md)' }}>
-                  <p className="text-muted" data-i18n="dash_loading_saved">Loading saved listings…</p>
+                  <p className="text-muted" data-i18n="dash_loading_saved">Loading saved listingsâ€¦</p>
                 </div>
               </section>
             </div>
@@ -311,13 +311,13 @@ export default function UserDashboardPage() {
                           '<strong style="color:#1e293b;display:block;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.listing_title || 'Listing') + '</strong>' +
                           '<p class="text-muted text-small m-0" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
                             '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + statusColor + ';margin-right:4px;vertical-align:middle;flex-shrink:0"></span>' +
-                            (c.status || '') + ' · ' + (c.start_date ? c.start_date.slice(0,10) : '') +
-                            (c.end_date ? ' → ' + c.end_date.slice(0,10) : '') +
+                            (c.status || '') + ' Â· ' + (c.start_date ? c.start_date.slice(0,10) : '') +
+                            (c.end_date ? ' â†’ ' + c.end_date.slice(0,10) : '') +
                           '</p>' +
                           (c.monthly_rent ? '<p class="text-small m-0 mt-xs" style="color:var(--color-brand);font-weight:700">' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</p>' : '') +
                         '</div>' +
                         '<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;align-items:flex-end">' +
-                          '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm" style="white-space:nowrap">📄 Doc</a>' +
+                          '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm" style="white-space:nowrap">ðŸ“„ Doc</a>' +
                           (needsPay ? '<button onclick="payContract(' + c.listing_id + ',' + c.id + ')" class="btn btn-primary btn-sm" style="background:#10b981;border-color:#10b981;white-space:nowrap">' + _t('dash_pay_now') + '</button>' : '') +
                           (canCancel ? '<button onclick="cancelContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;white-space:nowrap">' + _t('dash_cancel_contract') + '</button>' : '') +
                         '</div>' +
@@ -344,7 +344,7 @@ export default function UserDashboardPage() {
                     '<strong class="text-truncate" style="color:#1e293b">' + l.title + '</strong>' +
                     '<div class="flex justify-between items-center">' +
                       '<span class="color-brand font-bold text-small">' + l.price + ' TND</span>' +
-                      '<button onclick="unsaveListing(' + l.id + ')" class="btn btn-secondary btn-sm" style="padding:2px 8px;font-size:0.7rem">✕</button>' +
+                      '<button onclick="unsaveListing(' + l.id + ')" class="btn btn-secondary btn-sm" style="padding:2px 8px;font-size:0.7rem">âœ•</button>' +
                     '</div>' +
                   '</div>';
                 }).join('') : '<p class="text-muted">' + _t('dash_no_saved') + '</p>';
@@ -383,17 +383,17 @@ export default function UserDashboardPage() {
         function showVerificationBanner(status) {
           const cont = document.getElementById('bannerContainer');
           if (!cont) return;
-          let icon = '⚠️', bgColor = 'linear-gradient(135deg, #fffbeb, #fef3c7)', borderColor = '#f59e0b', textColor = '#92400e';
+          let icon = 'âš ï¸', bgColor = 'linear-gradient(135deg, #fffbeb, #fef3c7)', borderColor = '#f59e0b', textColor = '#92400e';
           let title = _t('dash_verify_title');
           let body = _t('dash_verify_body');
           let btnText = _t('dash_verify_btn');
           if (status === 'pending') {
-             icon = '🕐'; bgColor = 'linear-gradient(135deg, #eff6ff, #dbeafe)'; borderColor = '#3b82f6'; textColor = '#1e40af';
+             icon = 'ðŸ•'; bgColor = 'linear-gradient(135deg, #eff6ff, #dbeafe)'; borderColor = '#3b82f6'; textColor = '#1e40af';
              title = _t('dash_pending_title');
              body = _t('dash_pending_body');
              btnText = _t('dash_pending_btn');
           } else if (status === 'rejected') {
-             icon = '❌'; bgColor = 'linear-gradient(135deg, #fef2f2, #fee2e2)'; borderColor = '#ef4444'; textColor = '#991b1b';
+             icon = 'âŒ'; bgColor = 'linear-gradient(135deg, #fef2f2, #fee2e2)'; borderColor = '#ef4444'; textColor = '#991b1b';
              title = _t('dash_rejected_title');
              body = _t('dash_rejected_body');
              btnText = _t('dash_rejected_btn');
@@ -405,7 +405,7 @@ export default function UserDashboardPage() {
               '<div style="font-size:2rem">' + icon + '</div>' +
               '<div><p style="margin:0;line-height:1.4"><strong>' + title + '</strong><br>' + body + '</p></div>' +
             '</div>' +
-            '<button onclick="window.location.href=\\'/verification\\'" class="btn btn-primary" style="background:' + borderColor + ';border:none;white-space:nowrap;padding:10px 20px">' + btnText + ' →</button>';
+            '<button onclick="window.location.href=\\'/verification\\'" class="btn btn-primary" style="background:' + borderColor + ';border:none;white-space:nowrap;padding:10px 20px">' + btnText + ' â†’</button>';
           cont.appendChild(div);
         }
 
@@ -415,7 +415,7 @@ export default function UserDashboardPage() {
           let title = _t('dash_sub_required_title');
           let body = _t('dash_sub_required_body');
           if (status === 'expired') {
-            const dateText = expiresAt ? formatDateShort(expiresAt) : '—';
+            const dateText = expiresAt ? formatDateShort(expiresAt) : 'â€”';
             title = _t('dash_sub_expired_title');
             body = _t('dash_sub_expired_body_prefix') + dateText + _t('dash_sub_expired_body_suffix');
           }
@@ -423,7 +423,7 @@ export default function UserDashboardPage() {
           div.className = 'glass';
           div.style.cssText = 'grid-column:span 6;padding:20px;border-radius:16px;border:1px solid #10b981;background:linear-gradient(135deg, #ecfdf5, #d1fae5);color:#065f46;display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:12px';
           div.innerHTML = '<div style="display:flex;align-items:center;gap:20px">' +
-              '<div style="font-size:2rem">💳</div>' +
+              '<div style="font-size:2rem">ðŸ’³</div>' +
               '<div><p style="margin:0;line-height:1.4"><strong>' + title + '</strong><br>' + body + '</p></div>' +
             '</div>' +
             '<button onclick="window.location.href=\\'/subscription\\'" class="btn btn-primary" style="background:#10b981;border:none;white-space:nowrap;padding:10px 20px">' + _t('dash_subscribe_now') + '</button>';
@@ -441,7 +441,7 @@ export default function UserDashboardPage() {
             // fallback: direct payment if contracts.js not loaded yet
             if (!confirm('Proceed with payment for this contract?')) return;
             window.UNIDAR_API.Contracts.processPayment(contractId)
-              .then(() => { alert('✅ Payment successful! Contract is now active.'); init(); })
+              .then(() => { alert('âœ… Payment successful! Contract is now active.'); init(); })
               .catch(e => alert('Payment failed: ' + (e.message || 'Unknown error')));
           }
         };
@@ -452,7 +452,7 @@ export default function UserDashboardPage() {
           try {
             const api = window.UNIDAR_API;
             await api.Contracts.requestTermination(contractId, reason);
-            alert('✅ Cancellation request submitted. The owner will be notified.');
+            alert('âœ… Cancellation request submitted. The owner will be notified.');
             init();
           } catch (e) {
             alert('Error: ' + (e.message || 'Unknown error'));

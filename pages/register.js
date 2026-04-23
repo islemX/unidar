@@ -1,5 +1,5 @@
 /**
- * UNIDAR – Register Page
+ * UNIDAR â€“ Register Page
  * Matches PHP version exactly (Map + Premium Layout)
  */
 import Head from 'next/head';
@@ -23,7 +23,7 @@ export default function RegisterPage() {
       <nav className="navbar glass">
         <div className="nav-container">
           <a href="/" className="nav-logo">
-            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
+            <img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links">
             <a href="/login" className="nav-link" data-i18n="nav_login">Log In</a>
@@ -164,10 +164,10 @@ export default function RegisterPage() {
             const data = await res.json();
             const address = data.display_name;
             document.getElementById('preferred_address').value = address;
-            document.getElementById('selectedLocationDisplay').textContent = "📍 " + address;
+            document.getElementById('selectedLocationDisplay').textContent = "ðŸ“ " + address;
           } catch (e) {
             document.getElementById('preferred_address').value = lat + "," + lng;
-            document.getElementById('selectedLocationDisplay').textContent = "📍 " + lat.toFixed(4) + ", " + lng.toFixed(4);
+            document.getElementById('selectedLocationDisplay').textContent = "ðŸ“ " + lat.toFixed(4) + ", " + lng.toFixed(4);
           }
         }
 

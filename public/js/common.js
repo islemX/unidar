@@ -198,7 +198,7 @@ function applyRoleNavbar(page, user) {
     var firstName = userData && userData.full_name ? userData.full_name.split(' ')[0] : '';
     container.innerHTML =
         '<a href="/" class="nav-logo" aria-label="UNIDAR">' +
-        '<img src="/logo.svg" alt="UNIDAR" style="height:40px;width:auto;display:block" />' +
+        '<img src="/logo-nav.svg" alt="UNIDAR" style="height:44px;width:auto;display:block" />' +
         '</a>' +
         '<button class="nav-hamburger" id="navHamburger" aria-label="Menu">' +
         '<span></span><span></span><span></span>' +
