@@ -10,7 +10,7 @@ export default function AdminPaymentsPage() {
       <Head><title>Payments Ledger - UNIDAR</title></Head>
       <nav className="navbar black" style={{background:'#0f172a',color:'white'}}>
         <div className="nav-container">
-          <a href="/" className="nav-logo" style={{color:'white'}}><span style={{color:'var(--color-brand)'}}>UNI</span>DAR</a>
+          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} /></a>
           <div className="nav-links">
             <a href="/admin" className="nav-link" style={{color:'white'}}>Overview</a>
             <a href="/admin/payments" className="nav-link active" style={{color:'white'}}>Payments Ledger</a>

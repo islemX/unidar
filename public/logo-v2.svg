@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200"
+     role="img" aria-label="UNIDAR logo">
+  <defs>
+    <!-- Fonts -->
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=JetBrains+Mono:wght@500&amp;display=swap');
+      .u-word { font-family: 'Bricolage Grotesque', 'Segoe UI', sans-serif; font-weight: 800; font-variation-settings: "opsz" 96; }
+      .u-tag  { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; }
+    </style>
+
+    <!-- Deep midnight-to-neon gradient for the badge -->
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#0f172a"/>
+      <stop offset="50%"  stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+
+    <!-- Neon accent that shifts hue -->
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee">
+        <animate attributeName="stop-color"
+                 values="#22d3ee;#a78bfa;#f472b6;#22d3ee"
+                 dur="6s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#a78bfa">
+        <animate attributeName="stop-color"
+                 values="#a78bfa;#f472b6;#22d3ee;#a78bfa"
+                 dur="6s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <!-- Flowing hue gradient for the wordmark -->
+    <linearGradient id="wordGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0ea5e9">
+        <animate attributeName="stop-color"
+                 values="#0ea5e9;#8b5cf6;#f472b6;#0ea5e9"
+                 dur="7s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#8b5cf6">
+        <animate attributeName="stop-color"
+                 values="#8b5cf6;#f472b6;#0ea5e9;#8b5cf6"
+                 dur="7s" repeatCount="indefinite"/>
+      </stop>
+      <animate attributeName="x1" values="-50%;50%;-50%" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="50%;150%;50%"  dur="7s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <!-- Radial window glow -->
+    <radialGradient id="winGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#fde68a" stop-opacity="1"/>
+      <stop offset="60%"  stop-color="#fbbf24" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Strong glow for neon elements -->
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="b1"/>
+      <feGaussianBlur stdDeviation="6"   result="b2"/>
+      <feMerge>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Shimmer for the wordmark -->
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="48%"  stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="52%"  stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      <animate attributeName="x1" values="-100%;100%" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="0%;200%"    dur="4s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <!-- Keyhole badge — UNIDAR "unlocks" student housing.
+         Built from a circle (bow) + trapezoid (blade).
+         Path is a single closed shape so we can stroke it with the neon gradient. -->
+    <symbol id="keyhole" viewBox="-60 -60 120 120">
+      <path d="M 0 -48
+               A 30 30 0 1 1 -0.01 -48 Z
+               M -14 -22
+               L -22 46
+               L 22 46
+               L 14 -22 Z"
+            fill="url(#badgeGrad)" fill-rule="evenodd"
+            stroke="url(#neonGrad)" stroke-width="2.5"
+            stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+
+  <!-- ░░ LOGO MARK — "The Bilingual Door" ░░
+       A ligature of the Latin U (UNI) and the Arabic د daal (DAR / دار = home),
+       set inside a keyhole. A tiny key rotates to unlock the mark at intro,
+       then a constellation of student/home pins settles around it. -->
+  <g transform="translate(100 100)">
+
+    <!-- Constellation of student+home pins orbiting the keyhole.
+         Each pin drifts in from the edge and breathes — not generic ripple rings. -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+                        values="0;360" dur="60s" repeatCount="indefinite"/>
+      <g>
+        <!-- 6 pins at irregular angles & radii (a real network, not a symmetric grid) -->
+        <circle cx="-70" cy="-20" r="2.2" fill="#22d3ee">
+          <animate attributeName="opacity" values="0;1;0.5;1" dur="3.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="68"  cy="-30" r="2.0" fill="#a78bfa">
+          <animate attributeName="opacity" values="0.4;1;0.3;0.9" dur="2.7s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="72"  cy="10"  r="2.4" fill="#f472b6">
+          <animate attributeName="opacity" values="1;0.3;1;0.6" dur="3.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="-64" cy="30"  r="2.0" fill="#22d3ee">
+          <animate attributeName="opacity" values="0.6;0.2;1;0.5" dur="2.9s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="10"  cy="-64" r="2.2" fill="#a78bfa">
+          <animate attributeName="opacity" values="0.3;1;0.4;1" dur="3.1s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="-8"  cy="62"  r="2.0" fill="#f472b6">
+          <animate attributeName="opacity" values="1;0.5;0.2;0.9" dur="2.6s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+
+    <!-- Keyhole badge -->
+    <use href="#keyhole" x="-60" y="-60" width="120" height="120"/>
+
+    <!-- ─── Bilingual monogram: Latin U + Arabic د (daal) ─── -->
+    <g filter="url(#neonGlow)">
+
+      <!-- Arabic د (daal) as the roof/lintel of the door. Daal literally means
+           "door" in old Semitic pictography and is the first letter of دار (dar, home). -->
+      <path d="M -18 -30
+               L 14 -30
+               Q 22 -30 20 -22
+               L 18 -18"
+            fill="none" stroke="url(#neonGrad)" stroke-width="4"
+            stroke-linecap="round" stroke-linejoin="round">
+        <!-- Calligraphy draw-on -->
+        <animate attributeName="stroke-dasharray"  from="0 80" to="80 0" dur="0.9s" begin="0s" fill="freeze"/>
+      </path>
+
+      <!-- Latin U forming the archway/doorway beneath داال -->
+      <path d="M -22 -14
+               L -22 10
+               A 22 22 0 0 0 22 10
+               L 22 -14"
+            fill="none" stroke="url(#neonGrad)" stroke-width="5"
+            stroke-linecap="round" stroke-linejoin="round">
+        <animate attributeName="stroke-dasharray"  from="0 120" to="120 0" dur="1s" begin="0.6s" fill="freeze"/>
+      </path>
+
+      <!-- Graduation tassel hanging from the meeting point of U + د -->
+      <g transform="translate(22 -14)">
+        <animateTransform attributeName="transform" type="rotate"
+                          values="-12 0 0; 12 0 0; -12 0 0"
+                          dur="2.8s" repeatCount="indefinite" additive="sum"/>
+        <line x1="0" y1="0" x2="0" y2="12"
+              stroke="url(#neonGrad)" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="0" cy="14" r="2.2" fill="#fde68a">
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+
+    <!-- The key that "unlocks" UNIDAR. Rotates 90° once at intro from horizontal
+         to vertical, clicking into the keyhole — literal brand action. -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+                        values="-90;-90;0" keyTimes="0;0.3;1"
+                        dur="1.8s" begin="1.4s" fill="freeze"/>
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;1" dur="0.2s" begin="1.4s" fill="freeze"/>
+        <!-- Key shaft -->
+        <line x1="0" y1="0" x2="0" y2="22"
+              stroke="url(#neonGrad)" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Key bow (top) -->
+        <circle cx="0" cy="-4" r="4.5" fill="none"
+                stroke="url(#neonGrad)" stroke-width="2"/>
+        <!-- Teeth -->
+        <line x1="0" y1="14" x2="5" y2="14" stroke="url(#neonGrad)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="0" y1="19" x2="4" y2="19" stroke="url(#neonGrad)" stroke-width="2" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- Interior "light" behind the U — the home is lit once the key turns -->
+    <g opacity="0">
+      <animate attributeName="opacity" values="0;0;0.7" keyTimes="0;0.75;1"
+               dur="1.8s" begin="1.4s" fill="freeze"/>
+      <circle cx="-36" cy="-14" r="3" fill="url(#winGlow)">
+        <animate attributeName="opacity" values="0.2;1;0.2;0.8;0.2"
+                 dur="3.1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="36" cy="-14" r="3" fill="url(#winGlow)">
+        <animate attributeName="opacity" values="0.8;0.2;1;0.3;0.8"
+                 dur="2.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-36" cy="14" r="3" fill="url(#winGlow)">
+        <animate attributeName="opacity" values="1;0.3;0.9;0.2;1"
+                 dur="3.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="36" cy="14" r="3" fill="url(#winGlow)">
+        <animate attributeName="opacity" values="0.3;1;0.2;0.9;0.3"
+                 dur="2.9s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- ░░ WORDMARK ░░ -->
+  <g transform="translate(200 0)">
+
+    <!-- Main colored text (flowing gradient) -->
+    <text x="0" y="118" class="u-word" font-size="84" letter-spacing="-2"
+          fill="url(#wordGrad)">UNIDAR</text>
+
+    <!-- Shimmer overlay -->
+    <text x="0" y="118" class="u-word" font-size="84" letter-spacing="-2"
+          fill="url(#shine)">UNIDAR</text>
+
+    <!-- Accent dot on the I (location pin vibe) -->
+    <g>
+      <circle cx="182" cy="58" r="6" fill="url(#neonGrad)" filter="url(#neonGlow)">
+        <animate attributeName="r" values="5;7;5" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Underline sweep with gradient -->
+    <line x1="2" y1="138" x2="360" y2="138"
+          stroke="url(#neonGrad)" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="360" stroke-dashoffset="360">
+      <animate attributeName="stroke-dashoffset"
+               values="360;0;0;360" keyTimes="0;0.4;0.8;1"
+               dur="5s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- Monospace tagline with a typewriter reveal -->
+    <g class="u-tag">
+      <text x="4" y="162" font-size="13" letter-spacing="2" fill="#64748b">
+        <tspan>&gt; find.home( student )</tspan>
+        <animate attributeName="opacity" values="0;1" dur="1.2s" begin="0.6s" fill="freeze"/>
+      </text>
+      <!-- Blinking cursor -->
+      <rect x="180" y="150" width="8" height="14" fill="#64748b">
+        <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.5;0.5;1"
+                 dur="1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+  </g>
+</svg>

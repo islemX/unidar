@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  UNIDAR logo – "Row of Homes"
+  The six letters of UNIDAR sit side-by-side and clearly spell the name,
+  but each letter is sculpted into a different student dwelling. A single
+  roofline arcs across all of them, turning the wordmark into one house.
+
+    U = arched-door entrance hall
+    N = stair-house with a light climbing the staircase
+    I = lighthouse tower (dot = lamp, sweeping beam)
+    D = round-window dome house
+    A = tallest pitched-roof main house (peak of the skyline)
+    R = townhouse with round bay window + side extension
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" width="520" height="300"
+     role="img" aria-label="UNIDAR – letter homes">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;display=swap');
+      .u-tag { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; }
+    </style>
+
+    <!-- Flowing accent gradient for strokes & roof line -->
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee">
+        <animate attributeName="stop-color" values="#22d3ee;#a78bfa;#f472b6;#22d3ee"
+                 dur="7s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#f472b6">
+        <animate attributeName="stop-color" values="#f472b6;#22d3ee;#a78bfa;#f472b6"
+                 dur="7s" repeatCount="indefinite"/>
+      </stop>
+      <animate attributeName="x1" values="-30%;30%;-30%" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="70%;130%;70%"  dur="6s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <!-- Warm window glow -->
+    <radialGradient id="win" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#fef9c3"/>
+      <stop offset="55%"  stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Soft glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- House-body fill (dark navy silhouette) -->
+    <linearGradient id="bodyFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Reusable tiny lit window -->
+    <symbol id="w" viewBox="-4 -4 8 8">
+      <rect x="-3" y="-3" width="6" height="6" rx="0.8" fill="url(#win)"/>
+    </symbol>
+  </defs>
+
+  <!-- ════ NIGHT SKY DECOR ════ -->
+  <g opacity="0.9">
+    <!-- Moon -->
+    <circle cx="460" cy="50" r="16" fill="#fde68a" opacity="0.9"/>
+    <circle cx="455" cy="46" r="2" fill="#e8d57a" opacity="0.6"/>
+    <!-- Stars -->
+    <circle cx="40"  cy="30" r="1" fill="#fff"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="130" cy="45" r="1" fill="#fff"><animate attributeName="opacity" values="1;0.4;1"   dur="3.1s" repeatCount="indefinite"/></circle>
+    <circle cx="220" cy="25" r="1" fill="#fff"><animate attributeName="opacity" values="0.5;1;0.4" dur="2.8s" repeatCount="indefinite"/></circle>
+    <circle cx="310" cy="50" r="1" fill="#fff"><animate attributeName="opacity" values="0.4;1;0.3" dur="3.3s" repeatCount="indefinite"/></circle>
+    <circle cx="400" cy="28" r="1" fill="#fff"><animate attributeName="opacity" values="1;0.3;0.9" dur="2.9s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- Bird silhouette flying across the roofline -->
+  <path d="M 0 0 q 3 -4 6 0 q 3 -4 6 0" fill="none" stroke="#475569" stroke-width="1.2">
+    <animateTransform attributeName="transform" type="translate"
+                      values="-30 60; 560 30" dur="14s" begin="3s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- ════ THE ROW ════ gentle float -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+                      values="0 0; 0 -2; 0 0" dur="5s" repeatCount="indefinite"/>
+
+    <!-- Unified roofline: a single accent stroke tracing the tops of U→R.
+         Draws on at intro, then stays as the skyline spine. -->
+    <path d="M 20 140
+             L 95 140
+             L 100 140 L 170 140
+             L 180 140 L 185 88 L 190 140 L 200 140
+             L 272 140
+             L 283 140 L 320 74 L 357 140
+             L 370 140 L 440 140"
+          fill="none" stroke="url(#accent)" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="700" stroke-dashoffset="700">
+      <animate attributeName="stroke-dashoffset" from="700" to="0"
+               dur="1.6s" begin="0s" fill="freeze"/>
+    </path>
+
+    <!-- ── U : arched-door entrance hall ── -->
+    <g>
+      <!-- Letter U silhouette as a building with an arched interior doorway -->
+      <path d="M 20 140
+               L 20 240
+               L 95 240
+               L 95 140
+               L 82 140
+               L 82 178
+               A 19 19 0 0 0 33 178
+               L 33 140 Z"
+            fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="2"
+            stroke-linejoin="round"/>
+      <!-- Glowing doorway inside the arch -->
+      <path d="M 33 240 L 33 178 A 19 19 0 0 1 82 178 L 82 240 Z"
+            fill="url(#win)" opacity="0.9" filter="url(#glow)"/>
+      <!-- Door frame + handle -->
+      <rect x="49" y="198" width="17" height="42" fill="#0f172a" stroke="url(#accent)" stroke-width="1"/>
+      <circle cx="62" cy="220" r="1.3" fill="#fde68a"/>
+      <!-- Tiny person entering -->
+      <circle r="1.8" fill="#22d3ee">
+        <animate attributeName="cx" values="20;57;57" keyTimes="0;0.9;1" dur="7s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="236;236;236" dur="7s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.9;1" dur="7s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- ── N : stair-house with a light climbing the staircase ── -->
+    <g>
+      <!-- Letter N silhouette (two verticals + diagonal bar) -->
+      <path d="M 100 140 L 100 240 L 113 240 L 113 170
+               L 157 240 L 170 240 L 170 140 L 157 140 L 157 210 L 113 140 Z"
+            fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="2"
+            stroke-linejoin="round"/>
+      <!-- Zigzag staircase drawn in the right-hand counter of N -->
+      <polyline points="120,225 130,225 130,210 140,210 140,195 150,195 150,180"
+                fill="none" stroke="url(#accent)" stroke-width="1.3" stroke-linejoin="round" opacity="0.85"/>
+      <!-- A warm light climbing the staircase -->
+      <circle r="2.5" fill="url(#win)" filter="url(#glow)">
+        <animateMotion dur="4.5s" repeatCount="indefinite" rotate="auto"
+          path="M 120 225 L 130 225 L 130 210 L 140 210 L 140 195 L 150 195 L 150 180"/>
+      </circle>
+      <!-- Little window in the left counter -->
+      <use href="#w" x="120" y="155"/>
+    </g>
+
+    <!-- ── I : lighthouse tower with sweeping beam ── -->
+    <g>
+      <!-- Shaft -->
+      <rect x="176" y="140" width="18" height="100" fill="url(#bodyFill)"
+            stroke="url(#accent)" stroke-width="2"/>
+      <!-- Lamp housing (dot of the i) -->
+      <circle cx="185" cy="100" r="8" fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="2"/>
+      <!-- Bright bulb -->
+      <circle cx="185" cy="100" r="3.5" fill="#fde68a" filter="url(#glow)">
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="1.6s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Little neck between dot and shaft -->
+      <line x1="185" y1="108" x2="185" y2="140" stroke="url(#accent)" stroke-width="1.5"/>
+      <!-- Rotating beam -->
+      <g transform="translate(185 100)">
+        <animateTransform attributeName="transform" type="rotate"
+                          values="0;360" dur="6s" repeatCount="indefinite" additive="sum"/>
+        <polygon points="0,0 -60,-12 -60,12" fill="#fde68a" opacity="0.18"/>
+      </g>
+      <!-- Stacked windows on shaft -->
+      <use href="#w" x="185" y="160"/>
+      <use href="#w" x="185" y="180"/>
+      <use href="#w" x="185" y="200"/>
+      <use href="#w" x="185" y="220"/>
+    </g>
+
+    <!-- ── D : round-window dome house ── -->
+    <g>
+      <!-- Letter D silhouette: vertical stem + semicircle bowl -->
+      <path d="M 200 140 L 200 240 L 215 240 L 215 220
+               A 40 40 0 0 0 215 160 L 215 140 Z"
+            fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="2"
+            stroke-linejoin="round"/>
+      <!-- Big round window in the D-bowl -->
+      <circle cx="235" cy="190" r="22" fill="url(#win)" opacity="0.95" filter="url(#glow)"/>
+      <circle cx="235" cy="190" r="22" fill="none" stroke="url(#accent)" stroke-width="1.5"/>
+      <!-- Cross mullions -->
+      <line x1="213" y1="190" x2="257" y2="190" stroke="#0f172a" stroke-width="1" opacity="0.7"/>
+      <line x1="235" y1="168" x2="235" y2="212" stroke="#0f172a" stroke-width="1" opacity="0.7"/>
+      <!-- Antenna on top -->
+      <line x1="207" y1="140" x2="207" y2="128" stroke="url(#accent)" stroke-width="1.2"/>
+      <circle cx="207" cy="126" r="1.8" fill="#22d3ee">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Small window on the stem -->
+      <use href="#w" x="207" y="160"/>
+      <use href="#w" x="207" y="220"/>
+    </g>
+
+    <!-- ── A : main pitched-roof house (tallest peak in the skyline) ── -->
+    <g>
+      <!-- Letter A silhouette with a triangular interior counter -->
+      <path d="M 272 240
+               L 320 74
+               L 368 240
+               L 352 240
+               L 320 128
+               L 288 240 Z"
+            fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="2"
+            stroke-linejoin="round"/>
+      <!-- Attic crossbar -->
+      <rect x="299" y="178" width="42" height="7" fill="url(#accent)" opacity="0.85"/>
+      <!-- Attic porthole above crossbar -->
+      <circle cx="320" cy="160" r="5" fill="url(#win)" filter="url(#glow)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Front door below crossbar -->
+      <path d="M 310 240 L 310 205 A 10 10 0 0 1 330 205 L 330 240 Z"
+            fill="url(#win)" opacity="0.9" filter="url(#glow)"/>
+      <circle cx="325" cy="222" r="0.9" fill="#0f172a"/>
+      <!-- Chimney on the right slope -->
+      <rect x="342" y="132" width="6" height="16" fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="1"/>
+      <!-- Smoke -->
+      <g>
+        <circle cx="345" cy="130" r="2" fill="#fff" opacity="0">
+          <animate attributeName="cy"      values="130;100" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.5;0"   dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="r"       values="1.5;4"   dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="345" cy="130" r="2" fill="#fff" opacity="0">
+          <animate attributeName="cy"      values="130;100" dur="4s" begin="1.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.5;0"   dur="4s" begin="1.4s" repeatCount="indefinite"/>
+          <animate attributeName="r"       values="1.5;4"   dur="4s" begin="1.4s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+
+    <!-- ── R : townhouse with round bay window + diagonal side wing ── -->
+    <g>
+      <!-- Letter R silhouette: vertical stem + rounded bowl + diagonal leg -->
+      <path d="M 370 140 L 370 240 L 383 240 L 383 195
+               L 415 240 L 432 240 L 399 195
+               A 22 22 0 0 0 399 140 Z
+               M 383 155 L 395 155 A 10 10 0 0 1 395 183 L 383 183 Z"
+            fill="url(#bodyFill)" stroke="url(#accent)" stroke-width="2"
+            stroke-linejoin="round" fill-rule="evenodd"/>
+      <!-- Glass in the bay -->
+      <circle cx="400" cy="169" r="11" fill="url(#win)" opacity="0.85" filter="url(#glow)">
+        <animate attributeName="opacity" values="0.6;1;0.5" dur="2.6s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Warm lamp on the side wing -->
+      <circle cx="418" cy="225" r="2.5" fill="url(#win)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Windows on stem -->
+      <use href="#w" x="376" y="210"/>
+      <use href="#w" x="376" y="228"/>
+    </g>
+
+    <!-- Street / ground line -->
+    <line x1="10" y1="240" x2="450" y2="240"
+          stroke="url(#accent)" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Little glowing pins dotting the street in front of each house -->
+    <g fill="#22d3ee">
+      <circle cx="55"  cy="246" r="1.5"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="135" cy="246" r="1.5"><animate attributeName="opacity" values="1;0.3;1"   dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="185" cy="246" r="1.5"><animate attributeName="opacity" values="0.4;1;0.5" dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle cx="235" cy="246" r="1.5"><animate attributeName="opacity" values="0.5;1;0.3" dur="3.0s" repeatCount="indefinite"/></circle>
+      <circle cx="320" cy="246" r="1.5"><animate attributeName="opacity" values="1;0.4;1"   dur="2.5s" repeatCount="indefinite"/></circle>
+      <circle cx="400" cy="246" r="1.5"><animate attributeName="opacity" values="0.3;1;0.6" dur="2.7s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <!-- Tagline -->
+  <text x="230" y="280" text-anchor="middle" class="u-tag"
+        font-size="10" letter-spacing="6" fill="#94a3b8">
+    STUDENT · HOUSING · COMMUNITY
+    <animate attributeName="opacity" values="0;1" dur="1.4s" begin="1.2s" fill="freeze"/>
+  </text>
+</svg>

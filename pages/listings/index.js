@@ -13,7 +13,7 @@ export default function ListingsPage() {
 
       <nav className="navbar glass" id="navbar">
         <div className="nav-container">
-          <a href="/" className="nav-logo"><span style={{color:'var(--color-brand)'}}>UNI</span>DAR</a>
+          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} /></a>
           <div className="nav-links">
             <a href="/listings" className="nav-link active auth-only" style={{ display: 'none' }} data-i18n="nav_listings">Listings</a>
             <a href="/roommates" className="nav-link auth-only" style={{ display: 'none' }} data-i18n="nav_roommates">Roommates</a>

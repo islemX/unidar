@@ -11,7 +11,7 @@ export default function MessagesPage() {
       <nav className="navbar glass">
         <div className="nav-container">
           <a href="/" className="nav-logo">
-            <span style={{ color: 'var(--color-brand)' }}>UNI</span>DAR
+            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links">
             <a href="/listings" className="nav-link">Listings</a>

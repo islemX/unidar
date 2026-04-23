@@ -19,7 +19,7 @@ export default function UserDashboardPage() {
       <nav className="navbar glass">
         <div className="nav-container">
           <a href="/" className="nav-logo">
-            <span style={{ color: 'var(--color-brand)' }}>UNI</span>DAR
+            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links">
             <a href="/listings" className="nav-link" data-i18n="nav_listings">Listings</a>

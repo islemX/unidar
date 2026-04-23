@@ -15,8 +15,8 @@ export default function HomePage() {
       {/* Navbar */}
       <nav className="navbar" id="navbar">
         <div className="nav-container">
-          <a href="/" className="nav-logo" style={{ gap: 0 }}>
-            <span style={{ color: 'var(--color-brand)' }}>UNI</span>DAR
+          <a href="/" className="nav-logo" aria-label="UNIDAR">
+            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
           </a>
           <div className="nav-links" id="navLinks">
             <a href="/" className="nav-link active" data-i18n="nav_home">Home</a>
@@ -52,15 +52,15 @@ export default function HomePage() {
               </div>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <span className="hero-stat-number" id="stat_listings">500+</span>
+                  <span className="hero-stat-number" id="stat_listings">—</span>
                   <span className="hero-stat-label" data-i18n="home_hero_stat_listings">Verified Listings</span>
                 </div>
                 <div className="hero-stat">
-                  <span className="hero-stat-number" id="stat_students">2000+</span>
+                  <span className="hero-stat-number" id="stat_students">—</span>
                   <span className="hero-stat-label" data-i18n="home_hero_stat_students">Active Students</span>
                 </div>
                 <div className="hero-stat">
-                  <span className="hero-stat-number">15+</span>
+                  <span className="hero-stat-number" id="stat_unis">—</span>
                   <span className="hero-stat-label" data-i18n="home_hero_stat_unis">Universities Covered</span>
                 </div>
               </div>
@@ -418,23 +418,53 @@ export default function HomePage() {
       </footer>
 
       <Script id="home-dynamic-logic" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+        // Animate a number counter from 0 -> target
+        function countUp(el, target) {
+          if (!el || target == null) return;
+          var start = 0;
+          var duration = 1100;
+          var startTs = performance.now();
+          function tick(now) {
+            var p = Math.min(1, (now - startTs) / duration);
+            var ease = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(start + (target - start) * ease).toLocaleString();
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }
+
+        async function loadStats() {
+          try {
+            var r = await fetch('/api/public/stats', { cache: 'no-store' });
+            if (!r.ok) return;
+            var s = await r.json();
+            countUp(document.getElementById('stat_listings'), s.listings);
+            countUp(document.getElementById('stat_students'), s.students);
+            countUp(document.getElementById('stat_unis'),     s.universities);
+          } catch(e) { console.warn('stats load failed', e); }
+        }
+
         async function initHome() {
           try {
             const api = window.UNIDAR_API;
-            if (!api) return;
-            const auth = await api.Auth.check();
-            if (auth && auth.authenticated) {
-              document.querySelectorAll('.auth-only').forEach(el => el.style.display = 'block');
-              const actions = document.getElementById('headerActions');
-              if (actions) {
-                const dashUrl = auth.user.role === 'admin' ? '/admin' : (auth.user.role === 'owner' ? '/owner-listings' : '/user-dashboard');
-                const firstName = auth.user.full_name ? auth.user.full_name.split(' ')[0] : 'User';
-                actions.innerHTML = '<span class="text-muted mr-md" style="color:#64748b">Hi, ' + firstName + '</span>' +
-                                  '<a href="' + dashUrl + '" class="btn btn-primary btn-sm">Dashboard</a>';
+            if (api) {
+              const auth = await api.Auth.check();
+              if (auth && auth.authenticated) {
+                document.querySelectorAll('.auth-only').forEach(el => el.style.display = 'block');
+                const actions = document.getElementById('headerActions');
+                if (actions) {
+                  const dashUrl = auth.user.role === 'admin' ? '/admin' : (auth.user.role === 'owner' ? '/owner-listings' : '/user-dashboard');
+                  const firstName = auth.user.full_name ? auth.user.full_name.split(' ')[0] : 'User';
+                  actions.innerHTML = '<span class="text-muted mr-md" style="color:#64748b">Hi, ' + firstName + '</span>' +
+                                    '<a href="' + dashUrl + '" class="btn btn-primary btn-sm">Dashboard</a>';
+                }
               }
             }
           } catch(e) {}
-          
+
+          // Always load fresh stats from DB on every page load
+          loadStats();
+
           const reveal = () => {
             document.querySelectorAll(".reveal").forEach(el => {
               if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add("active");

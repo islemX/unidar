@@ -10,7 +10,7 @@ export default function ListingDetailPage() {
       <Head><title>Listing Detail - UNIDAR</title></Head>
       <nav className="navbar glass">
         <div className="nav-container">
-          <a href="/" className="nav-logo"><span style={{color:'var(--color-brand)'}}>UNI</span>DAR</a>
+          <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} /></a>
           <div className="nav-links">
             <a href="/listings" className="nav-link">← Back to Listings</a>
             <div id="navAuthArea"></div>

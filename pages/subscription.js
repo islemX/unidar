@@ -21,8 +21,8 @@ export default function SubscriptionPage() {
 
         {/* Nav */}
         <nav className="sp-nav">
-          <a href="/" className="sp-logo">
-            <span className="sp-logo-uni">UNI</span>DAR
+          <a href="/" className="sp-logo" aria-label="UNIDAR">
+            <img src="/logo.svg" alt="UNIDAR" style={{height:'40px',width:'auto',display:'block'}} />
           </a>
           <a href="/user-dashboard" className="sp-nav-link">← Back to Dashboard</a>
         </nav>
