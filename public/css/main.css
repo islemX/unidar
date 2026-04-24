@@ -1227,6 +1227,9 @@ textarea.form-input {
 @media (max-width: 768px) {
   :root { --navbar-height: 60px; }
 
+  .nav-container { padding: 0 var(--space-md); gap: var(--space-sm); }
+  .nav-logo img { height: 36px !important; }
+
   .nav-hamburger { display: flex; }
 
   .nav-links {
@@ -1267,6 +1270,8 @@ textarea.form-input {
 }
 
 @media (max-width: 480px) {
+  .nav-logo img { height: 30px !important; }
+  .nav-container { padding: 0 var(--space-sm); }
   .btn-lg { padding: 12px 20px; font-size: var(--font-size-sm); }
   .card-body { padding: var(--space-lg); }
   .modal-body { padding: var(--space-lg); }
