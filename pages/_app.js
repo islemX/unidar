@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Pages Layout Wrapper
+﻿/**
+ * UNIDAR � Pages Layout Wrapper
  * All pages inherit styles and common JS
  */
 import Head from 'next/head';

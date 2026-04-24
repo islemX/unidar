@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Single Listing API
+﻿/**
+ * UNIDAR � Single Listing API
  * GET    /api/listings/[id]
  * PUT    /api/listings/[id]
  * DELETE /api/listings/[id]
@@ -35,7 +35,7 @@ async function getListing(req, res, id) {
   if (!rows.length) return res.status(404).json({ error: 'Listing not found' });
   const listing = rows[0];
 
-  // Optional queries — wrapped individually so a missing table never kills the whole request
+  // Optional queries � wrapped individually so a missing table never kills the whole request
   try {
     const saved = await query('SELECT COUNT(*) as c FROM saved_listings WHERE listing_id = ? AND user_id = ?', [id, user.id]);
     listing.is_saved = !!(saved[0]?.c);

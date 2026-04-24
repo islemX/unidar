@@ -1,8 +1,8 @@
-/**
- * UNIDAR – Verifications API
- * GET  /api/verifications          – get my verification (student) or list all (admin)
- * POST /api/verifications          – submit verification (student)
- * PUT  /api/verifications?id=X     – approve/reject (admin only)
+﻿/**
+ * UNIDAR � Verifications API
+ * GET  /api/verifications          � get my verification (student) or list all (admin)
+ * POST /api/verifications          � submit verification (student)
+ * PUT  /api/verifications?id=X     � approve/reject (admin only)
  */
 import { query }                      from '../../../lib/db';
 import { requireAuth, requireRole }   from '../../../lib/auth';

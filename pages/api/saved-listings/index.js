@@ -1,8 +1,8 @@
-/**
- * UNIDAR – Saved Listings API
- * GET    /api/saved-listings         – list saved listings
- * POST   /api/saved-listings         – save a listing
- * DELETE /api/saved-listings?id=X    – unsave
+﻿/**
+ * UNIDAR � Saved Listings API
+ * GET    /api/saved-listings         � list saved listings
+ * POST   /api/saved-listings         � save a listing
+ * DELETE /api/saved-listings?id=X    � unsave
  */
 import { query }       from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';

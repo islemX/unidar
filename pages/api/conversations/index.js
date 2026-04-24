@@ -1,7 +1,7 @@
-/**
- * UNIDAR – Conversations API
- * GET  /api/conversations  – list all conversations for current user
- * POST /api/conversations  – create/get conversation with another user
+﻿/**
+ * UNIDAR � Conversations API
+ * GET  /api/conversations  � list all conversations for current user
+ * POST /api/conversations  � create/get conversation with another user
  */
 import { query }       from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';

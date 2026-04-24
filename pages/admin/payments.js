@@ -1,5 +1,5 @@
-/**
- * UNIDAR â€“ Admin Payments Record
+﻿/**
+ * UNIDAR – Admin Payments Record
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -24,7 +24,7 @@ export default function AdminPaymentsPage() {
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:32}}>
             <h1 style={{margin:0,fontSize:'2.5rem',fontWeight:800}}>Payments Ledger</h1>
             <div style={{display:'flex',gap:12}}>
-               <button id="refreshBtn" className="btn btn-secondary btn-sm">ðŸ”„ Refresh</button>
+               <button id="refreshBtn" className="btn btn-secondary btn-sm">🔄 Refresh</button>
                <select id="periodFilter" className="form-input" style={{width:150,padding:'4px 12px'}}>
                   <option value="all">All Time</option>
                   <option value="today">Today</option>
@@ -49,7 +49,7 @@ export default function AdminPaymentsPage() {
                   </tr>
                 </thead>
                 <tbody id="paymentTableBody">
-                  <tr><td colSpan="7" style={{padding:40,textAlign:'center',color:'#94a3b8'}}>Loading paymentsâ€¦</td></tr>
+                  <tr><td colSpan="7" style={{padding:40,textAlign:'center',color:'#94a3b8'}}>Loading payments…</td></tr>
                 </tbody>
               </table>
             </div>

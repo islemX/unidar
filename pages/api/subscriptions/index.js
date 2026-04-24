@@ -1,8 +1,8 @@
-/**
- * UNIDAR – Subscriptions API
- * GET  /api/subscriptions         – get my active subscription
- * GET  /api/subscriptions?all=1   – all subscriptions (admin)
- * POST /api/subscriptions         – create subscription
+﻿/**
+ * UNIDAR � Subscriptions API
+ * GET  /api/subscriptions         � get my active subscription
+ * GET  /api/subscriptions?all=1   � all subscriptions (admin)
+ * POST /api/subscriptions         � create subscription
  */
 import { query }       from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';

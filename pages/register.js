@@ -1,5 +1,5 @@
-/**
- * UNIDAR â€“ Register Page
+﻿/**
+ * UNIDAR – Register Page
  * Matches PHP version exactly (Map + Premium Layout)
  */
 import Head from 'next/head';
@@ -164,10 +164,10 @@ export default function RegisterPage() {
             const data = await res.json();
             const address = data.display_name;
             document.getElementById('preferred_address').value = address;
-            document.getElementById('selectedLocationDisplay').textContent = "ðŸ“ " + address;
+            document.getElementById('selectedLocationDisplay').textContent = "📍 " + address;
           } catch (e) {
             document.getElementById('preferred_address').value = lat + "," + lng;
-            document.getElementById('selectedLocationDisplay').textContent = "ðŸ“ " + lat.toFixed(4) + ", " + lng.toFixed(4);
+            document.getElementById('selectedLocationDisplay').textContent = "📍 " + lat.toFixed(4) + ", " + lng.toFixed(4);
           }
         }
 

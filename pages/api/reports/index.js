@@ -1,7 +1,7 @@
-/**
- * UNIDAR – Reports API
- * GET  /api/reports        – list my reports (student) or all (admin)
- * POST /api/reports        – submit a report
+﻿/**
+ * UNIDAR � Reports API
+ * GET  /api/reports        � list my reports (student) or all (admin)
+ * POST /api/reports        � submit a report
  */
 import { query }       from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';

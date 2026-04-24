@@ -1,4 +1,4 @@
-import Head from 'next/head';
+﻿import Head from 'next/head';
 import Script from 'next/script';
 
 export default function LoginPage() {
@@ -41,7 +41,7 @@ export default function LoginPage() {
                     <label className="form-label" htmlFor="password" style={{ marginBottom: 0 }} data-i18n="login_password">Password</label>
                     <a href="#" className="text-small" data-i18n="login_forgot">Forgot password?</a>
                   </div>
-                  <input type="password" id="password" className="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required />
+                  <input type="password" id="password" className="form-input" placeholder="••••••••" required />
                 </div>
                 <div id="errorMessage" className="alert alert-error" style={{ display: 'none' }}></div>
                 <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
@@ -80,7 +80,7 @@ export default function LoginPage() {
           const btn      = e.target.querySelector('button[type="submit"]');
           errorDiv.style.display = 'none';
           btn.disabled = true;
-          btn.querySelector('span').textContent = 'Signing inâ€¦';
+          btn.querySelector('span').textContent = 'Signing in…';
           try {
             const res = await window.UNIDAR_API.Auth.login(email, password);
             if (res.user.role === 'admin')  window.location.href = '/admin';

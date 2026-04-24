@@ -1,8 +1,8 @@
-/**
- * UNIDAR – Roommate Matching API
- * GET  /api/roommates          – get preferences (no ?matches)
- * GET  /api/roommates?matches  – get matches
- * POST /api/roommates          – save/update preferences
+﻿/**
+ * UNIDAR � Roommate Matching API
+ * GET  /api/roommates          � get preferences (no ?matches)
+ * GET  /api/roommates?matches  � get matches
+ * POST /api/roommates          � save/update preferences
  */
 import { query }       from '../../../lib/db';
 import { verifyToken, requireRole } from '../../../lib/auth';
@@ -109,7 +109,7 @@ async function getMatches(req, res, user) {
   return res.json({ matches });
 }
 
-// ── Matching algorithm (ported 1:1 from roommates.php) ──────────────────────
+// -- Matching algorithm (ported 1:1 from roommates.php) ----------------------
 
 function calculateCompatibilityScore(up, c, ui) {
   let score = 0, max = 0;

@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Contracts API
+﻿/**
+ * UNIDAR � Contracts API
  * All contract operations via /api/contracts/[action]
  * Supported actions: generate, sign, status, update-status, user-contracts,
  *   download, calculate-payment, process-payment, payment-status,
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   }
 }
 
-// ── Generate contract ────────────────────────────────────────────────────────
+// -- Generate contract --------------------------------------------------------
 async function handleGenerate(req, res, user) {
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
   if (user.role !== 'student') return res.status(403).json({ success: false, error: 'Students only' });
@@ -80,7 +80,7 @@ async function handleGenerate(req, res, user) {
   // Generate a unique, deterministic-enough number before INSERT to avoid duplicate '' defaults.
   const contractNumber = `CN-${listing_id}-${user.id}-${Date.now()}`;
 
-  // Insert contract — use 'draft' (valid ENUM value; 'pending' not in schema ENUM)
+  // Insert contract � use 'draft' (valid ENUM value; 'pending' not in schema ENUM)
   // contract_template_id defaults to 0 / contract_content filled via UPDATE below
   const result = await query(`
     INSERT INTO contracts (contract_number, listing_id, student_id, owner_id, start_date, end_date, monthly_rent, status, contract_template_id, contract_content)
@@ -101,7 +101,7 @@ async function handleGenerate(req, res, user) {
   });
 }
 
-// ── Sign contract ────────────────────────────────────────────────────────────
+// -- Sign contract ------------------------------------------------------------
 async function handleSign(req, res, user) {
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
 
@@ -115,7 +115,7 @@ async function handleSign(req, res, user) {
   const sigName = `signatures/student_${contract_id}_${Date.now()}.png`;
   let sigPath;
 
-  // On Vercel the filesystem is read-only — upload to Blob storage
+  // On Vercel the filesystem is read-only � upload to Blob storage
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     try {
       const blob = await blobPut(sigName, decoded, { access: 'public', contentType: 'image/png' });
@@ -144,7 +144,7 @@ async function handleSign(req, res, user) {
   return res.json({ success: true, message: 'Contract signed successfully' });
 }
 
-// ── Contract status ──────────────────────────────────────────────────────────
+// -- Contract status ----------------------------------------------------------
 async function handleStatus(req, res, user) {
   const id = req.query.contract_id;
   if (!id) return res.status(400).json({ success: false, error: 'contract_id required' });
@@ -172,7 +172,7 @@ async function handleStatus(req, res, user) {
   return res.json({ success: true, contract });
 }
 
-// ── Update status ────────────────────────────────────────────────────────────
+// -- Update status ------------------------------------------------------------
 async function handleUpdateStatus(req, res, user) {
   if (req.method !== 'PUT') return res.status(405).json({ success: false, error: 'Method not allowed' });
   const { contract_id, status } = req.body;
@@ -181,7 +181,7 @@ async function handleUpdateStatus(req, res, user) {
   return res.json({ success: true });
 }
 
-// ── User contracts ───────────────────────────────────────────────────────────
+// -- User contracts -----------------------------------------------------------
 async function handleUserContracts(req, res, user) {
   let sql, params;
 
@@ -217,7 +217,7 @@ async function handleUserContracts(req, res, user) {
   return res.json({ success: true, contracts });
 }
 
-// ── Download contract ────────────────────────────────────────────────────────
+// -- Download contract --------------------------------------------------------
 async function handleDownload(req, res, user) {
   const id = req.query.contract_id;
   if (!id) return res.status(400).json({ success: false, error: 'contract_id required' });
@@ -236,7 +236,7 @@ async function handleDownload(req, res, user) {
   return res.send(html);
 }
 
-// ── Calculate payment ────────────────────────────────────────────────────────
+// -- Calculate payment --------------------------------------------------------
 async function handleCalculatePayment(req, res, user) {
   const { listing_id } = req.query;
   if (!listing_id) return res.status(400).json({ success: false, error: 'listing_id required' });
@@ -251,7 +251,7 @@ async function handleCalculatePayment(req, res, user) {
   return res.json({ success: true, monthly_rent: rent, deposit, platform_fee: fee, total_due: deposit + fee });
 }
 
-// ── Process payment ──────────────────────────────────────────────────────────
+// -- Process payment ----------------------------------------------------------
 async function handleProcessPayment(req, res, user) {
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'Method not allowed' });
   const { contract_id, payment_method = 'card' } = req.body;
@@ -260,7 +260,7 @@ async function handleProcessPayment(req, res, user) {
   const rows = await query('SELECT * FROM contracts WHERE id = ?', [contract_id]);
   if (!rows.length) return res.status(404).json({ success: false, error: 'Contract not found' });
 
-  // Simulate payment success – insert payment record
+  // Simulate payment success � insert payment record
   const result = await query(`
     INSERT INTO payments (contract_id, user_id, amount, payment_method, status)
     VALUES (?, ?, ?, ?, 'completed')
@@ -271,14 +271,14 @@ async function handleProcessPayment(req, res, user) {
   return res.json({ success: true, payment_id: result.insertId, status: 'completed' });
 }
 
-// ── Payment status ───────────────────────────────────────────────────────────
+// -- Payment status -----------------------------------------------------------
 async function handlePaymentStatus(req, res, user) {
   const { payment_id } = req.query;
   const rows = await query('SELECT * FROM payments WHERE id = ?', [payment_id]).catch(() => []);
   return res.json({ success: true, payment: rows[0] || null });
 }
 
-// ── Terminate (owner direct) ─────────────────────────────────────────────────
+// -- Terminate (owner direct) -------------------------------------------------
 async function handleTerminate(req, res, user) {
   if (user.role !== 'owner' && user.role !== 'admin') return res.status(403).json({ success: false, error: 'Owners/admin only' });
   const { contract_id, reason = '' } = req.body;
@@ -294,7 +294,7 @@ async function handleTerminate(req, res, user) {
   return res.json({ success: true });
 }
 
-// ── Request termination (student) ────────────────────────────────────────────
+// -- Request termination (student) --------------------------------------------
 async function handleRequestTermination(req, res, user) {
   const { contract_id, reason = '' } = req.body;
   if (!contract_id) return res.status(400).json({ success: false, error: 'contract_id required' });
@@ -347,7 +347,7 @@ async function handleRequestTermination(req, res, user) {
   return res.json({ success: true });
 }
 
-// ── Get termination requests ─────────────────────────────────────────────────
+// -- Get termination requests -------------------------------------------------
 async function handleGetTerminationRequests(req, res, user) {
   let rows = [];
 
@@ -438,7 +438,7 @@ async function handleGetTerminationRequests(req, res, user) {
   return res.json({ success: true, requests: rows });
 }
 
-// ── Approve/reject termination ───────────────────────────────────────────────
+// -- Approve/reject termination -----------------------------------------------
 async function handleApproveTermination(req, res, user) {
   const { request_id } = req.body;
   if (!request_id) return res.status(400).json({ success: false, error: 'request_id required' });
@@ -480,7 +480,7 @@ async function handleRejectTermination(req, res, user) {
   return res.json({ success: true });
 }
 
-// ── Check expired ────────────────────────────────────────────────────────────
+// -- Check expired ------------------------------------------------------------
 async function handleCheckExpired(req, res, user) {
   // Get listing_ids of contracts that are about to expire
   const toExpire = await query(`
@@ -502,7 +502,7 @@ async function handleCheckExpired(req, res, user) {
   return res.json({ success: true, expired: toExpire.length });
 }
 
-// ── Helper: set listing back to active if no blocking contracts remain ────────
+// -- Helper: set listing back to active if no blocking contracts remain --------
 async function releaseListingIfFree(listingId) {
   if (!listingId) return;
   try {
@@ -519,55 +519,55 @@ async function releaseListingIfFree(listingId) {
   }
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// -- Helpers ------------------------------------------------------------------
 function generateContractText({ listing, student, startDate, endDate, contractId, duration }) {
   const fmt = d => d.toLocaleDateString('fr-FR');
-  return `CONTRAT DE LOCATION RÉSIDENTIELLE
+  return `CONTRAT DE LOCATION R�SIDENTIELLE
 
-UNIDAR – Plateforme de Location Étudiante
-Contrat N°: ${contractId}
+UNIDAR � Plateforme de Location �tudiante
+Contrat N�: ${contractId}
 Date: ${fmt(new Date())}
 
-ENTRE LES SOUSSIGNÉS
+ENTRE LES SOUSSIGN�S
 
-LE PROPRIÉTAIRE:
+LE PROPRI�TAIRE:
 Nom: ${listing.owner_name}
 Email: ${listing.owner_email}
-Téléphone: ${listing.owner_phone || 'N/A'}
+T�l�phone: ${listing.owner_phone || 'N/A'}
 
-LE LOCATAIRE (ÉTUDIANT):
+LE LOCATAIRE (�TUDIANT):
 Nom: ${student.full_name}
 Email: ${student.email}
-Téléphone: ${student.phone || 'N/A'}
-Université: ${student.university || 'N/A'}
+T�l�phone: ${student.phone || 'N/A'}
+Universit�: ${student.university || 'N/A'}
 
-IL A ÉTÉ CONVENU CE QUI SUIT:
+IL A �T� CONVENU CE QUI SUIT:
 
-ARTICLE 1 – OBJET DU CONTRAT
-Le présent contrat porte sur la location du logement situé à:
+ARTICLE 1 � OBJET DU CONTRAT
+Le pr�sent contrat porte sur la location du logement situ� �:
 ${listing.address}
 
-ARTICLE 2 – DURÉE
-Le présent contrat est conclu pour une durée de ${duration} mois,
+ARTICLE 2 � DUR�E
+Le pr�sent contrat est conclu pour une dur�e de ${duration} mois,
 du ${fmt(startDate)} au ${fmt(endDate)}.
 
-ARTICLE 3 – LOYER
-Le loyer mensuel est fixé à ${listing.price} TND/mois.
-Le dépôt de garantie équivaut à 2 mois de loyer (${listing.price * 2} TND).
+ARTICLE 3 � LOYER
+Le loyer mensuel est fix� � ${listing.price} TND/mois.
+Le d�p�t de garantie �quivaut � 2 mois de loyer (${listing.price * 2} TND).
 
-ARTICLE 4 – OBLIGATIONS DU LOCATAIRE
-- Payer le loyer à la date convenue
-- Entretenir le logement en bon état
-- Ne pas sous-louer sans autorisation écrite
-- Respecter le règlement intérieur de la résidence
+ARTICLE 4 � OBLIGATIONS DU LOCATAIRE
+- Payer le loyer � la date convenue
+- Entretenir le logement en bon �tat
+- Ne pas sous-louer sans autorisation �crite
+- Respecter le r�glement int�rieur de la r�sidence
 
-ARTICLE 5 – OBLIGATIONS DU PROPRIÉTAIRE
+ARTICLE 5 � OBLIGATIONS DU PROPRI�TAIRE
 - Assurer la jouissance paisible du logement
-- Effectuer les réparations nécessaires
-- Délivrer un logement en bon état
+- Effectuer les r�parations n�cessaires
+- D�livrer un logement en bon �tat
 
-ARTICLE 6 – RÉSILIATION
-Le contrat peut être résilié par l'une des parties avec un préavis d'un mois.
+ARTICLE 6 � R�SILIATION
+Le contrat peut �tre r�sili� par l'une des parties avec un pr�avis d'un mois.
 
 Fait en double exemplaire,
 
@@ -579,7 +579,7 @@ function generateContractHTML(textContent, contract) {
     .map(l => l.trim())
     .filter(l => l)
     .map(l => {
-      if (/^(ARTICLE|CONTRAT|ENTRE LES|IL A ÉTÉ)/i.test(l)) return `<h3>${l}</h3>`;
+      if (/^(ARTICLE|CONTRAT|ENTRE LES|IL A �T�)/i.test(l)) return `<h3>${l}</h3>`;
       return `<p>${l}</p>`;
     }).join('');
 
@@ -587,7 +587,7 @@ function generateContractHTML(textContent, contract) {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Contrat de Location – UNIDAR</title>
+  <title>Contrat de Location � UNIDAR</title>
   <style>
     body { font-family: "Times New Roman", serif; max-width: 21cm; margin: 0 auto; padding: 2cm; color: #000; }
     h1 { text-align:center; text-transform:uppercase; border-bottom: 3px solid #000; padding-bottom: 16px; }
@@ -600,16 +600,16 @@ function generateContractHTML(textContent, contract) {
   </style>
 </head>
 <body>
-  <h1>UNIDAR<br><small style="font-size:14pt;font-weight:normal">Contrat de Location Étudiante</small></h1>
+  <h1>UNIDAR<br><small style="font-size:14pt;font-weight:normal">Contrat de Location �tudiante</small></h1>
   <div class="print-btn">
     <button onclick="window.print()" style="padding:10px 24px;background:#0070f3;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:14px">
-      🖨️ Imprimer / Enregistrer PDF
+      ??? Imprimer / Enregistrer PDF
     </button>
   </div>
   ${paragraphs}
   <div class="sig">
     <div>
-      <strong>Le Propriétaire</strong>
+      <strong>Le Propri�taire</strong>
       ${contract.owner_signature_path ? `<br><img src="/${contract.owner_signature_path}" style="max-height:80px">` : ''}
     </div>
     <div>

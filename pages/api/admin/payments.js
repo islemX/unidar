@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Admin Payments API
+﻿/**
+ * UNIDAR � Admin Payments API
  * GET /api/admin/payments
  */
 import { query }       from '../../../lib/db';

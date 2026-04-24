@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Auth API (Dynamic Actions)
+﻿/**
+ * UNIDAR � Auth API (Dynamic Actions)
  */
 import { query } from '../../../lib/db';
 import { signToken, clearToken, verifyToken } from '../../../lib/auth';

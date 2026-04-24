@@ -1,5 +1,5 @@
-/**
- * UNIDAR â€“ Verification Page
+﻿/**
+ * UNIDAR – Verification Page
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -12,7 +12,7 @@ export default function VerificationPage() {
         <div className="nav-container">
           <a href="/" className="nav-logo" aria-label="UNIDAR"><img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} /></a>
           <div className="nav-links">
-            <a href="/user-dashboard" className="nav-link">â† Back to Dashboard</a>
+            <a href="/user-dashboard" className="nav-link">← Back to Dashboard</a>
           </div>
         </div>
       </nav>

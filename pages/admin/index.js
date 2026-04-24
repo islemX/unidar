@@ -1,5 +1,5 @@
-/**
- * UNIDAR â€“ Admin Dashboard
+﻿/**
+ * UNIDAR – Admin Dashboard
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -39,17 +39,17 @@ export default function AdminDashboardPage() {
               <p style={{color:'#64748b'}}>Manage verifications, reports, users, contracts, and termination requests.</p>
             </div>
             <div style={{display:'flex',gap:12}}>
-              <button id="refreshBtn" className="btn btn-secondary btn-sm">ðŸ”„ Refresh</button>
+              <button id="refreshBtn" className="btn btn-secondary btn-sm">🔄 Refresh</button>
             </div>
           </div>
           
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:24,marginBottom:48}}>
-            <StatCard title="Total Users" value="0" icon="ðŸ‘¥" color="#3b82f6" id="totalUsers" />
-            <StatCard title="Active Listings" value="0" icon="ðŸ " color="#10b981" id="totalListings" />
-            <StatCard title="Pending Verifications" value="0" icon="â³" color="#f59e0b" id="pendingVerifications" />
-            <StatCard title="Open Reports" value="0" icon="ðŸš©" color="#f43f5e" id="totalReports" />
-            <StatCard title="Total Contracts" value="0" icon="ðŸ“„" color="#8b5cf6" id="totalContracts" />
-            <StatCard title="Active Subscriptions" value="0" icon="âœ¨" color="#06b6d4" id="totalSubscriptions" />
+            <StatCard title="Total Users" value="0" icon="👥" color="#3b82f6" id="totalUsers" />
+            <StatCard title="Active Listings" value="0" icon="🏠" color="#10b981" id="totalListings" />
+            <StatCard title="Pending Verifications" value="0" icon="⏳" color="#f59e0b" id="pendingVerifications" />
+            <StatCard title="Open Reports" value="0" icon="🚩" color="#f43f5e" id="totalReports" />
+            <StatCard title="Total Contracts" value="0" icon="📄" color="#8b5cf6" id="totalContracts" />
+            <StatCard title="Active Subscriptions" value="0" icon="✨" color="#06b6d4" id="totalSubscriptions" />
           </div>
 
           {/* Pending Verifications */}
@@ -100,7 +100,7 @@ export default function AdminDashboardPage() {
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'end',gap:16,flexWrap:'wrap'}}>
                 <h2 style={{margin:0}}>Users Management <span id="userCount" className="badge badge-info" style={{marginLeft:8}}>0</span></h2>
                 <div className="filter-bar">
-                  <input type="text" id="userSearch" className="form-input" placeholder="Search usersâ€¦" />
+                  <input type="text" id="userSearch" className="form-input" placeholder="Search users…" />
                   <select id="roleFilter" className="form-input">
                     <option value="">All Roles</option>
                     <option value="student">Students</option>
@@ -137,7 +137,7 @@ export default function AdminDashboardPage() {
             <div className="card" style={{padding:0}}>
               <div style={{padding:20,borderBottom:'1px solid #e2e8f0',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <h2 style={{margin:0}}>Pending Termination Requests</h2>
-                <button id="refreshTermsBtn" className="btn btn-secondary btn-sm">ðŸ”„ Refresh</button>
+                <button id="refreshTermsBtn" className="btn btn-secondary btn-sm">🔄 Refresh</button>
               </div>
               <div className="table-wrapper">
                 <table className="data-table">
@@ -162,7 +162,7 @@ export default function AdminDashboardPage() {
                 <button id="refreshContractsBtn" className="btn btn-secondary btn-sm">Refresh</button>
               </div>
               <div id="contractsList" style={{marginTop:16,display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))',gap:16}}>
-                <div className="empty-state">Loading contractsâ€¦</div>
+                <div className="empty-state">Loading contracts…</div>
               </div>
             </div>
           </section>
@@ -179,7 +179,7 @@ export default function AdminDashboardPage() {
                     <option value="expired">Expired</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
-                  <button id="refreshSubsBtn" className="btn btn-secondary btn-sm">ðŸ”„ Refresh</button>
+                  <button id="refreshSubsBtn" className="btn btn-secondary btn-sm">🔄 Refresh</button>
                 </div>
               </div>
               <div className="table-wrapper">
@@ -203,8 +203,8 @@ export default function AdminDashboardPage() {
       <div id="docViewerModal" className="modal-overlay" style={{display:'none',zIndex:10000}}>
         <div className="modal-content" style={{maxWidth:900,width:'95%'}}>
           <div className="card-header" style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-            <h3 style={{margin:0}}>ðŸ“‹ Verification Documents</h3>
-            <button className="btn btn-secondary btn-sm" onclick="window.closeDocModal()">âœ•</button>
+            <h3 style={{margin:0}}>📋 Verification Documents</h3>
+            <button className="btn btn-secondary btn-sm" onclick="window.closeDocModal()">✕</button>
           </div>
           <div id="docViewerContent" style={{padding:20,display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}} />
         </div>

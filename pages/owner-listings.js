@@ -1,5 +1,5 @@
-/**
- * UNIDAR â€“ Owner Listings Page
+﻿/**
+ * UNIDAR – Owner Listings Page
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -33,13 +33,13 @@ export default function OwnerListingsPage() {
           {/* Contracts / Active Tenants */}
           <div className="card" style={{ padding: 'var(--space-xl)', marginBottom: 'var(--space-xl)' }}>
             <h2 style={{ marginBottom: 'var(--space-lg)' }} data-i18n="owner_active_contracts">Active Contracts</h2>
-            <div id="contractsList"><p className="text-muted">Loadingâ€¦</p></div>
+            <div id="contractsList"><p className="text-muted">Loading…</p></div>
           </div>
 
           {/* Listings grid */}
           <div id="listingsGrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 'var(--space-xl)' }}>
             <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', color: 'var(--color-text-muted)' }}>
-              <p>Loading listingsâ€¦</p>
+              <p>Loading listings…</p>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default function OwnerListingsPage() {
       {/* Create listing modal */}
       <div id="createModal" style={{ display: 'none', position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center', overflow: 'auto' }}>
         <div className="card" style={{ maxWidth: 600, width: '90%', margin: '40px auto', padding: 'var(--space-xl)', maxHeight: '90vh', overflowY: 'auto', position: 'relative' }}>
-          <button id="closeCreateModal" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>âœ•</button>
+          <button id="closeCreateModal" style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>✕</button>
           <h2 data-i18n="owner_create_listing">Create New Listing</h2>
           <form id="createListingForm">
             {[
@@ -162,16 +162,16 @@ export default function OwnerListingsPage() {
                 return '<div style="border:1px solid var(--color-surface-200);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px">' +
                   '<div style="flex:1;min-width:0">' +
                     '<strong style="color:#1e293b;display:block">' + (c.listing_title || 'Listing') + '</strong>' +
-                    '<p class="text-muted text-small m-0">ðŸ‘¤ ' + (c.student_name || 'Student') + ' Â· ' +
+                    '<p class="text-muted text-small m-0">👤 ' + (c.student_name || 'Student') + ' · ' +
                       '<span style="color:' + statusColor + ';font-weight:600">' + (c.status || '') + '</span>' +
                     '</p>' +
-                    '<p class="text-small m-0 text-muted">' + (c.start_date ? c.start_date.slice(0,10) : '') + ' â†’ ' + (c.end_date ? c.end_date.slice(0,10) : '') +
-                      (c.monthly_rent ? ' Â· <strong>' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</strong>' : '') +
+                    '<p class="text-small m-0 text-muted">' + (c.start_date ? c.start_date.slice(0,10) : '') + ' → ' + (c.end_date ? c.end_date.slice(0,10) : '') +
+                      (c.monthly_rent ? ' · <strong>' + Number(c.monthly_rent).toLocaleString() + ' TND/mo</strong>' : '') +
                     '</p>' +
                     (c.status === 'termination_requested' ? '<p class="text-small mt-xs" style="color:#f97316;font-weight:600">' + _t('owner_cancel_requested') + '</p>' : '') +
                   '</div>' +
                   '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
-                    '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">ðŸ“„ Doc</a>' +
+                    '<a href="/api/contracts/download?contract_id=' + c.id + '" target="_blank" class="btn btn-secondary btn-sm">📄 Doc</a>' +
                     (canTerminate ? '<button onclick="terminateContract(' + c.id + ')" class="btn btn-sm" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5">' + _t('owner_terminate_btn') + '</button>' : '') +
                   '</div>' +
                 '</div>';

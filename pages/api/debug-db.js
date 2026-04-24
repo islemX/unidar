@@ -1,5 +1,5 @@
-/**
- * UNIDAR – DB Status Check API
+﻿/**
+ * UNIDAR � DB Status Check API
  * GET /api/debug-db
  */
 import { query } from '../../lib/db';

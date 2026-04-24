@@ -1,10 +1,10 @@
-/**
- * UNIDAR – Messages API
- * GET  /api/messages?conversation_id=X   – get messages
- * GET  /api/messages?action=unread_count  – total unread count
- * POST /api/messages                      – send message
- * POST /api/messages?action=block         – block user
- * PUT  /api/messages                      – mark as read
+﻿/**
+ * UNIDAR � Messages API
+ * GET  /api/messages?conversation_id=X   � get messages
+ * GET  /api/messages?action=unread_count  � total unread count
+ * POST /api/messages                      � send message
+ * POST /api/messages?action=block         � block user
+ * PUT  /api/messages                      � mark as read
  */
 import { query }      from '../../../lib/db';
 import { requireAuth } from '../../../lib/auth';

@@ -1,6 +1,6 @@
-/**
- * UNIDAR – One-time DB migrations
- * GET /api/admin/migrate — runs safe, idempotent ALTER statements
+﻿/**
+ * UNIDAR � One-time DB migrations
+ * GET /api/admin/migrate � runs safe, idempotent ALTER statements
  * Can be called multiple times without harm.
  */
 import { query } from '../../../lib/db';

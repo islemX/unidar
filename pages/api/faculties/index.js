@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Faculties API
+﻿/**
+ * UNIDAR � Faculties API
  * GET /api/faculties
  */
 import { query } from '../../../lib/db';

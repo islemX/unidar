@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Custom Document
+﻿/**
+ * UNIDAR � Custom Document
  */
 import { Html, Head, Main, NextScript } from 'next/document';
 

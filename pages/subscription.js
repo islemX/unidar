@@ -1,6 +1,6 @@
-/**
- * UNIDAR â€“ Subscription Page (Premium)
- * Pro redesign â€” single yearly plan at 25 TND/year
+﻿/**
+ * UNIDAR – Subscription Page (Premium)
+ * Pro redesign — single yearly plan at 25 TND/year
  */
 import Head from 'next/head';
 import Script from 'next/script';
@@ -9,7 +9,7 @@ export default function SubscriptionPage() {
   return (
     <>
       <Head>
-        <title>Go Premium â€” UNIDAR</title>
+        <title>Go Premium — UNIDAR</title>
       </Head>
 
       <div className="sp-root">
@@ -24,12 +24,12 @@ export default function SubscriptionPage() {
           <a href="/" className="sp-logo" aria-label="UNIDAR">
             <img src="/logo-nav.svg" alt="UNIDAR" style={{height:'44px',width:'auto',display:'block'}} />
           </a>
-          <a href="/user-dashboard" className="sp-nav-link">â† Back to Dashboard</a>
+          <a href="/user-dashboard" className="sp-nav-link">← Back to Dashboard</a>
         </nav>
 
         <div className="sp-layout">
 
-          {/* â”€â”€ LEFT COLUMN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+          {/* ── LEFT COLUMN ───────────────────────────────── */}
           <div className="sp-left">
 
             <div className="sp-overline">
@@ -43,7 +43,7 @@ export default function SubscriptionPage() {
             </h1>
 
             <p className="sp-subtext">
-              Everything you need to find, secure, and manage student housing â€” all in one place, for less than a coffee a month.
+              Everything you need to find, secure, and manage student housing — all in one place, for less than a coffee a month.
             </p>
 
             {/* Stats row */}
@@ -63,12 +63,12 @@ export default function SubscriptionPage() {
             {/* Feature list */}
             <div className="sp-features">
               {[
-                { icon: 'ðŸ ', title: 'Verified Listings Only', desc: 'Every listing is reviewed and certified by our team.' },
-                { icon: 'ðŸ’¬', title: 'Unlimited Messaging', desc: 'Contact owners directly with no limits or paywalls.' },
-                { icon: 'ðŸ“„', title: 'Digital Contracts', desc: 'Sign legally binding contracts online, instantly.' },
-                { icon: 'ðŸ—ºï¸', title: 'Neighborhood Map', desc: 'Explore listings and nearby services on the map.' },
-                { icon: 'ðŸ¤', title: 'Roommate Matching', desc: 'Find compatible roommates based on your profile.' },
-                { icon: 'âš¡', title: 'Priority Support', desc: 'Get help from our team whenever you need it.' },
+                { icon: '🏠', title: 'Verified Listings Only', desc: 'Every listing is reviewed and certified by our team.' },
+                { icon: '💬', title: 'Unlimited Messaging', desc: 'Contact owners directly with no limits or paywalls.' },
+                { icon: '📄', title: 'Digital Contracts', desc: 'Sign legally binding contracts online, instantly.' },
+                { icon: '🗺️', title: 'Neighborhood Map', desc: 'Explore listings and nearby services on the map.' },
+                { icon: '🤝', title: 'Roommate Matching', desc: 'Find compatible roommates based on your profile.' },
+                { icon: '⚡', title: 'Priority Support', desc: 'Get help from our team whenever you need it.' },
               ].map(f => (
                 <div key={f.title} className="sp-feat">
                   <div className="sp-feat-icon">{f.icon}</div>
@@ -82,7 +82,7 @@ export default function SubscriptionPage() {
 
             {/* Testimonial */}
             <div className="sp-testimonial">
-              <div className="sp-stars">â˜…â˜…â˜…â˜…â˜…</div>
+              <div className="sp-stars">★★★★★</div>
               <p className="sp-quote">"Found my apartment in 3 days. The contracts feature saved me so much stress during my first year."</p>
               <div className="sp-reviewer">
                 <div className="sp-reviewer-avatar">A</div>
@@ -94,13 +94,13 @@ export default function SubscriptionPage() {
             </div>
           </div>
 
-          {/* â”€â”€ RIGHT COLUMN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+          {/* ── RIGHT COLUMN ──────────────────────────────── */}
           <div className="sp-right">
             <div className="sp-card">
 
               {/* Header */}
               <div className="sp-card-header">
-                <div className="sp-card-badge">âœ¦ UNIDAR PRO</div>
+                <div className="sp-card-badge">✦ UNIDAR PRO</div>
                 <div className="sp-card-price">
                   <span className="sp-card-amount">25</span>
                   <div className="sp-card-price-meta">
@@ -111,7 +111,7 @@ export default function SubscriptionPage() {
                 <div className="sp-card-saving">That's less than 2.10 TND/month</div>
               </div>
 
-              {/* Virtual Card Preview â€” realistic with chip, contactless, brand detection */}
+              {/* Virtual Card Preview — realistic with chip, contactless, brand detection */}
                   <div id="sp-card-face" style={{ background: 'linear-gradient(135deg,#1e293b,#0f172a)', borderRadius: 16, padding: '20px 22px', color: 'white', marginBottom: 24, position: 'relative', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.45),0 0 0 1px rgba(255,255,255,0.07)', transition: 'background 0.5s ease', aspectRatio: '1.586', display: 'flex', flexDirection: 'column' }}>
                     {/* Shine */}
                     <div style={{ position: 'absolute', inset: 0, borderRadius: 'inherit', background: 'linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.06) 50%,transparent 60%)', backgroundSize: '300% 100%', animation: 'sp-shine 5s ease-in-out infinite', pointerEvents: 'none' }} />
@@ -134,7 +134,7 @@ export default function SubscriptionPage() {
                       </svg>
                     </div>
                     {/* Card number */}
-                    <div id="displayCardNum" style={{ fontFamily: "'Courier New',monospace", fontSize: 'clamp(0.85rem,3.5vw,1.1rem)', letterSpacing: '0.2em', textShadow: '0 2px 6px rgba(0,0,0,0.4)', marginBottom: 12, flex: 1, display: 'flex', alignItems: 'flex-end' }}>â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢</div>
+                    <div id="displayCardNum" style={{ fontFamily: "'Courier New',monospace", fontSize: 'clamp(0.85rem,3.5vw,1.1rem)', letterSpacing: '0.2em', textShadow: '0 2px 6px rgba(0,0,0,0.4)', marginBottom: 12, flex: 1, display: 'flex', alignItems: 'flex-end' }}>•••• •••• •••• ••••</div>
                     {/* Bottom row */}
                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -174,7 +174,7 @@ export default function SubscriptionPage() {
                   <div className="sp-field">
                     <label className="sp-label">CVC</label>
                     <div className="sp-input-wrap">
-                      <input type="text" id="cardCvc" className="sp-input" placeholder="â€¢â€¢â€¢" maxLength="3" required autoComplete="cc-csc" inputMode="numeric" />
+                      <input type="text" id="cardCvc" className="sp-input" placeholder="•••" maxLength="3" required autoComplete="cc-csc" inputMode="numeric" />
                       <span className="sp-cvc-icon" title="3-digit code on back of card">?</span>
                     </div>
                   </div>
@@ -183,7 +183,7 @@ export default function SubscriptionPage() {
                 {/* Order summary */}
                 <div className="sp-summary">
                   <div className="sp-summary-row">
-                    <span>UNIDAR Pro â€” 1 Year</span>
+                    <span>UNIDAR Pro — 1 Year</span>
                     <span>25.00 TND</span>
                   </div>
                   <div className="sp-summary-row sp-summary-discount">
@@ -198,17 +198,17 @@ export default function SubscriptionPage() {
                 </div>
 
                 <button type="submit" id="payBtn" className="sp-btn">
-                  <span id="payBtnText">ðŸ”’ Pay 25 TND â€” Start Premium</span>
+                  <span id="payBtnText">🔒 Pay 25 TND — Start Premium</span>
                   <div id="payBtnLoader" className="sp-btn-loader" style={{ display: 'none' }}>
                     <div className="sp-spinner" />
-                    Processingâ€¦
+                    Processing…
                   </div>
                 </button>
 
                 <div className="sp-trust">
-                  <span className="sp-trust-item">ðŸ”’ SSL Encrypted</span>
-                  <span className="sp-trust-item">âœ“ No auto-renewal</span>
-                  <span className="sp-trust-item">âœ“ Cancel anytime</span>
+                  <span className="sp-trust-item">🔒 SSL Encrypted</span>
+                  <span className="sp-trust-item">✓ No auto-renewal</span>
+                  <span className="sp-trust-item">✓ Cancel anytime</span>
                 </div>
               </form>
             </div>
@@ -231,7 +231,7 @@ export default function SubscriptionPage() {
           const setDisplay = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
           if (currentUser.full_name) setDisplay('displayName', currentUser.full_name.toUpperCase());
 
-          // â”€â”€ Card number formatting & preview sync
+          // ── Card number formatting & preview sync
           document.getElementById('cardName')?.addEventListener('input', e => {
             setDisplay('displayName', e.target.value.toUpperCase() || currentUser.full_name.toUpperCase());
           });
@@ -273,10 +273,10 @@ export default function SubscriptionPage() {
             const parts = digits.match(/.{1,4}/g) || [];
             e.target.value = parts.join('  ');
             const masked = parts.length
-              ? parts.map((p, i) => i < parts.length - 1 ? p.replace(/\\d/g, 'â€¢') : p).join('  ')
-              : 'â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢';
+              ? parts.map((p, i) => i < parts.length - 1 ? p.replace(/\\d/g, '•') : p).join('  ')
+              : '•••• •••• •••• ••••';
             const el = document.getElementById('displayCardNum');
-            if (el) el.textContent = masked || 'â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢';
+            if (el) el.textContent = masked || '•••• •••• •••• ••••';
             spApplyBrand(e.target.value);
           });
           document.getElementById('cardExpiry')?.addEventListener('input', e => {
@@ -290,7 +290,7 @@ export default function SubscriptionPage() {
             e.target.value = e.target.value.replace(/\\D/g, '').substring(0, 3);
           });
 
-          // â”€â”€ Form submission
+          // ── Form submission
           document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('payBtn');
@@ -308,7 +308,7 @@ export default function SubscriptionPage() {
                   btn.style.boxShadow = '0 0 30px rgba(16,185,129,0.4)';
                   btnLoader.style.display = 'none';
                   btnText.style.display = 'flex';
-                  btnText.textContent = 'âœ“ Payment Successful! Redirectingâ€¦';
+                  btnText.textContent = '✓ Payment Successful! Redirecting…';
                   btnText.style.justifyContent = 'center';
                 }
                 setTimeout(() => window.location.href = '/user-dashboard', 1800);
@@ -316,7 +316,7 @@ export default function SubscriptionPage() {
             } catch (err) {
               if (btn) btn.disabled = false;
               if (btnLoader) btnLoader.style.display = 'none';
-              if (btnText) { btnText.style.display = 'flex'; btnText.textContent = 'ðŸ”’ Pay 25 TND â€” Start Premium'; }
+              if (btnText) { btnText.style.display = 'flex'; btnText.textContent = '🔒 Pay 25 TND — Start Premium'; }
               // Show inline error
               let errEl = document.getElementById('sp-error');
               if (!errEl) {
@@ -325,7 +325,7 @@ export default function SubscriptionPage() {
                 errEl.className = 'sp-error';
                 document.getElementById('payBtn').insertAdjacentElement('afterend', errEl);
               }
-              errEl.textContent = 'âš  ' + (err.message || 'Payment failed. Please try again.');
+              errEl.textContent = '⚠ ' + (err.message || 'Payment failed. Please try again.');
               setTimeout(() => { if (errEl) errEl.remove(); }, 5000);
             }
           });
@@ -335,7 +335,7 @@ export default function SubscriptionPage() {
       ` }} />
 
       <style jsx global>{`
-        /* â”€â”€ Root & background â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ── Root & background ────────────────── */
         .sp-root {
           min-height: 100vh;
           background: #080d1a;
@@ -387,7 +387,7 @@ export default function SubscriptionPage() {
           z-index: 0;
         }
 
-        /* â”€â”€ Nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ── Nav ────────────────────────────────── */
         .sp-nav {
           position: relative; z-index: 10;
           display: flex; align-items: center; justify-content: space-between;
@@ -404,7 +404,7 @@ export default function SubscriptionPage() {
         }
         .sp-nav-link:hover { color: white; }
 
-        /* â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ── Layout ─────────────────────────────── */
         .sp-layout {
           position: relative; z-index: 1;
           display: grid;
@@ -416,7 +416,7 @@ export default function SubscriptionPage() {
           padding: 60px 40px 80px;
         }
 
-        /* â”€â”€ LEFT COLUMN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ── LEFT COLUMN ─────────────────────────── */
         .sp-overline {
           display: inline-flex; align-items: center; gap: 8px;
           color: var(--color-brand, #6366f1);
@@ -535,7 +535,7 @@ export default function SubscriptionPage() {
         .sp-reviewer-name { font-size: 0.875rem; font-weight: 700; color: white; }
         .sp-reviewer-role { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
 
-        /* â”€â”€ RIGHT COLUMN / CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ── RIGHT COLUMN / CARD ─────────────────── */
         .sp-right { position: sticky; top: 30px; }
 
         .sp-card {
@@ -788,7 +788,7 @@ export default function SubscriptionPage() {
         }
         .sp-terms-link { color: rgba(255,255,255,0.5); text-decoration: underline; }
 
-        /* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        /* ── Responsive ──────────────────────────── */
         @media (max-width: 900px) {
           .sp-layout {
             grid-template-columns: 1fr;

@@ -1,5 +1,5 @@
-/**
- * Public stats endpoint — used by the home page hero counters.
+﻿/**
+ * Public stats endpoint � used by the home page hero counters.
  * No auth required, returns aggregate counts only.
  */
 import { query } from '../../../lib/db';

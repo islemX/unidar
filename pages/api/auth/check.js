@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Auth Check (dedicated endpoint)
+﻿/**
+ * UNIDAR � Auth Check (dedicated endpoint)
  * GET /api/auth/check
  */
 import { query } from '../../../lib/db';

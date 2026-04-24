@@ -1,5 +1,5 @@
-/**
- * UNIDAR – Admin API
+﻿/**
+ * UNIDAR � Admin API
  * GET /api/admin?action=users|stats|reports|verifications
  * POST /api/admin?action=ban-user|unban-user|resolve-report
  * DELETE /api/admin?action=delete-user&id=X
